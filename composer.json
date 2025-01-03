@@ -1,0 +1,17 @@
+{
+    "name": "yolisses/time-constraints",
+    "description": "A library to deal with time constraints",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Yolisses\\TimeConstraints\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ulisses",
+            "email": "iamurise@gmail.com"
+        }
+    ],
+    "require": {}
+}
