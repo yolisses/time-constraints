@@ -11,12 +11,12 @@ class EmptyTimeIntervalTest extends TestCase
         // B        ░░░░░░
         // A ∪ B    ░░░░░░
 
-        $empty_time_interval = new EmptyTimeInterval;
-        $other_time_interval = new MockTimeInterval();
+        $a = new EmptyTimeInterval;
+        $b = new MockTimeInterval();
 
-        $union_time_interval = $empty_time_interval->union($other_time_interval);
+        $a_union_b = $a->union($b);
 
-        $this->assertEquals($union_time_interval, $other_time_interval);
+        $this->assertEquals($a_union_b, $b);
     }
 
     public function testIntersection()
@@ -25,12 +25,12 @@ class EmptyTimeIntervalTest extends TestCase
         // B        ░░░░░░
         // A ∪ B    
 
-        $empty_time_interval = new EmptyTimeInterval;
-        $other_time_interval = new MockTimeInterval();
+        $a = new EmptyTimeInterval;
+        $b = new MockTimeInterval();
 
-        $intersection_time_interval = $empty_time_interval->intersection($other_time_interval);
+        $a_intersection_b = $a->intersection($b);
 
-        $this->assertEquals($intersection_time_interval, new EmptyTimeInterval);
+        $this->assertEquals($a_intersection_b, new EmptyTimeInterval);
     }
 
     public function testDifference()
@@ -39,11 +39,11 @@ class EmptyTimeIntervalTest extends TestCase
         // B        ░░░░░░
         // A ∪ B    
 
-        $empty_time_interval = new EmptyTimeInterval;
-        $other_time_interval = new MockTimeInterval();
+        $a = new EmptyTimeInterval;
+        $b = new MockTimeInterval();
 
-        $difference_time_interval = $empty_time_interval->difference($other_time_interval);
+        $a_difference_b = $a->difference($b);
 
-        $this->assertEquals($difference_time_interval, new EmptyTimeInterval);
+        $this->assertEquals($a_difference_b, new EmptyTimeInterval);
     }
 }
