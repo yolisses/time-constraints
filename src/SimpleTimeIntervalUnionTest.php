@@ -6,31 +6,94 @@ use PHPUnit\Framework\TestCase;
 
 class SimpleTimeIntervalUnionTest extends TestCase
 {
-    public function testWithIntersection()
+    public function testWithABeforeB()
+    {
+        // A        ██
+        // B            ██
+        // A ∪ B    ██  ██
+
+        [$a, $b] = TestUtil::createABeforeB();
+
+        $a_union_b = $a->union($b);
+
+        $this->assertEquals($a_union_b, new CompositeTimeInterval([$a, $b]));
+    }
+
+    public function testWithAAfterB()
+    {
+        // A            ██
+        // B        ██
+        // A ∪ B    ██  ██
+
+        [$a, $b] = TestUtil::createAAfterB();
+
+        $a_union_b = $a->union($b);
+
+        $this->assertEquals($a_union_b, new CompositeTimeInterval([$a, $b]));
+    }
+
+    public function testWithAEngingInB()
     {
         // A        ████
         // B          ████
         // A ∪ B    ██████
 
-        $a = TestUtil::createSimpleTimeInterval(1, 3);
-        $b = TestUtil::createSimpleTimeInterval(2, 4);
+        [$a, $b] = TestUtil::createAEndingInB();
 
         $a_union_b = $a->union($b);
 
         $this->assertEquals($a_union_b, TestUtil::createSimpleTimeInterval(1, 4));
     }
 
-    public function testWithoutIntersection()
+    public function testWithAStartingInB()
     {
-        // A        ██
-        // B            ██
-        // A ∪ B    ██  ██
+        // A          ████
+        // B        ████
+        // A ∪ B    ██████
 
-        $a = TestUtil::createSimpleTimeInterval(1, 2);
-        $b = TestUtil::createSimpleTimeInterval(3, 4);
+        [$a, $b] = TestUtil::createAStartingInB();
 
         $a_union_b = $a->union($b);
 
-        $this->assertEquals($a_union_b, new CompositeTimeInterval([$a, $b]));
+        $this->assertEquals($a_union_b, TestUtil::createSimpleTimeInterval(1, 4));
+    }
+
+    public function testWithAContainingB()
+    {
+        // A        ██████
+        // B          ██
+        // A ∪ B    ██████
+
+        [$a, $b] = TestUtil::createAContainingB();
+
+        $a_union_b = $a->union($b);
+
+        $this->assertEquals($a_union_b, TestUtil::createSimpleTimeInterval(1, 4));
+    }
+
+    public function testWithAContainedByB()
+    {
+        // A          ██
+        // B        ██████
+        // A ∪ B    ██████
+
+        [$a, $b] = TestUtil::createAContainedByB();
+
+        $a_union_b = $a->union($b);
+
+        $this->assertEquals($a_union_b, $b);
+    }
+
+    public function testWithAEqualB()
+    {
+        // A        ██████
+        // B        ██████
+        // A ∪ B    ██████
+
+        [$a, $b] = TestUtil::createAEqualB();
+
+        $a_union_b = $a->union($b);
+
+        $this->assertEquals($a_union_b, $a);
     }
 }

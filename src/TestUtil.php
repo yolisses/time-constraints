@@ -87,10 +87,24 @@ class TestUtil
      * B    ██████
      * ```
      */
-    static function createAContainedInB()
+    static function createAContainedByB()
     {
         return [
             self::createSimpleTimeInterval(2, 3),
+            self::createSimpleTimeInterval(1, 4),
+        ];
+    }
+
+    /**
+     * ```
+     * A    ██████
+     * B    ██████
+     * ```
+     */
+    static function createAEqualB()
+    {
+        return [
+            self::createSimpleTimeInterval(1, 4),
             self::createSimpleTimeInterval(1, 4),
         ];
     }
