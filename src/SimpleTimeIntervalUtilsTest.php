@@ -22,4 +22,13 @@ class SimpleTimeIntervalUtilsTest extends TestCase
         [$a, $b] = TestUtil::createABeforeB();
         $this->assertEquals($a->getIsAfter($b), false);
     }
+
+    public function testGetIsEqual()
+    {
+        [$a, $b] = TestUtil::createAEqualB();
+        $this->assertEquals($a->getIsEqual($b), true);
+
+        [$a, $b] = TestUtil::createABeforeB();
+        $this->assertEquals($a->getIsEqual($b), false);
+    }
 }

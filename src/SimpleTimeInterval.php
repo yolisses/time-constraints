@@ -11,6 +11,22 @@ class SimpleTimeInterval implements TimeInterval
         }
     }
 
+    public function getIsBefore(SimpleTimeInterval $simple_time_interval): bool
+    {
+        return $this->end < $simple_time_interval->start;
+    }
+
+    public function getIsAfter(SimpleTimeInterval $simple_time_interval): bool
+    {
+        return $this->start > $simple_time_interval->end;
+    }
+
+    public function getIsEqual(SimpleTimeInterval $simple_time_interval): bool
+    {
+        return $this->start == $simple_time_interval->start
+            && $this->end == $simple_time_interval->end;
+    }
+
     private function union_with_simple_time_interval(SimpleTimeInterval $simple_time_interval): TimeInterval
     {
         if (
@@ -82,15 +98,5 @@ class SimpleTimeInterval implements TimeInterval
         } else {
             return $time_interval->difference($this);
         }
-    }
-
-    public function getIsBefore(SimpleTimeInterval $simple_time_interval): bool
-    {
-        return $this->end < $simple_time_interval->start;
-    }
-
-    public function getIsAfter(SimpleTimeInterval $simple_time_interval): bool
-    {
-        return $this->start > $simple_time_interval->end;
     }
 }
