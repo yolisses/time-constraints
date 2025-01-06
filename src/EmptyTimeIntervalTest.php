@@ -7,6 +7,10 @@ class EmptyTimeIntervalTest extends TestCase
 {
     public function testUnion()
     {
+        // A        
+        // B        ░░░░░░
+        // A ∪ B    ░░░░░░
+
         $empty_time_interval = new EmptyTimeInterval;
         $other_time_interval = new MockTimeInterval();
 
@@ -17,6 +21,10 @@ class EmptyTimeIntervalTest extends TestCase
 
     public function testIntersection()
     {
+        // A        
+        // B        ░░░░░░
+        // A ∪ B    
+
         $empty_time_interval = new EmptyTimeInterval;
         $other_time_interval = new MockTimeInterval();
 
@@ -27,6 +35,10 @@ class EmptyTimeIntervalTest extends TestCase
 
     public function testDifference()
     {
+        // A        
+        // B        ░░░░░░
+        // A ∪ B    
+
         $empty_time_interval = new EmptyTimeInterval;
         $other_time_interval = new MockTimeInterval();
 
