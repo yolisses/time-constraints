@@ -12,24 +12,12 @@ class SimpleTimeIntervalUnionTest extends TestCase
         // B          ████
         // A ∪ B    ██████
 
-        $a = new SimpleTimeInterval(
-            new \DateTime('0001-01-01'),
-            new \DateTime('0001-01-03'),
-        );
-        $b = new SimpleTimeInterval(
-            new \DateTime('0001-01-02'),
-            new \DateTime('0001-01-04'),
-        );
+        $a = TestUtil::createSimpleTimeInterval(1, 3);
+        $b = TestUtil::createSimpleTimeInterval(2, 4);
 
         $a_union_b = $a->union($b);
 
-        $this->assertEquals(
-            $a_union_b,
-            new SimpleTimeInterval(
-                new \DateTime('0001-01-01'),
-                new \DateTime('0001-01-04')
-            )
-        );
+        $this->assertEquals($a_union_b, TestUtil::createSimpleTimeInterval(1, 4));
     }
 
     public function testWithoutIntersection()
@@ -38,20 +26,11 @@ class SimpleTimeIntervalUnionTest extends TestCase
         // B            ██
         // A ∪ B    ██  ██
 
-        $a = new SimpleTimeInterval(
-            new \DateTime('0001-01-01'),
-            new \DateTime('0001-01-02'),
-        );
-        $b = new SimpleTimeInterval(
-            new \DateTime('0001-01-03'),
-            new \DateTime('0001-01-04'),
-        );
+        $a = TestUtil::createSimpleTimeInterval(1, 2);
+        $b = TestUtil::createSimpleTimeInterval(3, 4);
 
         $a_union_b = $a->union($b);
 
-        $this->assertEquals(
-            $a_union_b,
-            new CompositeTimeInterval([$a, $b])
-        );
+        $this->assertEquals($a_union_b, new CompositeTimeInterval([$a, $b]));
     }
 }
