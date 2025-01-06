@@ -35,8 +35,28 @@ class SimpleTimeInterval implements TimeInterval
         }
     }
 
+    private function intersection_with_simple_time_interval(SimpleTimeInterval $simple_time_interval): TimeInterval
+    {
+        if (
+            $this->end < $simple_time_interval->start ||
+            $this->start > $simple_time_interval->end
+        ) {
+            return new EmptyTimeInterval();
+        }
+
+        return new SimpleTimeInterval(
+            max($this->start, $simple_time_interval->start),
+            min($this->end, $simple_time_interval->end)
+        );
+    }
+
     function intersection(TimeInterval $time_interval): TimeInterval
     {
+        if ($time_interval instanceof SimpleTimeInterval) {
+            return $this->intersection_with_simple_time_interval($time_interval);
+        } else {
+            return $time_interval->intersection($this);
+        }
     }
 
     function difference(TimeInterval $time_interval): TimeInterval

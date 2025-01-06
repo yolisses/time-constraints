@@ -4,7 +4,7 @@ namespace Yolisses\TimeConstraints;
 
 use PHPUnit\Framework\TestCase;
 
-class SimpleTimeIntervalUnionTest extends TestCase
+class SimpleTimeIntervalIntersectionTest extends TestCase
 {
     public function testWithIntersection()
     {
@@ -21,13 +21,13 @@ class SimpleTimeIntervalUnionTest extends TestCase
             new \DateTime('0001-01-04'),
         );
 
-        $a_union_b = $a->union($b);
+        $a_intersection_b = $a->intersection($b);
 
         $this->assertEquals(
-            $a_union_b,
+            $a_intersection_b,
             new SimpleTimeInterval(
-                new \DateTime('0001-01-01'),
-                new \DateTime('0001-01-04')
+                new \DateTime('0001-01-02'),
+                new \DateTime('0001-01-03')
             )
         );
     }
@@ -47,11 +47,11 @@ class SimpleTimeIntervalUnionTest extends TestCase
             new \DateTime('0001-01-04'),
         );
 
-        $a_union_b = $a->union($b);
+        $a_intersection_b = $a->intersection($b);
 
         $this->assertEquals(
-            $a_union_b,
-            new CompositeTimeInterval([$a, $b])
+            $a_intersection_b,
+            new EmptyTimeInterval()
         );
     }
 }
