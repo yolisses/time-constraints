@@ -31,4 +31,19 @@ class SimpleTimeIntervalUtilsTest extends TestCase
         [$a, $b] = TestUtil::createABeforeB();
         $this->assertEquals($a->getIsEqual($b), false);
     }
+
+    public function testGetIsIntersecting()
+    {
+        [$a, $b] = TestUtil::createABeforeB();
+        $this->assertEquals($a->getIsIntersecting($b), false);
+
+        [$a, $b] = TestUtil::createAAfterB();
+        $this->assertEquals($a->getIsIntersecting($b), false);
+
+        [$a, $b] = TestUtil::createAEndingInB();
+        $this->assertEquals($a->getIsIntersecting($b), true);
+
+        [$a, $b] = TestUtil::createAStartingInB();
+        $this->assertEquals($a->getIsIntersecting($b), true);
+    }
 }

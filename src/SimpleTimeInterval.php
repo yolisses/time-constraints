@@ -27,6 +27,12 @@ class SimpleTimeInterval implements TimeInterval
             && $this->end == $simple_time_interval->end;
     }
 
+    public function getIsIntersecting(SimpleTimeInterval $simple_time_interval): bool
+    {
+        return !$this->getIsBefore($simple_time_interval)
+            && !$this->getIsAfter($simple_time_interval);
+    }
+
     private function union_with_simple_time_interval(SimpleTimeInterval $simple_time_interval): TimeInterval
     {
         if (
