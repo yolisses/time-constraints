@@ -13,8 +13,8 @@ class SimpleTimeIntervalTest extends TestCase
         // A ∪ B    ██████
 
         $a = new SimpleTimeInterval(
-            new \DateTime('2021-01-01 00:00:00'),
-            new \DateTime('2021-01-01 01:00:00')
+            new \DateTime('0001-01-01'),
+            new \DateTime('0001-01-04'),
         );
         $b = new EmptyTimeInterval();
 
@@ -30,12 +30,12 @@ class SimpleTimeIntervalTest extends TestCase
         // A ∪ B    ██████
 
         $a = new SimpleTimeInterval(
-            new \DateTime('2021-01-01 00:00:00'),
-            new \DateTime('2021-01-01 01:00:00')
+            new \DateTime('0001-01-01'),
+            new \DateTime('0001-01-03'),
         );
         $b = new SimpleTimeInterval(
-            new \DateTime('2021-01-01 00:30:00'),
-            new \DateTime('2021-01-01 01:30:00')
+            new \DateTime('0001-01-02'),
+            new \DateTime('0001-01-04'),
         );
 
         $a_union_b = $a->union($b);
@@ -43,8 +43,8 @@ class SimpleTimeIntervalTest extends TestCase
         $this->assertEquals(
             $a_union_b,
             new SimpleTimeInterval(
-                new \DateTime('2021-01-01 00:00:00'),
-                new \DateTime('2021-01-01 01:30:00')
+                new \DateTime('0001-01-01'),
+                new \DateTime('0001-01-04')
             )
         );
     }
@@ -56,12 +56,12 @@ class SimpleTimeIntervalTest extends TestCase
         // A ∪ B    ██  ██
 
         $a = new SimpleTimeInterval(
-            new \DateTime('2021-01-01 00:00:00'),
-            new \DateTime('2021-01-01 01:00:00')
+            new \DateTime('0001-01-01'),
+            new \DateTime('0001-01-02'),
         );
         $b = new SimpleTimeInterval(
-            new \DateTime('2021-01-01 01:00:00'),
-            new \DateTime('2021-01-01 02:00:00')
+            new \DateTime('0001-01-03'),
+            new \DateTime('0001-01-04'),
         );
 
         $a_union_b = $a->union($b);

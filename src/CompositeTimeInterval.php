@@ -16,4 +16,17 @@ class CompositeTimeInterval implements TimeInterval
     {
         $this->time_intervals = $time_intervals;
     }
+
+
+    function union(TimeInterval $time_interval): TimeInterval
+    {
+    }
+
+    function intersection(TimeInterval $time_interval): TimeInterval
+    {
+    }
+
+    function difference(TimeInterval $time_interval): TimeInterval
+    {
+    }
 }
