@@ -1,11 +1,9 @@
 <?php
-
 namespace Yolisses\TimeConstraints;
 
-class TimeInterval
+interface TimeInterval
 {
-    static function hello_world()
-    {
-        return "Hello World";
-    }
+    function union(TimeInterval $time_interval): TimeInterval;
+    function intersection(TimeInterval $time_interval): TimeInterval;
+    function difference(TimeInterval $time_interval): TimeInterval;
 }
