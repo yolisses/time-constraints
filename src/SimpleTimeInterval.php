@@ -59,7 +59,38 @@ class SimpleTimeInterval implements TimeInterval
         }
     }
 
+    function difference_with_simple_time_interval(SimpleTimeInterval $simple_time_interval): TimeInterval
+    {
+        if (
+            $this->end < $simple_time_interval->start ||
+            $this->start > $simple_time_interval->end
+        ) {
+            return new SimpleTimeInterval($this->start, $this->end);
+        }
+
+        if ($this->start < $simple_time_interval->start) {
+            return new SimpleTimeInterval($this->start, $simple_time_interval->start);
+        }
+
+        return new SimpleTimeInterval($simple_time_interval->end, $this->end);
+    }
+
     function difference(TimeInterval $time_interval): TimeInterval
     {
+        if ($time_interval instanceof SimpleTimeInterval) {
+            return $this->difference_with_simple_time_interval($time_interval);
+        } else {
+            return $time_interval->difference($this);
+        }
+    }
+
+    public function getIsBefore(SimpleTimeInterval $simple_time_interval): bool
+    {
+        return $this->end < $simple_time_interval->start;
+    }
+
+    public function getIsAfter(SimpleTimeInterval $simple_time_interval): bool
+    {
+        return $this->start > $simple_time_interval->end;
     }
 }
