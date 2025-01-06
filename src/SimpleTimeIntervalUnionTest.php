@@ -4,9 +4,9 @@ namespace Yolisses\TimeConstraints;
 
 use PHPUnit\Framework\TestCase;
 
-class SimpleTimeIntervalTest extends TestCase
+class SimpleTimeIntervalUnionTest extends TestCase
 {
-    public function testUnionWithEmptyTimeInterval()
+    public function testWithEmptyTimeInterval()
     {
         // A        ██████
         // B        
@@ -23,7 +23,7 @@ class SimpleTimeIntervalTest extends TestCase
         $this->assertEquals($a_union_b, $a);
     }
 
-    public function testUnionWithSimpleTimeIntervalIntersecting()
+    public function testWithIntersection()
     {
         // A        ████
         // B          ████
@@ -49,7 +49,7 @@ class SimpleTimeIntervalTest extends TestCase
         );
     }
 
-    public function testUnionWithSimpleTimeIntervalNotIntersecting()
+    public function testWithoutIntersection()
     {
         // A        ██
         // B            ██
