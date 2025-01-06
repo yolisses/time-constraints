@@ -1,7 +1,7 @@
 <?php
 namespace Yolisses\TimeConstraints;
 
-class CompoundTimeInterval implements TimeInterval
+class CompositeTimeInterval implements TimeInterval
 {
     /**
      * Time intervals that compound this interval

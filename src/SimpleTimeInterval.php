@@ -1,38 +1,45 @@
 <?php
+
 namespace Yolisses\TimeConstraints;
 
 class SimpleTimeInterval implements TimeInterval
 {
-    public function __construct(public DateTime $start, public DateTime $end)
+    public function __construct(public \DateTime $start, public \DateTime $end)
     {
+        if ($start > $end) {
+            throw new \InvalidArgumentException('Start date must be before end date');
+        }
     }
 
-    function unionEmpty(EmptyTimeInterval $time_interval): TimeInterval
+    private function union_with_simple_time_interval(SimpleTimeInterval $simple_time_interval): TimeInterval
     {
-        return $this;
-    }
-
-    function unionSimple(SimpleTimeInterval $time_interval): TimeInterval
-    {
-        if ($this->start <= $time_interval->start && $time_interval->end <= $this->end) {
-            return $this;
+        if (
+            $this->end < $simple_time_interval->start ||
+            $this->start > $simple_time_interval->end
+        ) {
+            return new CompositeTimeInterval([$this, $simple_time_interval]);
         }
 
-        if ($time_interval->start <= $this->start && $this->end <= $time_interval->end) {
-            return $time_interval;
-        }
-
-        return new CompoundTimeInterval([$this, $time_interval]);
+        return new SimpleTimeInterval(
+            min($this->start, $simple_time_interval->start),
+            max($this->end, $simple_time_interval->end)
+        );
     }
 
-    public function union(TimeInterval $time_interval): TimeInterval
+    function union(TimeInterval $time_interval): TimeInterval
     {
-        if ($time_interval instanceof EmptyTimeInterval) {
-            return $this->unionEmpty($time_interval);
-        } else if ($time_interval instanceof SimpleTimeInterval) {
-            return $this->unionSimple($time_interval);
+        if ($time_interval instanceof SimpleTimeInterval) {
+            return $this->union_with_simple_time_interval($time_interval);
         } else {
-            return new CompoundTimeInterval([$this, $time_interval]);
+            return $time_interval->union($this);
         }
+    }
+
+    function intersection(TimeInterval $time_interval): TimeInterval
+    {
+    }
+
+    function difference(TimeInterval $time_interval): TimeInterval
+    {
     }
 }

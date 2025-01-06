@@ -1,4 +1,5 @@
 <?php
+
 namespace Yolisses\TimeConstraints;
 
 interface TimeInterval
