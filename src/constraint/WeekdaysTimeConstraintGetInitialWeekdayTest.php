@@ -4,7 +4,7 @@ namespace Yolisses\TimeConstraints\Constraint;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
-class WeekdaysTimeConstraintTest extends TestCase
+class WeekdaysTimeConstraintGetInitialWeekdayTest extends TestCase
 {
     public function testGetInitialWeekdayForMonday()
     {

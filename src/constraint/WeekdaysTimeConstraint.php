@@ -34,18 +34,19 @@ class WeekdaysTimeConstraint extends TimeConstraint
      */
     public function getIntervals(DateTime $start_instant, DateTime $end_instant): TimeInterval
     {
-        $intervals = [];
-        $current_instant = clone $start_instant;
-        while ($current_instant < $end_instant) {
-            if ($current_instant->format('N') < 6) {
-                $start = clone $current_instant;
-                $start->setTime(9, 0);
-                $end = clone $current_instant;
-                $end->setTime(17, 0);
-                $intervals[] = new SimpleTimeInterval($start, $end);
+        $initial_weekday = self::getInitialWeekday($start_instant);
+        $final_weekday = self::getInitialWeekday($end_instant);
+
+        $intervals = new CompositeTimeInterval();
+        $current_weekday = clone $initial_weekday;
+        while ($current_weekday < $final_weekday) {
+            $weekday = $current_weekday->format('N');
+            if ($weekday < 6) {
+                $intervals->add(new SimpleTimeInterval($current_weekday, $current_weekday->modify('+1 day')));
             }
-            $current_instant->modify('+1 day');
+            $current_weekday->modify('+1 day');
         }
-        return new CompositeTimeInterval($intervals);
+
+        return $intervals;
     }
 }
