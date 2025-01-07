@@ -6,8 +6,8 @@
     "autoload": {
         "psr-4": {
             "Yolisses\\TimeConstraints\\": "src/",
-            "Yolisses\\TimeConstraints\\Interval": "src/interval",
-            "Yolisses\\TimeConstraints\\Constraint": "src/constraint"
+            "Yolisses\\TimeConstraints\\Interval\\": "src/interval",
+            "Yolisses\\TimeConstraints\\Constraint\\": "src/constraint"
         }
     },
     "authors": [
