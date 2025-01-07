@@ -8,7 +8,7 @@ use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class WeekdaysTimeConstraint extends TimeConstraint
 {
-    function getInitialWeekday(DateTime $start_instant): DateTime
+    static function getInitialWeekday(DateTime $start_instant): DateTime
     {
         $initial_weekday = clone $start_instant;
 

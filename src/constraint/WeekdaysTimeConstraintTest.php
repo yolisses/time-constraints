@@ -6,54 +6,68 @@ use PHPUnit\Framework\TestCase;
 
 class WeekdaysTimeConstraintTest extends TestCase
 {
-    public function testGetInitialWeekdayMonday()
+    public function testGetInitialWeekdayForMonday()
     {
-        $constraint = new WeekdaysTimeConstraint();
         $some_time_at_monday = new DateTime('2018-01-01 05:00:00');
-        $this->assertEquals($some_time_at_monday, $constraint->getInitialWeekday($some_time_at_monday));
+        $this->assertEquals(
+            $some_time_at_monday,
+            WeekdaysTimeConstraint::getInitialWeekday($some_time_at_monday)
+        );
     }
 
-    public function testGetInitialWeekdayTuesday()
+    public function testGetInitialWeekdayForTuesday()
     {
-        $constraint = new WeekdaysTimeConstraint();
         $some_time_at_tuesday = new DateTime('2018-01-02 05:00:00');
-        $this->assertEquals($some_time_at_tuesday, $constraint->getInitialWeekday($some_time_at_tuesday));
+        $this->assertEquals(
+            $some_time_at_tuesday,
+            WeekdaysTimeConstraint::getInitialWeekday($some_time_at_tuesday)
+        );
     }
 
-    public function testGetInitialWeekdayWednesday()
+    public function testGetInitialWeekdayForWednesday()
     {
-        $constraint = new WeekdaysTimeConstraint();
         $some_time_at_wednesday = new DateTime('2018-01-03 05:00:00');
-        $this->assertEquals($some_time_at_wednesday, $constraint->getInitialWeekday($some_time_at_wednesday));
+        $this->assertEquals(
+            $some_time_at_wednesday,
+            WeekdaysTimeConstraint::getInitialWeekday($some_time_at_wednesday)
+        );
     }
 
-    public function testGetInitialWeekdayThursday()
+    public function testGetInitialWeekdayForThursday()
     {
-        $constraint = new WeekdaysTimeConstraint();
         $some_time_at_thursday = new DateTime('2018-01-04 05:00:00');
-        $this->assertEquals($some_time_at_thursday, $constraint->getInitialWeekday($some_time_at_thursday));
+        $this->assertEquals(
+            $some_time_at_thursday,
+            WeekdaysTimeConstraint::getInitialWeekday($some_time_at_thursday)
+        );
     }
 
-    public function testGetInitialWeekdayFriday()
+    public function testGetInitialWeekdayForFriday()
     {
-        $constraint = new WeekdaysTimeConstraint();
         $some_time_at_friday = new DateTime('2018-01-05 05:00:00');
-        $this->assertEquals($some_time_at_friday, $constraint->getInitialWeekday($some_time_at_friday));
+        $this->assertEquals(
+            $some_time_at_friday,
+            WeekdaysTimeConstraint::getInitialWeekday($some_time_at_friday)
+        );
     }
 
-    public function testGetInitialWeekdaySaturday()
+    public function testGetInitialWeekdayForSaturday()
     {
-        $constraint = new WeekdaysTimeConstraint();
         $some_time_at_saturday = new DateTime('2018-01-06 05:00:00');
         $next_monday_start = new DateTime('2018-01-08 00:00:00');
-        $this->assertEquals($next_monday_start, $constraint->getInitialWeekday($some_time_at_saturday));
+        $this->assertEquals(
+            $next_monday_start,
+            WeekdaysTimeConstraint::getInitialWeekday($some_time_at_saturday)
+        );
     }
 
-    public function testGetInitialWeekdaySunday()
+    public function testGetInitialWeekdayForSunday()
     {
-        $constraint = new WeekdaysTimeConstraint();
         $some_time_at_sunday = new DateTime('2018-01-07 05:00:00');
         $next_monday_start = new DateTime('2018-01-08 00:00:00');
-        $this->assertEquals($next_monday_start, $constraint->getInitialWeekday($some_time_at_sunday));
+        $this->assertEquals(
+            $next_monday_start,
+            WeekdaysTimeConstraint::getInitialWeekday($some_time_at_sunday)
+        );
     }
 }
