@@ -12,11 +12,15 @@ class CompositeTimeInterval implements TimeInterval
     /**
      * @param TimeInterval[] $time_intervals
      */
-    public function __construct(array $time_intervals)
+    public function __construct(array $time_intervals = [])
     {
         $this->time_intervals = $time_intervals;
     }
 
+    function getIntervals(): array
+    {
+        return $this->time_intervals;
+    }
 
     function union(TimeInterval $time_interval): TimeInterval
     {
