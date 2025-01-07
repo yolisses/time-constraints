@@ -10,9 +10,20 @@ class WeekdaysTimeConstraint extends TimeConstraint
 {
     function getInitialWeekday(DateTime $start_instant): DateTime
     {
-        $current_instant = clone $start_instant;
-        $current_instant->modify('-1 weekday')->modify('+1 weekday');
-        return $current_instant;
+        $initial_weekday = clone $start_instant;
+
+        $day_of_week = $initial_weekday->format('N');
+        if ($day_of_week == 6) {
+            $initial_weekday->modify('+2 day');
+        } elseif ($day_of_week == 7) {
+            $initial_weekday->modify('+1 day');
+        }
+
+        if ($day_of_week == 6 || $day_of_week == 7) {
+            $initial_weekday->setTime(0, 0, 0, 0);
+        }
+
+        return $initial_weekday;
     }
 
     /**
