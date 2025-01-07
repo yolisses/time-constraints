@@ -1,7 +1,10 @@
 <?php
+namespace Yolisses\TimeConstraints\Constraint;
 
-use Yolisses\TimeConstraints\SimpleTimeInterval;
-use Yolisses\TimeConstraints\TimeInterval;
+use DateTime;
+use Yolisses\TimeConstraints\Interval\CompositeTimeInterval;
+use Yolisses\TimeConstraints\Interval\SimpleTimeInterval;
+use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class WeekdaysTimeConstraint extends TimeConstraint
 {
@@ -14,9 +17,9 @@ class WeekdaysTimeConstraint extends TimeConstraint
 
     /**
      * Returns the time interval that occurs in weekdays between the start and end instants.
-     * @param DateTime $start_instant
-     * @param DateTime $end_instant
-     * @return TimeInterval
+     * @param \DateTime $start_instant
+     * @param \DateTime $end_instant
+     * @return \Yolisses\TimeConstraints\Interval\TimeInterval
      */
     public function getIntervals(DateTime $start_instant, DateTime $end_instant): TimeInterval
     {

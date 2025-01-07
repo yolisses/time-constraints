@@ -1,8 +1,5 @@
 <?php
-
-namespace Yolisses\TimeConstraints;
-
-use Yolisses\TimeConstraints\TimeInterval;
+namespace Yolisses\TimeConstraints\Interval;
 
 class EmptyTimeInterval implements TimeInterval
 {

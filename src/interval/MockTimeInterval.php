@@ -1,5 +1,7 @@
 <?php
-namespace Yolisses\TimeConstraints;
+namespace Yolisses\TimeConstraints\Interval;
+
+use Exception;
 
 class MockTimeInterval implements TimeInterval
 {

@@ -1,6 +1,5 @@
 <?php
-
-namespace Yolisses\TimeConstraints;
+namespace Yolisses\TimeConstraints\Interval;
 
 interface TimeInterval
 {

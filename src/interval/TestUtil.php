@@ -1,5 +1,5 @@
 <?php
-namespace Yolisses\TimeConstraints;
+namespace Yolisses\TimeConstraints\Interval;
 
 class TestUtil
 {

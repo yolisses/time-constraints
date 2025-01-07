@@ -1,10 +1,13 @@
 {
     "name": "yolisses/time-constraints",
-    "description": "A library to deal with time constraints",
+    "description": "A library for handling time constraints, e.g.: weekdays without holidays",
     "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Yolisses\\TimeConstraints\\": "src/"
+            "Yolisses\\TimeConstraints\\": "src/",
+            "Yolisses\\TimeConstraints\\Interval": "src/interval",
+            "Yolisses\\TimeConstraints\\Constraint": "src/constraint"
         }
     },
     "authors": [
@@ -13,7 +16,6 @@
             "email": "iamurise@gmail.com"
         }
     ],
-    "license": "MIT",
     "require-dev": {
         "phpunit/phpunit": "^11.5"
     }

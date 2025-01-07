@@ -1,5 +1,7 @@
 <?php
+namespace Yolisses\TimeConstraints\Constraint;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class WeekdaysTimeConstraintTest extends TestCase

@@ -1,6 +1,9 @@
 <?php
 
-use Yolisses\TimeConstraints\TimeInterval;
+namespace Yolisses\TimeConstraints\Constraint;
+
+use DateTime;
+use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 abstract class TimeConstraint
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Yolisses\TimeConstraints;
+namespace Yolisses\TimeConstraints\Interval;
 
 class CompositeTimeInterval implements TimeInterval
 {
