@@ -1,4 +1,3 @@
-
 # Time intervals as sets
 
 Time intervals can be seem as sets of all instants obeying some rule.
