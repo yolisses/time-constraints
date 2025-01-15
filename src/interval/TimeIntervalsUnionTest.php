@@ -2,11 +2,42 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\Interval\TestUtil;
-use Yolisses\TimeConstraints\Interval\UnionSimpleTimeIntervals;
+use Yolisses\TimeConstraints\Interval\TimeIntervalsUnion;
 
-class UnionSimpleIntervalsTest extends TestCase
+class TimeIntervalsUnionTest extends TestCase
 {
-    function testUnionSimpleIntervalsSimple()
+    function testUnionTimeIntervalsEmpty()
+    {
+        //0 1 2 3 4 5 6 7
+        //
+
+        $intervals = [
+        ];
+
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
+
+        $this->assertEquals([], $result);
+    }
+
+    function testUnionTimeIntervalsWithEquality()
+    {
+        //0 1 2 3 4 5 6 7
+        //  ██████
+        //  ██████
+
+        $intervals = [
+            TestUtil::createSimpleTimeInterval(1, 4),
+            TestUtil::createSimpleTimeInterval(1, 4),
+        ];
+
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
+
+        $this->assertEquals([
+            TestUtil::createSimpleTimeInterval(1, 4),
+        ], $result);
+    }
+
+    function testUnionTimeIntervalsSimple()
     {
         //0 1 2 3 4 5 6 7
         //  ██
@@ -20,7 +51,7 @@ class UnionSimpleIntervalsTest extends TestCase
             TestUtil::createSimpleTimeInterval(4, 5),
         ];
 
-        $result = UnionSimpleTimeIntervals::unionSimpleTimeIntervals($intervals);
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals(
             [
@@ -31,7 +62,7 @@ class UnionSimpleIntervalsTest extends TestCase
         );
     }
 
-    function testUnionSimpleIntervalsComplex()
+    function testUnionTimeIntervalsComplex()
     {
         //0 1 2 3 4 5 6 7
         //  ██
@@ -46,7 +77,7 @@ class UnionSimpleIntervalsTest extends TestCase
             TestUtil::createSimpleTimeInterval(5, 6),
         ];
 
-        $result = UnionSimpleTimeIntervals::unionSimpleTimeIntervals($intervals);
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals(
             [

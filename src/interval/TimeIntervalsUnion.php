@@ -11,13 +11,13 @@ class Edge
     }
 }
 
-class UnionSimpleTimeIntervals
+class TimeIntervalsUnion
 {
     /**
      * @param array<SimpleTimeInterval> $simple_time_intervals
      * @return array<SimpleTimeInterval>
      */
-    static function unionSimpleTimeIntervals(array $simple_time_intervals)
+    static function unionTimeIntervals(array $simple_time_intervals)
     {
         // Get edges
         $edges = [];
