@@ -4,6 +4,7 @@ namespace Yolisses\TimeConstraints\Constraint;
 
 use DateTime;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Interval\TimeIntervalsIntersection;
 
 abstract class TimeConstraint
 {
@@ -14,4 +15,12 @@ abstract class TimeConstraint
      * @return array<TimeInterval>
      */
     abstract public function getIntervals(DateTime $start_instant, DateTime $end_instant): array;
+
+    function clampIntervals($intervals, DateTime $start_instant, DateTime $end_instant)
+    {
+        return TimeIntervalsIntersection::intersectionTimeIntervals(
+            $intervals,
+            [new TimeInterval($start_instant, $end_instant)]
+        );
+    }
 }
