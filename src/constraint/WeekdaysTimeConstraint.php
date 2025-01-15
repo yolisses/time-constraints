@@ -44,7 +44,6 @@ class WeekdaysTimeConstraint extends TimeConstraint
             $current_instant = self::nextMonday($next_saturday);
         }
 
-        print_r($intervals);
         return $intervals;
     }
 }
