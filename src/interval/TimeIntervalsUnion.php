@@ -2,15 +2,6 @@
 
 namespace Yolisses\TimeConstraints\Interval;
 
-use Yolisses\TimeConstraints\Interval\TimeInterval;
-
-class Edge
-{
-    public function __construct(public \DateTime $instant, public bool $isStart)
-    {
-    }
-}
-
 class TimeIntervalsUnion
 {
     /**
@@ -33,8 +24,6 @@ class TimeIntervalsUnion
             }
             return $a->instant < $b->instant ? -1 : 1;
         });
-
-        print_r($edges);
 
         $result = [];
         $counter = 0;
