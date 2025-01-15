@@ -30,7 +30,8 @@ class TimeIntervalsIntersection
                 }
             } else {
                 $counter--;
-                if ($counter == 1) {
+                // The inequality is to avoid adding an empty interval
+                if ($counter == 1 && $edge->instant != $start) {
                     $result[] = new TimeInterval($start, $edge->instant);
                 }
             }
