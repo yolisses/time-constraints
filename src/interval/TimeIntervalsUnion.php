@@ -10,20 +10,8 @@ class TimeIntervalsUnion
      */
     static function unionTimeIntervals(array $time_intervals)
     {
-        // Get edges
-        $edges = [];
-        foreach ($time_intervals as $time_interval) {
-            $edges[] = new Edge($time_interval->start, true);
-            $edges[] = new Edge($time_interval->end, false);
-        }
-
-        // Sort edges by instant, using start edges before end edges in case of tie
-        usort($edges, function ($a, $b) {
-            if ($a->instant == $b->instant) {
-                return $a->isStart ? -1 : 1;
-            }
-            return $a->instant < $b->instant ? -1 : 1;
-        });
+        $edges = Edge::getTimeIntervalsEdges($time_intervals);
+        Edge::sortEdgesByInstantAndIsStart($edges);
 
         $result = [];
         $counter = 0;

@@ -16,23 +16,8 @@ class TimeIntervalsIntersection
         $time_intervals_2 = TimeIntervalsUnion::unionTimeIntervals($time_intervals_2);
 
         // Get edges
-        $edges = [];
-        foreach ($time_intervals_1 as $time_interval) {
-            $edges[] = new Edge($time_interval->start, true);
-            $edges[] = new Edge($time_interval->end, false);
-        }
-        foreach ($time_intervals_2 as $time_interval) {
-            $edges[] = new Edge($time_interval->start, true);
-            $edges[] = new Edge($time_interval->end, false);
-        }
-
-        // Sort edges by instant, using start edges before end edges in case of tie
-        usort($edges, function ($a, $b) {
-            if ($a->instant == $b->instant) {
-                return $a->isStart ? -1 : 1;
-            }
-            return $a->instant < $b->instant ? -1 : 1;
-        });
+        $edges = Edge::getTimeIntervalsEdges(array_merge($time_intervals_1, $time_intervals_2));
+        Edge::sortEdgesByInstantAndIsStart($edges);
 
         $result = [];
         $counter = 0;
