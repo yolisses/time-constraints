@@ -2,50 +2,49 @@
 namespace Yolisses\TimeConstraints\Constraint;
 
 use DateTime;
-use Yolisses\TimeConstraints\Interval\CompositeTimeInterval;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class WeekdaysTimeConstraint extends TimeConstraint
 {
-    static function getInitialWeekday(DateTime $start_instant): DateTime
+    static function nextSaturday(DateTime $current_instant): DateTime
     {
-        $initial_weekday = clone $start_instant;
-
-        $day_of_week = $initial_weekday->format('N');
-        if ($day_of_week == 6) {
-            $initial_weekday->modify('+2 day');
-        } elseif ($day_of_week == 7) {
-            $initial_weekday->modify('+1 day');
-        }
-
-        if ($day_of_week == 6 || $day_of_week == 7) {
-            $initial_weekday->setTime(0, 0, 0, 0);
-        }
-
-        return $initial_weekday;
+        $next_saturday = clone $current_instant;
+        $next_saturday->modify('next saturday');
+        return $next_saturday;
     }
 
-    /**
-     * Returns the time interval that occurs in weekdays between the start and end instants.
-     * @param \DateTime $start_instant
-     * @param \DateTime $end_instant
-     * @return \Yolisses\TimeConstraints\Interval\TimeInterval
-     */
-    public function getIntervals(DateTime $start_instant, DateTime $end_instant): TimeInterval
+    static function nextMonday(DateTime $current_instant): DateTime
     {
-        $initial_weekday = self::getInitialWeekday($start_instant);
-        $final_weekday = self::getInitialWeekday($end_instant);
+        $next_monday = clone $current_instant;
+        $next_monday->modify('next monday');
+        return $next_monday;
+    }
 
-        $intervals = new CompositeTimeInterval();
-        $current_weekday = clone $initial_weekday;
-        while ($current_weekday < $final_weekday) {
-            $weekday = $current_weekday->format('N');
-            if ($weekday < 6) {
-                $intervals->add(new TimeInterval($current_weekday, $current_weekday->modify('+1 day')));
-            }
-            $current_weekday->modify('+1 day');
+    static function getIsWeekend(DateTime $dateTime)
+    {
+        $weekDay = $dateTime->format('N');
+        return $weekDay == 6 || $weekDay == 7;
+    }
+
+    public function getIntervals(DateTime $start_instant, DateTime $end_instant): array
+    {
+        $intervals = [];
+        $current_instant = clone $start_instant;
+
+        if (self::getIsWeekend($current_instant)) {
+            $current_instant = self::nextMonday($current_instant);
         }
 
+        while ($current_instant < $end_instant) {
+            $next_saturday = self::nextSaturday($current_instant);
+            $interval_end = min($next_saturday, $end_instant);
+            $interval = new TimeInterval($current_instant, $interval_end);
+            $intervals[] = $interval;
+
+            $current_instant = self::nextMonday($next_saturday);
+        }
+
+        print_r($intervals);
         return $intervals;
     }
 }
