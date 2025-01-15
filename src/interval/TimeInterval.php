@@ -1,7 +1,7 @@
 <?php
 namespace Yolisses\TimeConstraints\Interval;
 
-class SimpleTimeInterval
+class TimeInterval
 {
     public function __construct(public \DateTime $start, public \DateTime $end)
     {

@@ -2,7 +2,7 @@
 
 namespace Yolisses\TimeConstraints\Interval;
 
-use Yolisses\TimeConstraints\Interval\SimpleTimeInterval;
+use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class Edge
 {
@@ -14,16 +14,16 @@ class Edge
 class TimeIntervalsUnion
 {
     /**
-     * @param array<SimpleTimeInterval> $simple_time_intervals
-     * @return array<SimpleTimeInterval>
+     * @param array<TimeInterval> $time_intervals
+     * @return array<TimeInterval>
      */
-    static function unionTimeIntervals(array $simple_time_intervals)
+    static function unionTimeIntervals(array $time_intervals)
     {
         // Get edges
         $edges = [];
-        foreach ($simple_time_intervals as $simple_time_interval) {
-            $edges[] = new Edge($simple_time_interval->start, true);
-            $edges[] = new Edge($simple_time_interval->end, false);
+        foreach ($time_intervals as $time_interval) {
+            $edges[] = new Edge($time_interval->start, true);
+            $edges[] = new Edge($time_interval->end, false);
         }
 
         // Sort edges by instant, using start edges before end edges in case of tie
@@ -48,7 +48,7 @@ class TimeIntervalsUnion
             } else {
                 $counter--;
                 if ($counter == 0) {
-                    $result[] = new SimpleTimeInterval($start, $edge->instant);
+                    $result[] = new TimeInterval($start, $edge->instant);
                 }
             }
         }

@@ -5,17 +5,14 @@ use PHPUnit\Framework\TestCase;
 
 class TestUtilTest extends TestCase
 {
-    public function testCreateSimpleTimeInterval()
+    public function testCreateTimeInterval()
     {
-        $start = 1;
-        $end = 2;
-        $simpleTimeInterval = TestUtil::createSimpleTimeInterval($start, $end);
         $this->assertEquals(
-            $simpleTimeInterval,
-            new SimpleTimeInterval(
+            new TimeInterval(
                 new \DateTime("0001-01-01"),
                 new \DateTime("0001-01-02")
-            )
+            ),
+            TestUtil::createTimeInterval(1, 2),
         );
     }
 }

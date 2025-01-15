@@ -3,7 +3,6 @@ namespace Yolisses\TimeConstraints\Constraint;
 
 use DateTime;
 use Yolisses\TimeConstraints\Interval\CompositeTimeInterval;
-use Yolisses\TimeConstraints\Interval\SimpleTimeInterval;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class WeekdaysTimeConstraint extends TimeConstraint
@@ -42,7 +41,7 @@ class WeekdaysTimeConstraint extends TimeConstraint
         while ($current_weekday < $final_weekday) {
             $weekday = $current_weekday->format('N');
             if ($weekday < 6) {
-                $intervals->add(new SimpleTimeInterval($current_weekday, $current_weekday->modify('+1 day')));
+                $intervals->add(new TimeInterval($current_weekday, $current_weekday->modify('+1 day')));
             }
             $current_weekday->modify('+1 day');
         }

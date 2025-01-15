@@ -8,7 +8,7 @@ class TimeIntervalsUnionTest extends TestCase
 {
     function testUnionTimeIntervalsEmpty()
     {
-        //0 1 2 3 4 5 6 7
+        //1 2 3 4 5 6 7
         //
 
         $intervals = [
@@ -21,42 +21,42 @@ class TimeIntervalsUnionTest extends TestCase
 
     function testUnionTimeIntervalsWithEquality()
     {
-        //0 1 2 3 4 5 6 7
-        //  ██████
-        //  ██████
+        // 1 2 3 4 5 6 7
+        // ██████
+        // ██████
 
         $intervals = [
-            TestUtil::createSimpleTimeInterval(1, 4),
-            TestUtil::createSimpleTimeInterval(1, 4),
+            TestUtil::createTimeInterval(1, 4),
+            TestUtil::createTimeInterval(1, 4),
         ];
 
         $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals([
-            TestUtil::createSimpleTimeInterval(1, 4),
+            TestUtil::createTimeInterval(1, 4),
         ], $result);
     }
 
     function testUnionTimeIntervalsSimple()
     {
-        //0 1 2 3 4 5 6 7
-        //  ██
-        //    ██
-        //        ██
-        //  ████  ██
+        // 1 2 3 4 5 6 7
+        // ██
+        //   ██
+        //       ██
+        // ████  ██
 
         $intervals = [
-            TestUtil::createSimpleTimeInterval(1, 2),
-            TestUtil::createSimpleTimeInterval(2, 3),
-            TestUtil::createSimpleTimeInterval(4, 5),
+            TestUtil::createTimeInterval(1, 2),
+            TestUtil::createTimeInterval(2, 3),
+            TestUtil::createTimeInterval(4, 5),
         ];
 
         $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals(
             [
-                TestUtil::createSimpleTimeInterval(1, 3),
-                TestUtil::createSimpleTimeInterval(4, 5),
+                TestUtil::createTimeInterval(1, 3),
+                TestUtil::createTimeInterval(4, 5),
             ],
             $result
         );
@@ -64,25 +64,25 @@ class TimeIntervalsUnionTest extends TestCase
 
     function testUnionTimeIntervalsComplex()
     {
-        //0 1 2 3 4 5 6 7
-        //  ██
-        //        ██████
-        //    ██
-        //          ██
-        //  ████  ██████
+        // 1 2 3 4 5 6 7
+        // ██
+        //       ██████
+        //   ██
+        //         ██
+        // ████  ██████
         $intervals = [
-            TestUtil::createSimpleTimeInterval(1, 2),
-            TestUtil::createSimpleTimeInterval(4, 7),
-            TestUtil::createSimpleTimeInterval(2, 3),
-            TestUtil::createSimpleTimeInterval(5, 6),
+            TestUtil::createTimeInterval(1, 2),
+            TestUtil::createTimeInterval(4, 7),
+            TestUtil::createTimeInterval(2, 3),
+            TestUtil::createTimeInterval(5, 6),
         ];
 
         $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals(
             [
-                TestUtil::createSimpleTimeInterval(1, 3),
-                TestUtil::createSimpleTimeInterval(4, 7),
+                TestUtil::createTimeInterval(1, 3),
+                TestUtil::createTimeInterval(4, 7),
             ],
             $result
         );
