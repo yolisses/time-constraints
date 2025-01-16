@@ -19,7 +19,11 @@ class AndTimeConstraint extends TimeConstraint
 
     public function getIntervals(\DateTime $start_instant, \DateTime $end_instant): array
     {
-        $intervals = [];
+        if (empty($this->time_constraints)) {
+            return [];
+        }
+
+        $intervals = $this->time_constraints[0]->getIntervals($start_instant, $end_instant);
 
         foreach ($this->time_constraints as $time_constraint) {
             $intervals = TimeIntervalsIntersection::intersectionTimeIntervals(
