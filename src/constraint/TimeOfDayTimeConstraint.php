@@ -11,21 +11,22 @@ use Yolisses\TimeConstraints\Interval\TimeInterval;
 class TimeOfDayTimeConstraint extends TimeConstraint
 {
     /**
-     * @param \DateTime $time_start e.g. `new DateTime('10:00:00')`
-     * @param \DateTime $time_end e.g. `new DateTime('12:00:00')`
+     * @param string $time_start e.g. `'10:00:00'`
+     * @param string $time_end e.g. `'12:00:00'`
      */
-    public function __construct(public \DateTime $time_start, public \DateTime $time_end)
+    public function __construct(public string $time_start, public string $time_end)
     {
     }
 
-    static function getCloneWithTime(\DateTime $dateTime, \DateTime $time): \DateTime
+    static function getCloneWithTime(\DateTime $dateTime, string $time): \DateTime
     {
+        $timeAsDateTime = new \DateTime($time);
         $dateTime = clone $dateTime;
         $dateTime->setTime(
-            $time->format('H'),
-            $time->format('i'),
-            $time->format('s'),
-            $time->format('u'),
+            $timeAsDateTime->format('H'),
+            $timeAsDateTime->format('i'),
+            $timeAsDateTime->format('s'),
+            $timeAsDateTime->format('u'),
         );
         return $dateTime;
     }
