@@ -1,9 +1,10 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Interval\TestUtil;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 use Yolisses\TimeConstraints\Interval\TimeIntervalsUnion;
+
+require_once __DIR__ . '/createTimeInterval.php';
 
 class TimeIntervalsUnionTest extends TestCase
 {
@@ -28,14 +29,14 @@ class TimeIntervalsUnionTest extends TestCase
         // ██████
 
         $intervals = [
-            TestUtil::createTimeInterval(1, 4),
-            TestUtil::createTimeInterval(1, 4),
+            createTimeInterval(1, 4),
+            createTimeInterval(1, 4),
         ];
 
         $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals([
-            TestUtil::createTimeInterval(1, 4),
+            createTimeInterval(1, 4),
         ], $result);
     }
 
@@ -76,17 +77,17 @@ class TimeIntervalsUnionTest extends TestCase
         // ████  ██
 
         $intervals = [
-            TestUtil::createTimeInterval(1, 2),
-            TestUtil::createTimeInterval(2, 3),
-            TestUtil::createTimeInterval(4, 5),
+            createTimeInterval(1, 2),
+            createTimeInterval(2, 3),
+            createTimeInterval(4, 5),
         ];
 
         $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals(
             [
-                TestUtil::createTimeInterval(1, 3),
-                TestUtil::createTimeInterval(4, 5),
+                createTimeInterval(1, 3),
+                createTimeInterval(4, 5),
             ],
             $result
         );
@@ -101,18 +102,18 @@ class TimeIntervalsUnionTest extends TestCase
         //         ██
         // ████  ██████
         $intervals = [
-            TestUtil::createTimeInterval(1, 2),
-            TestUtil::createTimeInterval(4, 7),
-            TestUtil::createTimeInterval(2, 3),
-            TestUtil::createTimeInterval(5, 6),
+            createTimeInterval(1, 2),
+            createTimeInterval(4, 7),
+            createTimeInterval(2, 3),
+            createTimeInterval(5, 6),
         ];
 
         $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals(
             [
-                TestUtil::createTimeInterval(1, 3),
-                TestUtil::createTimeInterval(4, 7),
+                createTimeInterval(1, 3),
+                createTimeInterval(4, 7),
             ],
             $result
         );

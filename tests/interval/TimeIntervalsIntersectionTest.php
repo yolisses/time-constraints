@@ -1,11 +1,21 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Interval\TestUtil;
+use Yolisses\TimeConstraints\Interval\TimeInterval;
 use Yolisses\TimeConstraints\Interval\TimeIntervalsIntersection;
+
+require_once __DIR__ . '/createTimeInterval.php';
 
 class TimeIntervalsIntersectionTest extends TestCase
 {
+    static function createTimeInterval(int $start, int $end)
+    {
+        return new TimeInterval(
+            new \DateTime("0001-01-$start"),
+            new \DateTime("0001-01-$end")
+        );
+    }
+
     function testIntersectionTimeIntervalsEmpty()
     {
         //1 2 3 4 5 6 7
@@ -26,17 +36,17 @@ class TimeIntervalsIntersectionTest extends TestCase
         // ██████
 
         $intervals_1 = [
-            TestUtil::createTimeInterval(1, 4),
+            createTimeInterval(1, 4),
         ];
         $intervals_2 = [
-            TestUtil::createTimeInterval(1, 4),
+            createTimeInterval(1, 4),
         ];
 
         $result = TimeIntervalsIntersection::intersectionTimeIntervals($intervals_1, $intervals_2);
 
         $this->assertEquals(
             [
-                TestUtil::createTimeInterval(1, 4),
+                createTimeInterval(1, 4),
             ],
             $result
         );
@@ -50,18 +60,18 @@ class TimeIntervalsIntersectionTest extends TestCase
         //   ██
 
         $intervals_1 = [
-            TestUtil::createTimeInterval(1, 4),
+            createTimeInterval(1, 4),
         ];
         $intervals_2 = [
-            TestUtil::createTimeInterval(2, 3),
-            TestUtil::createTimeInterval(5, 6),
+            createTimeInterval(2, 3),
+            createTimeInterval(5, 6),
         ];
 
         $result = TimeIntervalsIntersection::intersectionTimeIntervals($intervals_1, $intervals_2);
 
         $this->assertEquals(
             [
-                TestUtil::createTimeInterval(2, 3),
+                createTimeInterval(2, 3),
             ],
             $result
         );
@@ -76,25 +86,25 @@ class TimeIntervalsIntersectionTest extends TestCase
         //         ██      ██  ████
 
         $intervals_1 = [
-            TestUtil::createTimeInterval(1, 2),
-            TestUtil::createTimeInterval(3, 6),
-            TestUtil::createTimeInterval(7, 8),
-            TestUtil::createTimeInterval(9, 10),
-            TestUtil::createTimeInterval(11, 13),
+            createTimeInterval(1, 2),
+            createTimeInterval(3, 6),
+            createTimeInterval(7, 8),
+            createTimeInterval(9, 10),
+            createTimeInterval(11, 13),
         ];
         $intervals_2 = [
-            TestUtil::createTimeInterval(2, 3),
-            TestUtil::createTimeInterval(5, 6),
-            TestUtil::createTimeInterval(9, 13),
+            createTimeInterval(2, 3),
+            createTimeInterval(5, 6),
+            createTimeInterval(9, 13),
         ];
 
         $result = TimeIntervalsIntersection::intersectionTimeIntervals($intervals_1, $intervals_2);
 
         $this->assertEquals(
             [
-                TestUtil::createTimeInterval(5, 6),
-                TestUtil::createTimeInterval(9, 10),
-                TestUtil::createTimeInterval(11, 13),
+                createTimeInterval(5, 6),
+                createTimeInterval(9, 10),
+                createTimeInterval(11, 13),
             ],
             $result
         );
