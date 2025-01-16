@@ -30,8 +30,7 @@ class AndTimeConstraintTest extends TestCase
         $intervals = $and_time_constraint->getIntervals(new DateTime('2021-01-01 00:00:00'), new DateTime('2021-01-01 02:00:00'));
 
         $this->assertEquals([
-            new TimeInterval(new DateTime('2021-01-01 00:00:00'), new DateTime('2021-01-01 01:30:00')),
-            new TimeInterval(new DateTime('2021-01-01 01:45:00'), new DateTime('2021-01-01 02:00:00'))
+            new TimeInterval(new DateTime('2021-01-01 00:30:00'), new DateTime('2021-01-01 01:00:00')),
         ], $intervals);
     }
 }
