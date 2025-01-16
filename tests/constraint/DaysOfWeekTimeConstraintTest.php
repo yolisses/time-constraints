@@ -1,10 +1,10 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\SpecificDaysOfWeekTimeConstraint;
+use Yolisses\TimeConstraints\Constraint\DaysOfWeekTimeConstraint;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
-class SpecificDaysOfWeekTimeConstraintTest extends TestCase
+class DaysOfWeekTimeConstraintTest extends TestCase
 {
     function testGetIntervals()
     {
@@ -13,7 +13,7 @@ class SpecificDaysOfWeekTimeConstraintTest extends TestCase
             3, // Wednesday
             6, // Saturday
         ];
-        $constraint = new SpecificDaysOfWeekTimeConstraint($days_of_week);
+        $constraint = new DaysOfWeekTimeConstraint($days_of_week);
 
         $start_instant = new DateTime('2025-01-01 02:03:04'); // Wednesday
         $end_instant = new DateTime('2025-01-09 05:06:07'); // Thursday
@@ -37,7 +37,7 @@ class SpecificDaysOfWeekTimeConstraintTest extends TestCase
             5, // Friday
         ];
 
-        $constraint = new SpecificDaysOfWeekTimeConstraint($days_of_week);
+        $constraint = new DaysOfWeekTimeConstraint($days_of_week);
 
         $start_instant = new DateTime('2025-01-01 08:00:00'); // Wednesday
         $end_instant = new DateTime('2025-01-10 17:00:00'); // Friday
@@ -55,7 +55,7 @@ class SpecificDaysOfWeekTimeConstraintTest extends TestCase
     function testGetIntervalsEmptyDaysOfWeek()
     {
         $days_of_week = [];
-        $constraint = new SpecificDaysOfWeekTimeConstraint($days_of_week);
+        $constraint = new DaysOfWeekTimeConstraint($days_of_week);
 
         $start_instant = new DateTime('2025-01-01 02:03:04'); // Wednesday
         $end_instant = new DateTime('2025-01-09 05:06:07'); // Thursday
@@ -70,7 +70,7 @@ class SpecificDaysOfWeekTimeConstraintTest extends TestCase
             1, // Monday
             2, // Tuesday
         ];
-        $constraint = new SpecificDaysOfWeekTimeConstraint($days_of_week);
+        $constraint = new DaysOfWeekTimeConstraint($days_of_week);
 
         $start_instant = new DateTime('2025-01-01 02:03:04'); // Wednesday
         $end_instant = new DateTime('2025-01-05 05:06:07'); // Sunday

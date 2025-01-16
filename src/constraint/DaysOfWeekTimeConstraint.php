@@ -11,7 +11,7 @@ use Yolisses\TimeConstraints\Interval\TimeInterval;
  * The days of week are in numeric format, as in `$date->format('w')`, where 0
  * is Monday and 6 is Sunday.
  */
-class SpecificDaysOfWeekTimeConstraint extends TimeConstraint
+class DaysOfWeekTimeConstraint extends TimeConstraint
 {
     public function __construct(public array $days_of_week)
     {

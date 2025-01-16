@@ -1,16 +1,16 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\SpecificTimeOfDayTimeConstraint;
+use Yolisses\TimeConstraints\Constraint\TimeOfDayTimeConstraint;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
-class SpecificTimeOfDayTimeConstraintTest extends TestCase
+class TimeOfDayTimeConstraintTest extends TestCase
 {
     function testGetIntervals()
     {
         $time_start = new DateTime('10:00:00');
         $time_end = new DateTime('12:00:00');
-        $constraint = new SpecificTimeOfDayTimeConstraint($time_start, $time_end);
+        $constraint = new TimeOfDayTimeConstraint($time_start, $time_end);
 
         $start_instant = new DateTime('2025-01-01 11:03:04');
         $end_instant = new DateTime('2025-01-09 11:06:07');

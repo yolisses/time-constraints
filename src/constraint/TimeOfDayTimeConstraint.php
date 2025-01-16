@@ -8,7 +8,7 @@ use Yolisses\TimeConstraints\Interval\TimeInterval;
 /**
  * Time constraint for a specific time of day. E.g. only from 10:00:00 to 12:00:00.
  */
-class SpecificTimeOfDayTimeConstraint extends TimeConstraint
+class TimeOfDayTimeConstraint extends TimeConstraint
 {
     /**
      * @param \DateTime $time_start e.g. `new DateTime('10:00:00')`
