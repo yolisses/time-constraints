@@ -27,6 +27,31 @@ class SpecificDaysOfWeekTimeConstraintTest extends TestCase
         ], $intervals);
     }
 
+
+    public function testGetIntervals2()
+    {
+        $days_of_week = [
+            1, // Monday
+            2, // Tuesday
+            3, // Wednesday
+            5, // Friday
+        ];
+
+        $constraint = new SpecificDaysOfWeekTimeConstraint($days_of_week);
+
+        $start_instant = new DateTime('2025-01-01 08:00:00'); // Wednesday
+        $end_instant = new DateTime('2025-01-10 17:00:00'); // Friday
+
+        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+
+        $this->assertEquals([
+            new TimeInterval(new DateTime('2025-01-01 08:00:00'), new DateTime('2025-01-02 00:00:00')), // Wednesday
+            new TimeInterval(new DateTime('2025-01-03 00:00:00'), new DateTime('2025-01-04 00:00:00')), // Friday
+            new TimeInterval(new DateTime('2025-01-06 00:00:00'), new DateTime('2025-01-09 00:00:00')), // Monday, Tuesday, Wednesday
+            new TimeInterval(new DateTime('2025-01-10 00:00:00'), new DateTime('2025-01-10 17:00:00')), // Friday
+        ], $intervals);
+    }
+
     function testGetIntervalsEmptyDaysOfWeek()
     {
         $days_of_week = [];

@@ -23,16 +23,19 @@ class SpecificDaysOfWeekTimeConstraint extends TimeConstraint
 
         $current_instant = clone $start_instant;
         $current_instant->setTime(0, 0, 0);
-        while ($current_instant < $end_instant) {
-            $next_day = clone $current_instant;
-            $next_day->modify('+1 day');
 
-            $day_of_week = (int) $current_instant->format('w');
-            if (in_array($day_of_week, $this->days_of_week)) {
-                $intervals[] = new TimeInterval($current_instant, $next_day);
+        while ($current_instant < $end_instant) {
+            $current_day_of_week = (int) $current_instant->format('w');
+
+            if (in_array($current_day_of_week, $this->days_of_week)) {
+                $interval_start = clone $current_instant;
+                $interval_end = clone $current_instant;
+                $interval_end->modify('+1 day');
+
+                $intervals[] = new TimeInterval($interval_start, $interval_end);
             }
 
-            $current_instant = $next_day;
+            $current_instant->modify('+1 day');
         }
 
         return $this->clampIntervals($intervals, $start_instant, $end_instant);
