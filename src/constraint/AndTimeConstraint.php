@@ -1,6 +1,9 @@
 <?php
 
+namespace Yolisses\TimeConstraints\Constraint;
+
 use Yolisses\TimeConstraints\Constraint\TimeConstraint;
+use Yolisses\TimeConstraints\Interval\TimeIntervalsUnion;
 
 /**
  * Apply a logical AND between time constraints.
@@ -14,7 +17,14 @@ class AndTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getIntervals(DateTime $start_instant, DateTime $end_instant): array
+    public function getIntervals(\DateTime $start_instant, \DateTime $end_instant): array
     {
+        $intervals = [];
+
+        foreach ($this->time_constraints as $time_constraint) {
+            $intervals = array_merge($intervals, $time_constraint->getIntervals($start_instant, $end_instant));
+        }
+
+        return TimeIntervalsUnion::unionTimeIntervals($intervals);
     }
 }

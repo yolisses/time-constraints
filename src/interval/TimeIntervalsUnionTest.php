@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\Interval\TestUtil;
+use Yolisses\TimeConstraints\Interval\TimeInterval;
 use Yolisses\TimeConstraints\Interval\TimeIntervalsUnion;
 
 class TimeIntervalsUnionTest extends TestCase
@@ -24,6 +25,7 @@ class TimeIntervalsUnionTest extends TestCase
         // 1 2 3 4 5 6 7
         // ██████
         // ██████
+        // ██████
 
         $intervals = [
             TestUtil::createTimeInterval(1, 4),
@@ -34,6 +36,34 @@ class TimeIntervalsUnionTest extends TestCase
 
         $this->assertEquals([
             TestUtil::createTimeInterval(1, 4),
+        ], $result);
+    }
+
+    function testUnionTimeIntervalsWithTime()
+    {
+        // 0 1 2 3 4
+        // ████
+        //   ██████
+        // ████████
+
+        $intervals = [
+            new TimeInterval(
+                new DateTime('2021-01-01 00:00:00'),
+                new DateTime('2021-01-01 00:02:00')
+            ),
+            new TimeInterval(
+                new DateTime('2021-01-01 00:01:00'),
+                new DateTime('2021-01-01 00:04:00')
+            ),
+        ];
+
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
+
+        $this->assertEquals([
+            new TimeInterval(
+                new DateTime('2021-01-01 00:00:00'),
+                new DateTime('2021-01-01 00:04:00')
+            ),
         ], $result);
     }
 
