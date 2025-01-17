@@ -53,9 +53,10 @@ class TimeConstraintGetEndInstantTest extends TestCase
         $start_instant = new DateTime('2025-01-01 00:00');
         $time_constraint = new TimeOfDayTimeConstraint('03:00', '05:00');
 
-        $end_instant = $time_constraint->getEndInstant($start_instant, $duration);
+        $this->assertEquals(new DateTime('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration));
+        $this->assertEquals(new DateTime('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration, 1000, 1000));
 
-        $this->assertEquals(new DateTime('2025-01-08 04:00'), $end_instant);
-
+        $this->expectException(Exception::class);
+        $this->assertEquals(new DateTime('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration, 10, 1000));
     }
 }
