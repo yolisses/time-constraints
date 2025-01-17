@@ -2,10 +2,6 @@
 
 namespace Yolisses\TimeConstraints\Constraint;
 
-use DateTime;
-use DateInterval;
-use DateTimeImmutable;
-use Exception;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 use Yolisses\TimeConstraints\Interval\TimeIntervalsIntersection;
 
@@ -13,13 +9,13 @@ abstract class TimeConstraint
 {
     /**
      * Returns the intervals that satisfy the constraint between the given instants.
-     * @param DateTime $start_instant
-     * @param DateTime $end_instant
+     * @param \DateTime $start_instant
+     * @param \DateTime $end_instant
      * @return array<TimeInterval>
      */
-    abstract public function getIntervals(DateTime $start_instant, DateTime $end_instant): array;
+    abstract public function getIntervals(\DateTime $start_instant, \DateTime $end_instant): array;
 
-    public function clampIntervals($intervals, DateTime $start_instant, DateTime $end_instant)
+    public function clampIntervals($intervals, \DateTime $start_instant, \DateTime $end_instant)
     {
         return TimeIntervalsIntersection::intersectionTimeIntervals(
             $intervals,
@@ -27,7 +23,7 @@ abstract class TimeConstraint
         );
     }
 
-    public function getTotalDuration(DateTime $start_instant, DateTime $end_instant)
+    public function getTotalDuration(\DateTime $start_instant, \DateTime $end_instant)
     {
         $intervals = $this->getIntervals($start_instant, $end_instant);
 
@@ -55,10 +51,10 @@ abstract class TimeConstraint
      * additional information a random instant has a change of one half of
      * satisfying the time constraint.
      * @throws \Exception
-     * @return DateTime
+     * @return \DateTime
      */
     public function getEndInstant(
-        DateTime $start_instant,
+        \DateTime $start_instant,
         int $duration,
         int $max_iterations = 1000,
         null|int $search_interval_duration = null,
@@ -68,22 +64,22 @@ abstract class TimeConstraint
             $search_interval_duration = $duration * 2;
         }
 
-        $search_start_instant = DateTimeImmutable::createFromMutable($start_instant);
-        $search_end_instant = DateTimeImmutable::createFromMutable($start_instant);
+        $search_start_instant = \DateTimeImmutable::createFromMutable($start_instant);
+        $search_end_instant = \DateTimeImmutable::createFromMutable($start_instant);
         $search_end_instant = $search_end_instant->modify("+$search_interval_duration seconds");
 
         $total_duration = 0;
         for ($i = 0; $i < $max_iterations; $i++) {
             $intervals = $this->getIntervals(
-                DateTime::createFromImmutable($search_start_instant),
-                DateTime::createFromImmutable($search_end_instant),
+                \DateTime::createFromImmutable($search_start_instant),
+                \DateTime::createFromImmutable($search_end_instant),
             );
 
             foreach ($intervals as $interval) {
                 if ($total_duration + $interval->getDuration() >= $duration) {
                     $remaining_duration = $duration - $total_duration;
                     $end_instant = clone $interval->start;
-                    $end_instant->add(new DateInterval('PT' . $remaining_duration . 'S'));
+                    $end_instant->add(new \DateInterval('PT' . $remaining_duration . 'S'));
                     return $end_instant;
                 }
                 $total_duration += $interval->getDuration();
@@ -93,6 +89,6 @@ abstract class TimeConstraint
             $search_end_instant = $search_end_instant->modify("+$search_interval_duration seconds");
         }
 
-        throw new Exception("End instant not found with max iterations equals $max_iterations");
+        throw new \Exception("End instant not found with max iterations equals $max_iterations");
     }
 }
