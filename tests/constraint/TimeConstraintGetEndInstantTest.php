@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\Constraint\TimeConstraint;
+use Yolisses\TimeConstraints\Constraint\TimeOfDayTimeConstraint;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class TimeConstraintGetEndInstantTest extends TestCase
@@ -32,5 +33,29 @@ class TimeConstraintGetEndInstantTest extends TestCase
         $end_instant = $time_constraint->getEndInstant($start_instant, $duration);
 
         $this->assertEquals(new DateTime('2025-01-03 06:00'), $end_instant);
+    }
+
+    public function testDependingOnMaxInstant()
+    {
+        //                      10  12  14  16  18  20  22  24
+        //   0 1 2 3 4 5 6 7 8 9  11  13  15  17  19  21  23
+        // 01      ████
+        // 02      ████
+        // 03      ████
+        // 04      ████
+        // 05      ████
+        // 06      ████
+        // 07      ████
+        // 08      ████
+        // 09      ████
+
+        $duration = 15 * 3600; // 15h
+        $start_instant = new DateTime('2025-01-01 00:00');
+        $time_constraint = new TimeOfDayTimeConstraint('03:00', '05:00');
+
+        $end_instant = $time_constraint->getEndInstant($start_instant, $duration);
+
+        $this->assertEquals(new DateTime('2025-01-08 04:00'), $end_instant);
+
     }
 }

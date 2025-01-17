@@ -4,6 +4,8 @@ namespace Yolisses\TimeConstraints\Constraint;
 
 use DateTime;
 use DateInterval;
+use DateTimeImmutable;
+use Exception;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 use Yolisses\TimeConstraints\Interval\TimeIntervalsIntersection;
 
@@ -37,21 +39,41 @@ abstract class TimeConstraint
         return $total_duration;
     }
 
-    public function getEndInstant(DateTime $start_instant, int $duration)
+    public function getEndInstant(DateTime $start_instant, int $duration, int $max_iterations = 1000)
     {
         $total_duration = 0;
 
-        $intervals = $this->getIntervals($start_instant, new DateTime('9999-12-31 23:59:59'));
-        foreach ($intervals as $interval) {
-            if ($total_duration + $interval->getDuration() >= $duration) {
-                $remaining_duration = $duration - $total_duration;
-                $end_instant = clone $interval->start;
-                $end_instant->add(new DateInterval('PT' . $remaining_duration . 'S'));
-                return $end_instant;
+        $search_start_instant = DateTimeImmutable::createFromMutable($start_instant);
+        $search_end_instant = DateTimeImmutable::createFromMutable($start_instant);
+        $search_end_instant = $search_end_instant->modify("+$duration seconds");
+
+        for ($i = 0; $i < $max_iterations; $i++) {
+
+            print_r("----------------");
+            print_r($search_start_instant);
+            print_r($search_end_instant);
+
+            $intervals = $this->getIntervals(
+                DateTime::createFromImmutable($search_start_instant),
+                DateTime::createFromImmutable($search_end_instant),
+            );
+
+            print_r($intervals);
+
+            foreach ($intervals as $interval) {
+                if ($total_duration + $interval->getDuration() >= $duration) {
+                    $remaining_duration = $duration - $total_duration;
+                    $end_instant = clone $interval->start;
+                    $end_instant->add(new DateInterval('PT' . $remaining_duration . 'S'));
+                    return $end_instant;
+                }
+                $total_duration += $interval->getDuration();
             }
-            $total_duration += $interval->getDuration();
+
+            $search_start_instant = $search_end_instant;
+            $search_end_instant = $search_end_instant->modify("+$duration seconds");
         }
 
-        return null;
+        throw new Exception("End instant not found with max iterations equals $max_iterations");
     }
 }
