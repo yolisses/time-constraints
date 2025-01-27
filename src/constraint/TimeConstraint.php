@@ -59,14 +59,12 @@ abstract class TimeConstraint
         int $max_iterations = 1000,
         null|int $search_interval_duration = null,
     ) {
-
         if (empty($search_interval_duration)) {
             $search_interval_duration = $duration * 2;
         }
 
         $search_start_instant = \DateTimeImmutable::createFromMutable($start_instant);
-        $search_end_instant = \DateTimeImmutable::createFromMutable($start_instant);
-        $search_end_instant = $search_end_instant->modify("+$search_interval_duration seconds");
+        $search_end_instant = \DateTimeImmutable::createFromMutable($start_instant)->modify("+$search_interval_duration seconds");
 
         $total_duration = 0;
         for ($i = 0; $i < $max_iterations; $i++) {
