@@ -79,7 +79,7 @@ abstract class TimeConstraint
                 if ($total_duration + $interval->getDuration() >= $duration) {
                     $remaining_duration = $duration - $total_duration;
                     $end_instant = clone $interval->start;
-                    $end_instant->add(new \DateInterval('PT' . $remaining_duration . 'S'));
+                    $end_instant->modify("+$remaining_duration seconds");
                     return $end_instant;
                 }
                 $total_duration += $interval->getDuration();
