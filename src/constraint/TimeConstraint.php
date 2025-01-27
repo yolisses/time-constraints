@@ -41,8 +41,12 @@ abstract class TimeConstraint
      * end instant exists at all. To deal with that, the end instant is searched
      * using a search interval, that is moved forward iteratively. If the max
      * number of iterations is reached, an Exception is thrown.
+     * 
+     * The duration can be negative, which means that the end instant is before
+     * the start instant. In this case, the search interval duration must be negative.
+     * 
      * @param \DateTime $start_instant
-     * @param int $duration
+     * @param int $duration The duration in seconds.
      * @param int $max_iterations
      * @param null|int $search_interval_duration The duration in seconds used in
      * the search interval. This can be increased to deal with time constraints
@@ -59,6 +63,12 @@ abstract class TimeConstraint
         int $max_iterations = 1000,
         null|int $search_interval_duration = null,
     ) {
+        $is_duration_negative = $duration < 0;
+
+        if ($is_duration_negative && $search_interval_duration > 0) {
+            throw new \Exception("search_interval_duration must be negative if duration is negative");
+        }
+
         if (empty($search_interval_duration)) {
             $search_interval_duration = $duration * 2;
         }
