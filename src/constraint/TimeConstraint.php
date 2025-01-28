@@ -93,7 +93,7 @@ abstract class TimeConstraint
         $search_start_instant = $start_instant;
         $search_end_instant = $start_instant->modify("$search_interval_duration seconds");
 
-        $total_duration = 0;
+        $cumulative_duration = 0;
         for ($i = 0; $i < $max_iterations; $i++) {
             // Get intervals
 
@@ -101,10 +101,10 @@ abstract class TimeConstraint
 
             // Iterates over intervals
             foreach ($intervals as $interval) {
-                if ($total_duration + $interval->getDuration() <= abs($duration)) {
-                    $total_duration += $interval->getDuration();
+                if ($cumulative_duration + $interval->getDuration() <= abs($duration)) {
+                    $cumulative_duration += $interval->getDuration();
                 } else {
-                    $remaining_duration = abs($duration) - $total_duration;
+                    $remaining_duration = abs($duration) - $cumulative_duration;
                     if ($is_duration_negative) {
                         $negative_remaining_duration = -$remaining_duration;
                         return $interval->end->modify("$negative_remaining_duration seconds");
