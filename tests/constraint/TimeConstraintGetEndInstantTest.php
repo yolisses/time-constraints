@@ -75,6 +75,6 @@ class TimeConstraintGetEndInstantTest extends TestCase
         $this->assertEquals(new DateTimeImmutable('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration, 1000, 1000));
 
         $this->expectException(Exception::class);
-        $this->assertEquals(new DateTimeImmutable('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration, 10, 1000));
+        $time_constraint->getEndInstant($start_instant, $duration, 10, 1000);
     }
 }
