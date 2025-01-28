@@ -35,6 +35,23 @@ abstract class TimeConstraint
         return $total_duration;
     }
 
+    public function getIntervalsAllowingReverse(\DateTime $start_instant, \DateTime $end_instant)
+    {
+        $is_duration_negative = $start_instant > $end_instant;
+
+        $params = [$start_instant, $end_instant];
+        if ($is_duration_negative) {
+            $params = array_reverse($params);
+        }
+
+        $intervals = $this->getIntervals(...$params);
+
+        if ($is_duration_negative) {
+            return array_reverse($intervals);
+        }
+        return $intervals;
+    }
+
     /**
      * Returns the end instant given the start instant and the duration. Because
      * the time constraints details are unknown, theres no guarantee that the
@@ -74,26 +91,13 @@ abstract class TimeConstraint
         }
 
         $search_start_instant = \DateTimeImmutable::createFromMutable($start_instant);
-        $search_end_instant = \DateTimeImmutable::createFromMutable($start_instant)->modify("+$search_interval_duration seconds");
-
-        var_dump($search_start_instant);
-        var_dump($search_interval_duration);
-        var_dump($search_end_instant);
+        $search_end_instant = \DateTimeImmutable::createFromMutable($start_instant)->modify("$search_interval_duration seconds");
 
         $total_duration = 0;
         for ($i = 0; $i < $max_iterations; $i++) {
             // Get intervals
-            $params = [
-                \DateTime::createFromImmutable($search_start_instant),
-                \DateTime::createFromImmutable($search_end_instant),
-            ];
-            if ($is_duration_negative) {
-                $params = array_reverse($params);
-            }
-            $intervals = $this->getIntervals(...$params);
-            if ($is_duration_negative) {
-                $intervals = array_reverse($intervals);
-            }
+
+            $intervals = $this->getIntervalsAllowingReverse($search_start_instant, $search_end_instant);
 
             // Iterates over intervals
             foreach ($intervals as $interval) {
@@ -103,11 +107,12 @@ abstract class TimeConstraint
                     $remaining_duration = abs($duration) - $total_duration;
                     if ($is_duration_negative) {
                         $end_instant = clone $interval->end;
-                        $end_instant->modify("-$remaining_duration seconds");
+                        $negative_remaining_duration = -$remaining_duration;
+                        $end_instant->modify("$negative_remaining_duration seconds");
                         return $end_instant;
                     } else {
                         $end_instant = clone $interval->start;
-                        $end_instant->modify("+$remaining_duration seconds");
+                        $end_instant->modify("$remaining_duration seconds");
                         return $end_instant;
                     }
 
@@ -115,7 +120,7 @@ abstract class TimeConstraint
             }
 
             $search_start_instant = $search_end_instant;
-            $search_end_instant = $search_end_instant->modify("+$search_interval_duration seconds");
+            $search_end_instant = $search_end_instant->modify("$search_interval_duration seconds");
         }
 
         throw new \Exception("End instant not found with max iterations equals $max_iterations");
