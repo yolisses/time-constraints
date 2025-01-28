@@ -1,6 +1,5 @@
 <?php
 
-
 require_once __DIR__ . '/randomly_chosen_number.php';
 
 function createInstant(int $instant)
