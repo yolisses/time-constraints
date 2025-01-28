@@ -1,11 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\AndTimeConstraint;
 use Yolisses\TimeConstraints\Constraint\OrTimeConstraint;
 use Yolisses\TimeConstraints\Constraint\SingleIntervalTimeConstraint;
 use Yolisses\TimeConstraints\Constraint\TimeOfDayTimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class TimeConstraintGetEndInstantTest extends TestCase
 {
@@ -17,11 +15,11 @@ class TimeConstraintGetEndInstantTest extends TestCase
         // 03        ██████
         // 04        ████
         $time_constraint = new OrTimeConstraint([
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-01 00:00', '2025-01-01 02:00')), // 2h
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-02 01:00', '2025-01-02 03:00')), // 2h
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-02 06:00', '2025-01-02 07:00')), // 1h 
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-03 04:00', '2025-01-03 07:00')), // 3h
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-04 04:00', '2025-01-04 06:00')), // 2h
+            SingleIntervalTimeConstraint::fromStrings('2025-01-01 00:00', '2025-01-01 02:00'), // 2h
+            SingleIntervalTimeConstraint::fromStrings('2025-01-02 01:00', '2025-01-02 03:00'), // 2h
+            SingleIntervalTimeConstraint::fromStrings('2025-01-02 06:00', '2025-01-02 07:00'), // 1h 
+            SingleIntervalTimeConstraint::fromStrings('2025-01-03 04:00', '2025-01-03 07:00'), // 3h
+            SingleIntervalTimeConstraint::fromStrings('2025-01-04 04:00', '2025-01-04 06:00'), // 2h
         ]);
 
         $start_instant = new DateTimeImmutable('2025-01-01 00:00');
@@ -40,11 +38,11 @@ class TimeConstraintGetEndInstantTest extends TestCase
         // 03        ██████
         // 04        ████
         $time_constraint = new OrTimeConstraint([
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-01 00:00', '2025-01-01 02:00')), // 2h
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-02 01:00', '2025-01-02 03:00')), // 2h
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-02 06:00', '2025-01-02 07:00')), // 1h 
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-03 04:00', '2025-01-03 07:00')), // 3h
-            new SingleIntervalTimeConstraint(TimeInterval::fromStrings('2025-01-04 04:00', '2025-01-04 06:00')), // 2h
+            SingleIntervalTimeConstraint::fromStrings('2025-01-01 00:00', '2025-01-01 02:00'), // 2h
+            SingleIntervalTimeConstraint::fromStrings('2025-01-02 01:00', '2025-01-02 03:00'), // 2h
+            SingleIntervalTimeConstraint::fromStrings('2025-01-02 06:00', '2025-01-02 07:00'), // 1h
+            SingleIntervalTimeConstraint::fromStrings('2025-01-03 04:00', '2025-01-03 07:00'), // 3h
+            SingleIntervalTimeConstraint::fromStrings('2025-01-04 04:00', '2025-01-04 06:00'), // 2h
         ]);
 
         $start_instant = new DateTimeImmutable('2025-01-03 06:00');
