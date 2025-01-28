@@ -5,6 +5,13 @@ namespace Yolisses\TimeConstraints\Constraint;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 use Yolisses\TimeConstraints\Interval\TimeIntervalsIntersection;
 
+enum OnZeroDuration
+{
+    case THROW_EXCEPTION;
+    case GET_CLOSEST_PAST;
+    case GET_CLOSEST_FUTURE;
+}
+
 abstract class TimeConstraint
 {
     /**
@@ -51,6 +58,20 @@ abstract class TimeConstraint
         return $intervals;
     }
 
+    /**
+     * Returns the closest instant that satisfies the constraint. Because the
+     * time constraints details are unknown, theres no guarantee that the
+     * instant exists at all. To deal with that, the search interval is moved
+     * forward iteratively. If the max number of iterations is reached, an
+     * Exception is thrown.
+     * @param \DateTimeImmutable $start_instant The instant to start the search.
+     * @param int $search_interval_duration The duration in seconds used in the
+     * search interval.
+     * @param int $max_iterations The maximum number of iterations to search the
+     * instant.
+     * @throws \Exception
+     * @return \DateTimeImmutable
+     */
     public function getClosestInstant(
         \DateTimeImmutable $start_instant,
         int $search_interval_duration,
@@ -86,19 +107,20 @@ abstract class TimeConstraint
      * end instant exists at all. To deal with that, the end instant is searched
      * using a search interval, that is moved forward iteratively. If the max
      * number of iterations is reached, an Exception is thrown.
-     * 
+     *
      * The duration can be negative, which means that the end instant is before
-     * the start instant. In this case, the search interval duration must be negative.
-     * 
+     * the start instant. In this case, the search interval duration must be
+     * negative.
+     *
      * @param \DateTimeImmutable $start_instant
      * @param int $duration The duration in seconds.
      * @param int $max_iterations
      * @param null|int $search_interval_duration The duration in seconds used in
      * the search interval. This can be increased to deal with time constraints
-     * that return more sparse intervals. If not provided, `2 * $duration` is
-     * used. This default value comes from the rough approximation that with no
-     * additional information a random instant has a change of one half of
-     * satisfying the time constraint.
+     * that return more sparse intervals. The default value is  `2 * $duration`
+     * if on_zero_duration is THROW_EXCEPTION, and 1 day if on_zero_duration is
+     * GET_CLOSEST_PAST or GET_CLOSEST_FUTURE.
+     * @param OnZeroDuration $on_zero_duration What to do if the duration is 0.
      * @throws \Exception
      * @return \DateTimeImmutable
      */
@@ -107,9 +129,17 @@ abstract class TimeConstraint
         int $duration,
         int $max_iterations = 1000,
         null|int $search_interval_duration = null,
+        OnZeroDuration $on_zero_duration = OnZeroDuration::THROW_EXCEPTION,
     ) {
         if ($duration == 0) {
-            throw new \Exception("Duration must be different from 0");
+            $one_day_in_seconds = 24 * 60 * 60;
+            if ($on_zero_duration === OnZeroDuration::THROW_EXCEPTION) {
+                throw new \Exception("Duration must be different from 0");
+            } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_PAST) {
+                return $this->getClosestInstant($start_instant, -$one_day_in_seconds, $max_iterations);
+            } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_FUTURE) {
+                return $this->getClosestInstant($start_instant, $one_day_in_seconds, $max_iterations);
+            }
         }
 
         $is_duration_negative = $duration < 0;
