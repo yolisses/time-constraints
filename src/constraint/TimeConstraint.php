@@ -37,14 +37,13 @@ abstract class TimeConstraint
 
     public function getIntervalsAllowingReverse(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
     {
-        $is_duration_negative = $start_instant > $end_instant;
+        $is_duration_negative = $end_instant < $start_instant;
 
-        $params = [$start_instant, $end_instant];
         if ($is_duration_negative) {
-            $params = array_reverse($params);
+            $intervals = $this->getIntervals($end_instant, $start_instant);
+        } else {
+            $intervals = $this->getIntervals($start_instant, $end_instant);
         }
-
-        $intervals = $this->getIntervals(...$params);
 
         if ($is_duration_negative) {
             return array_reverse($intervals);
@@ -93,11 +92,16 @@ abstract class TimeConstraint
         $search_start_instant = $start_instant;
         $search_end_instant = $start_instant->modify("$search_interval_duration seconds");
 
+        var_dump($search_start_instant);
+        var_dump($search_end_instant);
+
         $cumulative_duration = 0;
         for ($i = 0; $i < $max_iterations; $i++) {
             // Get intervals
 
             $intervals = $this->getIntervalsAllowingReverse($search_start_instant, $search_end_instant);
+
+            var_dump($intervals);
 
             // Iterates over intervals
             foreach ($intervals as $interval) {
