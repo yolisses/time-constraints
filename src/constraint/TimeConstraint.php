@@ -90,8 +90,8 @@ abstract class TimeConstraint
             $search_interval_duration = $duration * 2;
         }
 
-        $search_start_instant = \DateTimeImmutable::createFromMutable($start_instant);
-        $search_end_instant = \DateTimeImmutable::createFromMutable($start_instant)->modify("$search_interval_duration seconds");
+        $search_start_instant = $start_instant;
+        $search_end_instant = $start_instant->modify("$search_interval_duration seconds");
 
         $total_duration = 0;
         for ($i = 0; $i < $max_iterations; $i++) {
@@ -106,14 +106,10 @@ abstract class TimeConstraint
                 } else {
                     $remaining_duration = abs($duration) - $total_duration;
                     if ($is_duration_negative) {
-                        $end_instant = clone $interval->end;
                         $negative_remaining_duration = -$remaining_duration;
-                        $end_instant->modify("$negative_remaining_duration seconds");
-                        return $end_instant;
+                        return $interval->end->modify("$negative_remaining_duration seconds");
                     } else {
-                        $end_instant = clone $interval->start;
-                        $end_instant->modify("$remaining_duration seconds");
-                        return $end_instant;
+                        return $interval->start->modify("$remaining_duration seconds");
                     }
 
                 }

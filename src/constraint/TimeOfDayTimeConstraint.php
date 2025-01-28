@@ -40,7 +40,7 @@ class TimeOfDayTimeConstraint extends TimeConstraint
 
             $intervals[] = new TimeInterval(clone $current_instant, $interval_end);
 
-            $current_instant->modify('+1 day');
+            $current_instant = $current_instant->modify('+1 day');
         }
 
 
