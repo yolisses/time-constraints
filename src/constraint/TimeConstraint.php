@@ -79,6 +79,10 @@ abstract class TimeConstraint
         int $max_iterations = 1000,
         null|int $search_interval_duration = null,
     ) {
+        if ($duration == 0) {
+            throw new \Exception("Duration must be different from 0");
+        }
+
         $is_duration_negative = $duration < 0;
 
         if ($is_duration_negative && $search_interval_duration > 0) {
