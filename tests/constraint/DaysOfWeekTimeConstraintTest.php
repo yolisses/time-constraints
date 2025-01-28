@@ -20,10 +20,10 @@ class DaysOfWeekTimeConstraintTest extends TestCase
 
         $intervals = $constraint->getIntervals($start_instant, $end_instant);
         $this->assertEquals([
-            new TimeInterval(new DateTimeImmutable('2025-01-01 02:03:04'), new DateTimeImmutable('2025-01-02')),
-            new TimeInterval(new DateTimeImmutable('2025-01-04'), new DateTimeImmutable('2025-01-05')),
-            new TimeInterval(new DateTimeImmutable('2025-01-06'), new DateTimeImmutable('2025-01-07')),
-            new TimeInterval(new DateTimeImmutable('2025-01-08'), new DateTimeImmutable('2025-01-09')),
+            TimeInterval::fromStrings('2025-01-01 02:03:04', '2025-01-02'),
+            TimeInterval::fromStrings('2025-01-04', '2025-01-05'),
+            TimeInterval::fromStrings('2025-01-06', '2025-01-07'),
+            TimeInterval::fromStrings('2025-01-08', '2025-01-09'),
         ], $intervals);
     }
 
@@ -45,10 +45,10 @@ class DaysOfWeekTimeConstraintTest extends TestCase
         $intervals = $constraint->getIntervals($start_instant, $end_instant);
 
         $this->assertEquals([
-            new TimeInterval(new DateTimeImmutable('2025-01-01 08:00:00'), new DateTimeImmutable('2025-01-02 00:00:00')), // Wednesday
-            new TimeInterval(new DateTimeImmutable('2025-01-03 00:00:00'), new DateTimeImmutable('2025-01-04 00:00:00')), // Friday
-            new TimeInterval(new DateTimeImmutable('2025-01-06 00:00:00'), new DateTimeImmutable('2025-01-09 00:00:00')), // Monday, Tuesday, Wednesday
-            new TimeInterval(new DateTimeImmutable('2025-01-10 00:00:00'), new DateTimeImmutable('2025-01-10 17:00:00')), // Friday
+            TimeInterval::fromStrings('2025-01-01 08:00:00', '2025-01-02 00:00:00'), // Wednesday
+            TimeInterval::fromStrings('2025-01-03 00:00:00', '2025-01-04 00:00:00'), // Friday
+            TimeInterval::fromStrings('2025-01-06 00:00:00', '2025-01-09 00:00:00'), // Monday, Tuesday, Wednesday
+            TimeInterval::fromStrings('2025-01-10 00:00:00', '2025-01-10 17:00:00'), // Friday
         ], $intervals);
     }
 

@@ -14,6 +14,14 @@ class TimeInterval
         }
     }
 
+    public static function fromStrings(string $start, string $end): TimeInterval
+    {
+        return new TimeInterval(
+            new \DateTimeImmutable($start),
+            new \DateTimeImmutable($end)
+        );
+    }
+
     public function getDuration(): int
     {
         return $this->end->getTimestamp() - $this->start->getTimestamp();

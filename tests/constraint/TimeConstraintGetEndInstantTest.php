@@ -18,11 +18,11 @@ class TimeConstraintGetEndInstantTest extends TestCase
             public function getIntervals(DateTimeImmutable $start_instant, DateTimeImmutable $end_instant): array
             {
                 return [
-                    new TimeInterval(new DateTimeImmutable('2025-01-01 00:00'), new DateTimeImmutable('2025-01-01 02:00')), // 2h
-                    new TimeInterval(new DateTimeImmutable('2025-01-02 01:00'), new DateTimeImmutable('2025-01-02 03:00')), // 2h
-                    new TimeInterval(new DateTimeImmutable('2025-01-02 06:00'), new DateTimeImmutable('2025-01-02 07:00')), // 1h 
-                    new TimeInterval(new DateTimeImmutable('2025-01-03 04:00'), new DateTimeImmutable('2025-01-03 07:00')), // 3h
-                    new TimeInterval(new DateTimeImmutable('2025-01-04 04:00'), new DateTimeImmutable('2025-01-04 06:00')), // 2h
+                    TimeInterval::fromStrings('2025-01-01 00:00', '2025-01-01 02:00'), // 2h
+                    TimeInterval::fromStrings('2025-01-02 01:00', '2025-01-02 03:00'), // 2h
+                    TimeInterval::fromStrings('2025-01-02 06:00', '2025-01-02 07:00'), // 1h 
+                    TimeInterval::fromStrings('2025-01-03 04:00', '2025-01-03 07:00'), // 3h
+                    TimeInterval::fromStrings('2025-01-04 04:00', '2025-01-04 06:00'), // 2h
                 ];
             }
         };
@@ -46,11 +46,11 @@ class TimeConstraintGetEndInstantTest extends TestCase
             public function getIntervals(DateTimeImmutable $start_instant, DateTimeImmutable $end_instant): array
             {
                 return [
-                    new TimeInterval(new DateTimeImmutable('2025-01-01 00:00'), new DateTimeImmutable('2025-01-01 02:00')), // 2h
-                    new TimeInterval(new DateTimeImmutable('2025-01-02 01:00'), new DateTimeImmutable('2025-01-02 03:00')), // 2h
-                    new TimeInterval(new DateTimeImmutable('2025-01-02 06:00'), new DateTimeImmutable('2025-01-02 07:00')), // 1h 
-                    new TimeInterval(new DateTimeImmutable('2025-01-03 04:00'), new DateTimeImmutable('2025-01-03 07:00')), // 3h
-                    new TimeInterval(new DateTimeImmutable('2025-01-04 04:00'), new DateTimeImmutable('2025-01-04 06:00')), // 2h
+                    TimeInterval::fromStrings('2025-01-01 00:00', '2025-01-01 02:00'), // 2h
+                    TimeInterval::fromStrings('2025-01-02 01:00', '2025-01-02 03:00'), // 2h
+                    TimeInterval::fromStrings('2025-01-02 06:00', '2025-01-02 07:00'), // 1h 
+                    TimeInterval::fromStrings('2025-01-03 04:00', '2025-01-03 07:00'), // 3h
+                    TimeInterval::fromStrings('2025-01-04 04:00', '2025-01-04 06:00'), // 2h
                 ];
             }
         };

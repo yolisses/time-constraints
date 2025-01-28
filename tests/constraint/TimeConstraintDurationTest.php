@@ -12,9 +12,9 @@ class TimeConstraintDurationTest extends TestCase
             public function getIntervals(DateTimeImmutable $start_instant, DateTimeImmutable $end_instant): array
             {
                 return [
-                    new TimeInterval(new DateTimeImmutable('2025-01-01 01:00:00'), new DateTimeImmutable('2025-01-01 04:00:06')), // 3 hours 6 seconds
-                    new TimeInterval(new DateTimeImmutable('2025-01-02 07:00:00'), new DateTimeImmutable('2025-01-02 09:04:00')), // 2 hours 4 minutes
-                    new TimeInterval(new DateTimeImmutable('2025-01-03 15:00:00'), new DateTimeImmutable('2025-01-03 16:00:02')), // 1 hours 2 seconds
+                    TimeInterval::fromStrings('2025-01-01 01:00:00', '2025-01-01 04:00:06'), // 3 hours 6 seconds
+                    TimeInterval::fromStrings('2025-01-02 07:00:00', '2025-01-02 09:04:00'), // 2 hours 4 minutes
+                    TimeInterval::fromStrings('2025-01-03 15:00:00', '2025-01-03 16:00:02'), // 1 hours 2 seconds
                 ];
             }
         };

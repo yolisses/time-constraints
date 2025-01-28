@@ -16,7 +16,7 @@ class SingleDayTimeConstraintTest extends TestCase
 
         $intervals = $constraint->getIntervals($start_instant, $end_instant);
         $this->assertEquals([
-            new TimeInterval(new DateTimeImmutable('2025-01-02 00:00:00'), new DateTimeImmutable('2025-01-03 00:00:00')),
+            TimeInterval::fromStrings('2025-01-02 00:00:00', '2025-01-03 00:00:00'),
         ], $intervals);
     }
 
@@ -30,7 +30,7 @@ class SingleDayTimeConstraintTest extends TestCase
 
         $intervals = $constraint->getIntervals($start_instant, $end_instant);
         $this->assertEquals([
-            new TimeInterval(new DateTimeImmutable('2025-01-02 02:03:04'), new DateTimeImmutable('2025-01-02 05:06:07')),
+            TimeInterval::fromStrings('2025-01-02 02:03:04', '2025-01-02 05:06:07'),
         ], $intervals);
     }
 }

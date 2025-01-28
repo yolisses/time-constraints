@@ -17,15 +17,15 @@ class TimeOfDayTimeConstraintTest extends TestCase
 
         $intervals = $constraint->getIntervals($start_instant, $end_instant);
         $this->assertEquals([
-            new TimeInterval(new DateTimeImmutable('2025-01-01 11:03:04'), new DateTimeImmutable('2025-01-01 12:00')),
-            new TimeInterval(new DateTimeImmutable('2025-01-02 10:00'), new DateTimeImmutable('2025-01-02 12:00')),
-            new TimeInterval(new DateTimeImmutable('2025-01-03 10:00'), new DateTimeImmutable('2025-01-03 12:00')),
-            new TimeInterval(new DateTimeImmutable('2025-01-04 10:00'), new DateTimeImmutable('2025-01-04 12:00')),
-            new TimeInterval(new DateTimeImmutable('2025-01-05 10:00'), new DateTimeImmutable('2025-01-05 12:00')),
-            new TimeInterval(new DateTimeImmutable('2025-01-06 10:00'), new DateTimeImmutable('2025-01-06 12:00')),
-            new TimeInterval(new DateTimeImmutable('2025-01-07 10:00'), new DateTimeImmutable('2025-01-07 12:00')),
-            new TimeInterval(new DateTimeImmutable('2025-01-08 10:00'), new DateTimeImmutable('2025-01-08 12:00')),
-            new TimeInterval(new DateTimeImmutable('2025-01-09 10:00'), new DateTimeImmutable('2025-01-09 11:06:07')),
+            TimeInterval::fromStrings('2025-01-01 11:03:04', '2025-01-01 12:00'),
+            TimeInterval::fromStrings('2025-01-02 10:00', '2025-01-02 12:00'),
+            TimeInterval::fromStrings('2025-01-03 10:00', '2025-01-03 12:00'),
+            TimeInterval::fromStrings('2025-01-04 10:00', '2025-01-04 12:00'),
+            TimeInterval::fromStrings('2025-01-05 10:00', '2025-01-05 12:00'),
+            TimeInterval::fromStrings('2025-01-06 10:00', '2025-01-06 12:00'),
+            TimeInterval::fromStrings('2025-01-07 10:00', '2025-01-07 12:00'),
+            TimeInterval::fromStrings('2025-01-08 10:00', '2025-01-08 12:00'),
+            TimeInterval::fromStrings('2025-01-09 10:00', '2025-01-09 11:06:07'),
         ], $intervals);
     }
 }

@@ -21,7 +21,7 @@ class AndTimeConstraintTest extends TestCase
         $time_constraint1 = $this->createMock(TimeConstraint::class);
 
         $time_constraint1->method('getIntervals')->willReturn([
-            new TimeInterval(new DateTimeImmutable('2021-01-01 00:00:00'), new DateTimeImmutable('2021-01-01 01:00:00')),
+            TimeInterval::fromStrings('2021-01-01 00:00:00', '2021-01-01 01:00:00'),
         ]);
 
         $and_time_constraint = new AndTimeConstraint([$time_constraint1]);
@@ -29,7 +29,7 @@ class AndTimeConstraintTest extends TestCase
         $intervals = $and_time_constraint->getIntervals(new DateTimeImmutable('2021-01-01 00:00:00'), new DateTimeImmutable('2021-01-01 02:00:00'));
 
         $this->assertEquals([
-            new TimeInterval(new DateTimeImmutable('2021-01-01 00:00:00'), new DateTimeImmutable('2021-01-01 01:00:00')),
+            TimeInterval::fromStrings('2021-01-01 00:00:00', '2021-01-01 01:00:00'),
         ], $intervals);
     }
 
@@ -40,16 +40,16 @@ class AndTimeConstraintTest extends TestCase
         $time_constraint3 = $this->createMock(TimeConstraint::class);
 
         $time_constraint1->method('getIntervals')->willReturn([
-            new TimeInterval(new DateTimeImmutable('2021-01-01 00:00:00'), new DateTimeImmutable('2021-01-01 01:00:00')),
+            TimeInterval::fromStrings('2021-01-01 00:00:00', '2021-01-01 01:00:00'),
         ]);
 
         $time_constraint2->method('getIntervals')->willReturn([
-            new TimeInterval(new DateTimeImmutable('2021-01-01 00:30:00'), new DateTimeImmutable('2021-01-01 01:30:00')),
+            TimeInterval::fromStrings('2021-01-01 00:30:00', '2021-01-01 01:30:00'),
         ]);
 
         $time_constraint3->method('getIntervals')->willReturn([
-            new TimeInterval(new DateTimeImmutable('2021-01-01 00:00:00'), new DateTimeImmutable('2021-01-01 01:00:00')),
-            new TimeInterval(new DateTimeImmutable('2021-01-01 01:45:00'), new DateTimeImmutable('2021-01-01 02:00:00')),
+            TimeInterval::fromStrings('2021-01-01 00:00:00', '2021-01-01 01:00:00'),
+            TimeInterval::fromStrings('2021-01-01 01:45:00', '2021-01-01 02:00:00'),
         ]);
 
         $and_time_constraint = new AndTimeConstraint([$time_constraint1, $time_constraint2, $time_constraint3]);
@@ -57,7 +57,7 @@ class AndTimeConstraintTest extends TestCase
         $intervals = $and_time_constraint->getIntervals(new DateTimeImmutable('2021-01-01 00:00:00'), new DateTimeImmutable('2021-01-01 02:00:00'));
 
         $this->assertEquals([
-            new TimeInterval(new DateTimeImmutable('2021-01-01 00:30:00'), new DateTimeImmutable('2021-01-01 01:00:00')),
+            TimeInterval::fromStrings('2021-01-01 00:30:00', '2021-01-01 01:00:00'),
         ], $intervals);
     }
 }
