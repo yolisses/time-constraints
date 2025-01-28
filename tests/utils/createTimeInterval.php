@@ -2,14 +2,14 @@
 
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
+require_once __DIR__ . '/randomly_chosen_number.php';
+
 function createTimeInterval(int $start, int $end)
 {
-    $randomly_chosen_number = 41278;
-
-    $scaled_start = $start * $randomly_chosen_number;
+    $scaled_start = $start * RANDOMLY_CHOSEN_NUMBER;
     $start_datetime = (new DateTimeImmutable("2021-01-01 00:00:00"))->modify("$scaled_start seconds");
 
-    $scaled_end = $end * $randomly_chosen_number;
+    $scaled_end = $end * RANDOMLY_CHOSEN_NUMBER;
     $end_datetime = (new DateTimeImmutable("2021-01-01 00:00:00"))->modify("$scaled_end seconds");
 
     return new TimeInterval($start_datetime, $end_datetime);

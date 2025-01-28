@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 use Yolisses\TimeConstraints\Interval\TimeIntervalsIntersection;
 
-require_once __DIR__ . '/createTimeInterval.php';
+require_once __DIR__ . '/../utils/createTimeInterval.php';
 
 class TimeIntervalsIntersectionTest extends TestCase
 {

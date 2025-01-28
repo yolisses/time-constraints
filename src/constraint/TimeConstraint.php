@@ -51,6 +51,35 @@ abstract class TimeConstraint
         return $intervals;
     }
 
+    public function getClosestInstant(
+        \DateTimeImmutable $start_instant,
+        int $search_interval_duration,
+        int $max_iterations = 1000,
+    ) {
+        $search_start_instant = $start_instant;
+        $search_end_instant = $start_instant->modify("$search_interval_duration seconds");
+
+        for ($i = 0; $i < $max_iterations; $i++) {
+            $intervals = $this->getIntervalsAllowingReverse($search_start_instant, $search_end_instant);
+
+            // Iterates over intervals
+            foreach ($intervals as $interval) {
+                if ($interval->start <= $start_instant && $start_instant <= $interval->end) {
+                    return $start_instant;
+                } else if ($interval->start > $start_instant) {
+                    return $interval->start;
+                } else if ($interval->end < $start_instant) {
+                    return $interval->end;
+                }
+            }
+
+            $search_start_instant = $search_end_instant;
+            $search_end_instant = $search_end_instant->modify("$search_interval_duration seconds");
+        }
+
+        throw new \Exception("Closest instant not found with max iterations equals $max_iterations");
+    }
+
     /**
      * Returns the end instant given the start instant and the duration. Because
      * the time constraints details are unknown, theres no guarantee that the
