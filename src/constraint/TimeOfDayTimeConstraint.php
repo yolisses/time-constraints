@@ -18,20 +18,18 @@ class TimeOfDayTimeConstraint extends TimeConstraint
     {
     }
 
-    static function getCloneWithTime(\DateTime $dateTime, string $time): \DateTime
+    static function getCloneWithTime(\DateTimeImmutable $dateTimeImmutable, string $time): \DateTimeImmutable
     {
-        $timeAsDateTime = new \DateTime($time);
-        $dateTime = clone $dateTime;
-        $dateTime->setTime(
+        $timeAsDateTime = new \DateTimeImmutable($time);
+        return $dateTimeImmutable->setTime(
             $timeAsDateTime->format('H'),
             $timeAsDateTime->format('i'),
             $timeAsDateTime->format('s'),
             $timeAsDateTime->format('u'),
         );
-        return $dateTime;
     }
 
-    public function getIntervals(\DateTime $start_instant, \DateTime $end_instant): array
+    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
         $intervals = [];
 

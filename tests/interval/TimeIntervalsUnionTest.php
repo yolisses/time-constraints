@@ -49,12 +49,12 @@ class TimeIntervalsUnionTest extends TestCase
 
         $intervals = [
             new TimeInterval(
-                new DateTime('2021-01-01 00:00:00'),
-                new DateTime('2021-01-01 00:02:00')
+                new DateTimeImmutable('2021-01-01 00:00:00'),
+                new DateTimeImmutable('2021-01-01 00:02:00')
             ),
             new TimeInterval(
-                new DateTime('2021-01-01 00:01:00'),
-                new DateTime('2021-01-01 00:04:00')
+                new DateTimeImmutable('2021-01-01 00:01:00'),
+                new DateTimeImmutable('2021-01-01 00:04:00')
             ),
         ];
 
@@ -62,8 +62,8 @@ class TimeIntervalsUnionTest extends TestCase
 
         $this->assertEquals([
             new TimeInterval(
-                new DateTime('2021-01-01 00:00:00'),
-                new DateTime('2021-01-01 00:04:00')
+                new DateTimeImmutable('2021-01-01 00:00:00'),
+                new DateTimeImmutable('2021-01-01 00:04:00')
             ),
         ], $result);
     }

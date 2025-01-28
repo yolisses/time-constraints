@@ -17,7 +17,7 @@ class OrTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getIntervals(\DateTime $start_instant, \DateTime $end_instant): array
+    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
         $intervals = [];
 

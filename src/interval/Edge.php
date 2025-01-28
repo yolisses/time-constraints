@@ -4,7 +4,7 @@ namespace Yolisses\TimeConstraints\Interval;
 
 class Edge
 {
-    public function __construct(public \DateTime $instant, public bool $isStart)
+    public function __construct(public \DateTimeImmutable $instant, public bool $isStart)
     {
     }
 

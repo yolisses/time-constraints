@@ -17,7 +17,7 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getIntervals(\DateTime $start_instant, \DateTime $end_instant): array
+    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
         $intervals = [];
 
@@ -30,12 +30,12 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
             if (in_array($current_day_of_week, $this->days_of_week)) {
                 $interval_start = clone $current_instant;
                 $interval_end = clone $current_instant;
-                $interval_end->modify('+1 day');
+                $interval_end = $interval_end->modify('+1 day');
 
                 $intervals[] = new TimeInterval($interval_start, $interval_end);
             }
 
-            $current_instant->modify('+1 day');
+            $current_instant = $current_instant->modify('+1 day');
         }
 
         return $this->clampIntervals($intervals, $start_instant, $end_instant);

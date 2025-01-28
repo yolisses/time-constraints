@@ -9,13 +9,13 @@ abstract class TimeConstraint
 {
     /**
      * Returns the intervals that satisfy the constraint between the given instants.
-     * @param \DateTime $start_instant
-     * @param \DateTime $end_instant
+     * @param \DateTimeImmutable $start_instant
+     * @param \DateTimeImmutable $end_instant
      * @return array<TimeInterval>
      */
-    abstract public function getIntervals(\DateTime $start_instant, \DateTime $end_instant): array;
+    abstract public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array;
 
-    public function clampIntervals($intervals, \DateTime $start_instant, \DateTime $end_instant)
+    public function clampIntervals($intervals, \DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
     {
         return TimeIntervalsIntersection::intersectionTimeIntervals(
             $intervals,
@@ -23,7 +23,7 @@ abstract class TimeConstraint
         );
     }
 
-    public function getTotalDuration(\DateTime $start_instant, \DateTime $end_instant)
+    public function getTotalDuration(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
     {
         $intervals = $this->getIntervals($start_instant, $end_instant);
 
@@ -35,7 +35,7 @@ abstract class TimeConstraint
         return $total_duration;
     }
 
-    public function getIntervalsAllowingReverse(\DateTime $start_instant, \DateTime $end_instant)
+    public function getIntervalsAllowingReverse(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
     {
         $is_duration_negative = $start_instant > $end_instant;
 
@@ -62,7 +62,7 @@ abstract class TimeConstraint
      * The duration can be negative, which means that the end instant is before
      * the start instant. In this case, the search interval duration must be negative.
      * 
-     * @param \DateTime $start_instant
+     * @param \DateTimeImmutable $start_instant
      * @param int $duration The duration in seconds.
      * @param int $max_iterations
      * @param null|int $search_interval_duration The duration in seconds used in
@@ -72,10 +72,10 @@ abstract class TimeConstraint
      * additional information a random instant has a change of one half of
      * satisfying the time constraint.
      * @throws \Exception
-     * @return \DateTime
+     * @return \DateTimeImmutable
      */
     public function getEndInstant(
-        \DateTime $start_instant,
+        \DateTimeImmutable $start_instant,
         int $duration,
         int $max_iterations = 1000,
         null|int $search_interval_duration = null,

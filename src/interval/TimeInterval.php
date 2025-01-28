@@ -7,7 +7,7 @@ namespace Yolisses\TimeConstraints\Interval;
  */
 class TimeInterval
 {
-    public function __construct(public \DateTime $start, public \DateTime $end)
+    public function __construct(public \DateTimeImmutable $start, public \DateTimeImmutable $end)
     {
         if (!($end >= $start)) {
             throw new \InvalidArgumentException('End must be equals or greater than start');

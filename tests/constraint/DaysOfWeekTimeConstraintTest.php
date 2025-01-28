@@ -15,15 +15,15 @@ class DaysOfWeekTimeConstraintTest extends TestCase
         ];
         $constraint = new DaysOfWeekTimeConstraint($days_of_week);
 
-        $start_instant = new DateTime('2025-01-01 02:03:04'); // Wednesday
-        $end_instant = new DateTime('2025-01-09 05:06:07'); // Thursday
+        $start_instant = new DateTimeImmutable('2025-01-01 02:03:04'); // Wednesday
+        $end_instant = new DateTimeImmutable('2025-01-09 05:06:07'); // Thursday
 
         $intervals = $constraint->getIntervals($start_instant, $end_instant);
         $this->assertEquals([
-            new TimeInterval(new DateTime('2025-01-01 02:03:04'), new DateTime('2025-01-02')),
-            new TimeInterval(new DateTime('2025-01-04'), new DateTime('2025-01-05')),
-            new TimeInterval(new DateTime('2025-01-06'), new DateTime('2025-01-07')),
-            new TimeInterval(new DateTime('2025-01-08'), new DateTime('2025-01-09')),
+            new TimeInterval(new DateTimeImmutable('2025-01-01 02:03:04'), new DateTimeImmutable('2025-01-02')),
+            new TimeInterval(new DateTimeImmutable('2025-01-04'), new DateTimeImmutable('2025-01-05')),
+            new TimeInterval(new DateTimeImmutable('2025-01-06'), new DateTimeImmutable('2025-01-07')),
+            new TimeInterval(new DateTimeImmutable('2025-01-08'), new DateTimeImmutable('2025-01-09')),
         ], $intervals);
     }
 
@@ -39,16 +39,16 @@ class DaysOfWeekTimeConstraintTest extends TestCase
 
         $constraint = new DaysOfWeekTimeConstraint($days_of_week);
 
-        $start_instant = new DateTime('2025-01-01 08:00:00'); // Wednesday
-        $end_instant = new DateTime('2025-01-10 17:00:00'); // Friday
+        $start_instant = new DateTimeImmutable('2025-01-01 08:00:00'); // Wednesday
+        $end_instant = new DateTimeImmutable('2025-01-10 17:00:00'); // Friday
 
         $intervals = $constraint->getIntervals($start_instant, $end_instant);
 
         $this->assertEquals([
-            new TimeInterval(new DateTime('2025-01-01 08:00:00'), new DateTime('2025-01-02 00:00:00')), // Wednesday
-            new TimeInterval(new DateTime('2025-01-03 00:00:00'), new DateTime('2025-01-04 00:00:00')), // Friday
-            new TimeInterval(new DateTime('2025-01-06 00:00:00'), new DateTime('2025-01-09 00:00:00')), // Monday, Tuesday, Wednesday
-            new TimeInterval(new DateTime('2025-01-10 00:00:00'), new DateTime('2025-01-10 17:00:00')), // Friday
+            new TimeInterval(new DateTimeImmutable('2025-01-01 08:00:00'), new DateTimeImmutable('2025-01-02 00:00:00')), // Wednesday
+            new TimeInterval(new DateTimeImmutable('2025-01-03 00:00:00'), new DateTimeImmutable('2025-01-04 00:00:00')), // Friday
+            new TimeInterval(new DateTimeImmutable('2025-01-06 00:00:00'), new DateTimeImmutable('2025-01-09 00:00:00')), // Monday, Tuesday, Wednesday
+            new TimeInterval(new DateTimeImmutable('2025-01-10 00:00:00'), new DateTimeImmutable('2025-01-10 17:00:00')), // Friday
         ], $intervals);
     }
 
@@ -57,8 +57,8 @@ class DaysOfWeekTimeConstraintTest extends TestCase
         $days_of_week = [];
         $constraint = new DaysOfWeekTimeConstraint($days_of_week);
 
-        $start_instant = new DateTime('2025-01-01 02:03:04'); // Wednesday
-        $end_instant = new DateTime('2025-01-09 05:06:07'); // Thursday
+        $start_instant = new DateTimeImmutable('2025-01-01 02:03:04'); // Wednesday
+        $end_instant = new DateTimeImmutable('2025-01-09 05:06:07'); // Thursday
 
         $intervals = $constraint->getIntervals($start_instant, $end_instant);
         $this->assertEquals([], $intervals);
@@ -72,8 +72,8 @@ class DaysOfWeekTimeConstraintTest extends TestCase
         ];
         $constraint = new DaysOfWeekTimeConstraint($days_of_week);
 
-        $start_instant = new DateTime('2025-01-01 02:03:04'); // Wednesday
-        $end_instant = new DateTime('2025-01-05 05:06:07'); // Sunday
+        $start_instant = new DateTimeImmutable('2025-01-01 02:03:04'); // Wednesday
+        $end_instant = new DateTimeImmutable('2025-01-05 05:06:07'); // Sunday
 
         $intervals = $constraint->getIntervals($start_instant, $end_instant);
         $this->assertEquals([], $intervals);

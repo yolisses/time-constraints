@@ -15,24 +15,24 @@ class TimeConstraintGetEndInstantTest extends TestCase
         // 03        ██████
         // 04        ████
         $time_constraint = new class () extends TimeConstraint {
-            public function getIntervals(DateTime $start_instant, DateTime $end_instant): array
+            public function getIntervals(DateTimeImmutable $start_instant, DateTimeImmutable $end_instant): array
             {
                 return [
-                    new TimeInterval(new DateTime('2025-01-01 00:00'), new DateTime('2025-01-01 02:00')), // 2h
-                    new TimeInterval(new DateTime('2025-01-02 01:00'), new DateTime('2025-01-02 03:00')), // 2h
-                    new TimeInterval(new DateTime('2025-01-02 06:00'), new DateTime('2025-01-02 07:00')), // 1h 
-                    new TimeInterval(new DateTime('2025-01-03 04:00'), new DateTime('2025-01-03 07:00')), // 3h
-                    new TimeInterval(new DateTime('2025-01-04 04:00'), new DateTime('2025-01-04 06:00')), // 2h
+                    new TimeInterval(new DateTimeImmutable('2025-01-01 00:00'), new DateTimeImmutable('2025-01-01 02:00')), // 2h
+                    new TimeInterval(new DateTimeImmutable('2025-01-02 01:00'), new DateTimeImmutable('2025-01-02 03:00')), // 2h
+                    new TimeInterval(new DateTimeImmutable('2025-01-02 06:00'), new DateTimeImmutable('2025-01-02 07:00')), // 1h 
+                    new TimeInterval(new DateTimeImmutable('2025-01-03 04:00'), new DateTimeImmutable('2025-01-03 07:00')), // 3h
+                    new TimeInterval(new DateTimeImmutable('2025-01-04 04:00'), new DateTimeImmutable('2025-01-04 06:00')), // 2h
                 ];
             }
         };
 
-        $start_instant = new DateTime('2025-01-01 00:00');
+        $start_instant = new DateTimeImmutable('2025-01-01 00:00');
         $duration = 7 * 3600;  // 7h
 
         $end_instant = $time_constraint->getEndInstant($start_instant, $duration);
 
-        $this->assertEquals(new DateTime('2025-01-03 06:00'), $end_instant);
+        $this->assertEquals(new DateTimeImmutable('2025-01-03 06:00'), $end_instant);
     }
 
     public function testGetEndInstantWithNegativeDuration()
@@ -43,24 +43,24 @@ class TimeConstraintGetEndInstantTest extends TestCase
         // 03        ██████
         // 04        ████
         $time_constraint = new class () extends TimeConstraint {
-            public function getIntervals(DateTime $start_instant, DateTime $end_instant): array
+            public function getIntervals(DateTimeImmutable $start_instant, DateTimeImmutable $end_instant): array
             {
                 return [
-                    new TimeInterval(new DateTime('2025-01-01 00:00'), new DateTime('2025-01-01 02:00')), // 2h
-                    new TimeInterval(new DateTime('2025-01-02 01:00'), new DateTime('2025-01-02 03:00')), // 2h
-                    new TimeInterval(new DateTime('2025-01-02 06:00'), new DateTime('2025-01-02 07:00')), // 1h 
-                    new TimeInterval(new DateTime('2025-01-03 04:00'), new DateTime('2025-01-03 07:00')), // 3h
-                    new TimeInterval(new DateTime('2025-01-04 04:00'), new DateTime('2025-01-04 06:00')), // 2h
+                    new TimeInterval(new DateTimeImmutable('2025-01-01 00:00'), new DateTimeImmutable('2025-01-01 02:00')), // 2h
+                    new TimeInterval(new DateTimeImmutable('2025-01-02 01:00'), new DateTimeImmutable('2025-01-02 03:00')), // 2h
+                    new TimeInterval(new DateTimeImmutable('2025-01-02 06:00'), new DateTimeImmutable('2025-01-02 07:00')), // 1h 
+                    new TimeInterval(new DateTimeImmutable('2025-01-03 04:00'), new DateTimeImmutable('2025-01-03 07:00')), // 3h
+                    new TimeInterval(new DateTimeImmutable('2025-01-04 04:00'), new DateTimeImmutable('2025-01-04 06:00')), // 2h
                 ];
             }
         };
 
-        $start_instant = new DateTime('2025-01-03 06:00');
+        $start_instant = new DateTimeImmutable('2025-01-03 06:00');
         $duration = -7 * 3600;  // -7h
 
         $end_instant = $time_constraint->getEndInstant($start_instant, $duration);
 
-        $this->assertEquals(new DateTime('2025-01-01 00:00'), $end_instant);
+        $this->assertEquals(new DateTimeImmutable('2025-01-01 00:00'), $end_instant);
     }
 
     public function testDependingOnMaxInstant()
@@ -78,13 +78,13 @@ class TimeConstraintGetEndInstantTest extends TestCase
         // 09      ████
 
         $duration = 15 * 3600; // 15h
-        $start_instant = new DateTime('2025-01-01 00:00');
+        $start_instant = new DateTimeImmutable('2025-01-01 00:00');
         $time_constraint = new TimeOfDayTimeConstraint('03:00', '05:00');
 
-        $this->assertEquals(new DateTime('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration));
-        $this->assertEquals(new DateTime('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration, 1000, 1000));
+        $this->assertEquals(new DateTimeImmutable('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration));
+        $this->assertEquals(new DateTimeImmutable('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration, 1000, 1000));
 
         $this->expectException(Exception::class);
-        $this->assertEquals(new DateTime('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration, 10, 1000));
+        $this->assertEquals(new DateTimeImmutable('2025-01-08 04:00'), $time_constraint->getEndInstant($start_instant, $duration, 10, 1000));
     }
 }
