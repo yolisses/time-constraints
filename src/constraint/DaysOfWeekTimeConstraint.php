@@ -21,8 +21,7 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
     {
         $intervals = [];
 
-        $current_instant = clone $start_instant;
-        $current_instant->setTime(0, 0, 0);
+        $current_instant = $start_instant->setTime(0, 0, 0);
 
         while ($current_instant < $end_instant) {
             $current_day_of_week = (int) $current_instant->format('w');
