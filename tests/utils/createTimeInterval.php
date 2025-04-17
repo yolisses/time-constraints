@@ -2,15 +2,11 @@
 
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
-require_once __DIR__ . '/randomly_chosen_number.php';
+require_once __DIR__ . '/createInstant.php';
 
 function createTimeInterval(int $start, int $end, bool $include_start, bool $include_end)
 {
-    $scaled_start = $start * RANDOMLY_CHOSEN_NUMBER;
-    $start_datetime = (new DateTimeImmutable("2021-01-01 00:00:00"))->modify("$scaled_start seconds");
-
-    $scaled_end = $end * RANDOMLY_CHOSEN_NUMBER;
-    $end_datetime = (new DateTimeImmutable("2021-01-01 00:00:00"))->modify("$scaled_end seconds");
-
+    $start_datetime = createInstant($start);
+    $end_datetime = createInstant($end);
     return new TimeInterval($start_datetime, $end_datetime, $include_start, $include_end);
 }
