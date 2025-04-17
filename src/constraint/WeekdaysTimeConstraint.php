@@ -23,7 +23,7 @@ class WeekdaysTimeConstraint extends TimeConstraint
         while ($current_instant < $end_instant) {
             $next_saturday = $current_instant->modify('next saturday');
             $interval_end = min($next_saturday, $end_instant);
-            $interval = new TimeInterval($current_instant, $interval_end);
+            $interval = new TimeInterval($current_instant, $interval_end, true, false);
             $intervals[] = $interval;
 
             $current_instant = $next_saturday->modify('next monday');
