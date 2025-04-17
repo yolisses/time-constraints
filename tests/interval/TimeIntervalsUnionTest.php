@@ -21,61 +21,6 @@ class TimeIntervalsUnionTest extends TestCase
         $this->assertEquals([], $result);
     }
 
-    function testUnionTimeIntervalsWithEquality()
-    {
-        // 1 2 3 4 5 6 7
-        // ●───●
-        // ●───●
-        // ●───●
-
-        $intervals = [
-            createTimeInterval(1, 4, true, true),
-            createTimeInterval(1, 4, true, true),
-        ];
-
-        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
-
-        $this->assertEquals([
-            createTimeInterval(1, 4, true, true),
-        ], $result);
-    }
-
-    // TODO move this test up
-    function testUnionTimeIntervalsWithTime()
-    {
-        // 0 1 2 3 4
-        // ●─●
-        //   ●─────●
-        // ●───────●
-
-        $intervals = [
-            new TimeInterval(
-                new DateTimeImmutable('2021-01-01 00:00:00'),
-                new DateTimeImmutable('2021-01-01 00:02:00'),
-                true,
-                true,
-            ),
-            new TimeInterval(
-                new DateTimeImmutable('2021-01-01 00:01:00'),
-                new DateTimeImmutable('2021-01-01 00:04:00'),
-                true,
-                true,
-            ),
-        ];
-
-        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
-
-        $this->assertEquals([
-            new TimeInterval(
-                new DateTimeImmutable('2021-01-01 00:00:00'),
-                new DateTimeImmutable('2021-01-01 00:04:00'),
-                true,
-                true,
-            ),
-        ], $result);
-    }
-
-
     function testUnionTimeIntervals1()
     {
         // 1 2 3 4 5 6 7
@@ -163,6 +108,59 @@ class TimeIntervalsUnionTest extends TestCase
             ],
             $result
         );
+    }
+
+    function testUnionTimeIntervalsWithEquality()
+    {
+        // 1 2 3 4 5 6 7
+        // ●───●
+        // ●───●
+        // ●───●
+
+        $intervals = [
+            createTimeInterval(1, 4, true, true),
+            createTimeInterval(1, 4, true, true),
+        ];
+
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
+
+        $this->assertEquals([
+            createTimeInterval(1, 4, true, true),
+        ], $result);
+    }
+
+    function testUnionTimeIntervalsWithTime()
+    {
+        // 0 1 2 3 4
+        // ●─●
+        //   ●─────●
+        // ●───────●
+
+        $intervals = [
+            new TimeInterval(
+                new DateTimeImmutable('2021-01-01 00:00:00'),
+                new DateTimeImmutable('2021-01-01 00:02:00'),
+                true,
+                true,
+            ),
+            new TimeInterval(
+                new DateTimeImmutable('2021-01-01 00:01:00'),
+                new DateTimeImmutable('2021-01-01 00:04:00'),
+                true,
+                true,
+            ),
+        ];
+
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
+
+        $this->assertEquals([
+            new TimeInterval(
+                new DateTimeImmutable('2021-01-01 00:00:00'),
+                new DateTimeImmutable('2021-01-01 00:04:00'),
+                true,
+                true,
+            ),
+        ], $result);
     }
 
     function testUnionTimeIntervalsSimple()
