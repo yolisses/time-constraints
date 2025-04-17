@@ -15,17 +15,24 @@ class TimeIntervalsUnion
 
         $result = [];
         $counter = 0;
+
         $start = null;
+        $include_start = null;
+
         foreach ($edges as $edge) {
             if ($edge->isStart) {
                 $counter++;
                 if ($counter == 1) {
                     $start = $edge->instant;
+                    $include_start = $edge->is_included;
+                } else if ($edge->instant == $start) {
+                    $include_start = $include_start || $edge->is_included;
                 }
             } else {
                 $counter--;
                 if ($counter == 0) {
-                    $result[] = new TimeInterval($start, $edge->instant);
+                    // TODO fix include_end
+                    $result[] = new TimeInterval($start, $edge->instant, $include_start, true);
                 }
             }
         }

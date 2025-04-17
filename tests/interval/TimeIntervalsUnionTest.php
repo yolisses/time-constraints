@@ -75,6 +75,96 @@ class TimeIntervalsUnionTest extends TestCase
         ], $result);
     }
 
+
+    function testUnionTimeIntervals1()
+    {
+        // 1 2 3 4 5 6 7
+        // ●─●
+        //   ●─●
+        // ●───●
+
+        $intervals = [
+            createTimeInterval(1, 2, true, true),
+            createTimeInterval(2, 3, true, true),
+        ];
+
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
+
+        $this->assertEquals(
+            [
+                createTimeInterval(1, 3, true, true),
+            ],
+            $result
+        );
+    }
+
+    function testUnionTimeIntervals2()
+    {
+        // 1 2 3 4 5 6 7
+        // ●─●
+        //   ○─●
+        // ●───●
+
+        $intervals = [
+            createTimeInterval(1, 2, true, true),
+            createTimeInterval(2, 3, false, true),
+        ];
+
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
+
+        $this->assertEquals(
+            [
+                createTimeInterval(1, 3, true, true),
+            ],
+            $result
+        );
+    }
+
+    function testUnionTimeIntervals3()
+    {
+        // 1 2 3 4 5 6 7
+        // ●─○
+        //   ●─●
+        // ●───●
+
+        $intervals = [
+            createTimeInterval(1, 2, true, false),
+            createTimeInterval(2, 3, true, true),
+        ];
+
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
+
+        $this->assertEquals(
+            [
+                createTimeInterval(1, 3, true, true),
+            ],
+            $result
+        );
+    }
+
+    function testUnionTimeIntervals4()
+    {
+        // 1 2 3 4 5 6 7
+        // ●─○
+        //   ○─●
+        // ●─○─●
+
+        $intervals = [
+            createTimeInterval(1, 2, true, false),
+            createTimeInterval(2, 3, false, true),
+        ];
+
+        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
+
+        $this->assertEquals(
+            [
+                createTimeInterval(1, 2, true, false),
+                createTimeInterval(2, 3, false, true),
+            ],
+            $result
+        );
+    }
+
     function testUnionTimeIntervalsSimple()
     {
         // 1 2 3 4 5 6 7
