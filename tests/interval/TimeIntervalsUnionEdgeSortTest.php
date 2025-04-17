@@ -25,7 +25,7 @@ class TimeIntervalsUnionEdgeSortTest extends TestCase
 
     public function testSort1()
     {
-        // 1 2 3 4 5 6 7 8 9
+        // 1 2 3
         // ●───●
 
         $intervals = [
@@ -46,7 +46,7 @@ class TimeIntervalsUnionEdgeSortTest extends TestCase
 
     public function testSort2()
     {
-        // 1 2 3 4 5 6 7 8 9
+        // 1 2 3 4
         // ●───●
         //   ●───●
 
@@ -71,7 +71,7 @@ class TimeIntervalsUnionEdgeSortTest extends TestCase
 
     public function testSort3()
     {
-        // 1 2 3 4 5 6 7 8 9
+        // 1 2 3
         // ●───●
         // ○───○
         // ●───●
