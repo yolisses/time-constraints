@@ -51,15 +51,9 @@ class TimeIntervalsUnionTest extends TestCase
 
     function testUnionTimeIntervalsEmpty()
     {
-        //1 2 3 4 5 6 7
-        //
-
-        $intervals = [
-        ];
-
-        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
-
-        $this->assertEquals([], $result);
+        // 1 2 3
+        // 
+        $this->assertUnion([], []);
     }
 
     function testUnionTimeIntervals1()
@@ -73,9 +67,7 @@ class TimeIntervalsUnionTest extends TestCase
                 [1, 2, true, true],
                 [2, 3, true, true],
             ],
-            [
-                [1, 3, true, true]
-            ]
+            [[1, 3, true, true]]
         );
     }
 
@@ -90,9 +82,7 @@ class TimeIntervalsUnionTest extends TestCase
                 [1, 2, true, true],
                 [2, 3, false, true],
             ],
-            [
-                [1, 3, true, true],
-            ]
+            [[1, 3, true, true]]
         );
     }
 
@@ -107,9 +97,7 @@ class TimeIntervalsUnionTest extends TestCase
                 [1, 2, true, false],
                 [2, 3, true, true],
             ],
-            [
-                [1, 3, true, true],
-            ]
+            [[1, 3, true, true]]
         );
     }
 
@@ -125,28 +113,25 @@ class TimeIntervalsUnionTest extends TestCase
                 [2, 3, false, true],
             ],
             [
-                [1, 3, false, true],
+                [1, 2, true, false],
+                [2, 3, false, true],
             ]
         );
     }
 
     function testUnionTimeIntervalsWithEquality()
     {
-        // 1 2 3 4 5 6 7
-        // ●───●
-        // ●───●
-        // ●───●
-
-        $intervals = [
-            createTimeInterval(1, 4, true, true),
-            createTimeInterval(1, 4, true, true),
-        ];
-
-        $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
-
-        $this->assertEquals([
-            createTimeInterval(1, 4, true, true),
-        ], $result);
+        // 1 2 3
+        // ●─●
+        // ●─●
+        // ●─●
+        $this->assertUnion(
+            [
+                [1, 2, true, true],
+                [1, 2, true, true],
+            ],
+            [[1, 2, true, true]]
+        );
     }
 
     function testUnionTimeIntervalsWithTime()
