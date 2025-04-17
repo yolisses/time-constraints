@@ -4,8 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9129b464fc78de3a6c741b06d2b29e0",
-    "packages": [],
+    "content-hash": "88d407fff4ca3b7773c6736c91459040",
+    "packages": [
+        {
+            "name": "vanderlee/php-stable-sort-functions",
+            "version": "2.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vanderlee/PHP-stable-sort-functions.git",
+                "reference": "c5c6291a77abce53997ff67018ab932b50f0a220"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vanderlee/PHP-stable-sort-functions/zipball/c5c6291a77abce53997ff67018ab932b50f0a220",
+                "reference": "c5c6291a77abce53997ff67018ab932b50f0a220",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "functions.php"
+                ],
+                "psr-4": {
+                    "StableSort\\": "classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Class of stable sort methods. Equal values remain in the original order. Only different values are sorted.",
+            "homepage": "https://github.com/vanderlee/PHP-stable-sort-functions",
+            "keywords": [
+                "array",
+                "arsort",
+                "asort",
+                "natcasesort",
+                "natsort",
+                "sort",
+                "stable",
+                "uasort",
+                "uksort",
+                "usort"
+            ],
+            "support": {
+                "issues": "https://github.com/vanderlee/PHP-stable-sort-functions/issues",
+                "source": "https://github.com/vanderlee/PHP-stable-sort-functions/"
+            },
+            "time": "2024-01-18T20:29:47+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "myclabs/deep-copy",

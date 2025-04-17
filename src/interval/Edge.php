@@ -24,18 +24,4 @@ class Edge
 
         return $edges;
     }
-
-    /**
-     * Sort edges by instant, with start edges before end edges in case of tie
-     * @param array<Edge> $edges
-     */
-    static function sortEdgesByInstantAndIsStart(array &$edges)
-    {
-        usort($edges, function ($a, $b) {
-            if ($a->instant == $b->instant) {
-                return $a->isStart ? -1 : 1;
-            }
-            return $a->instant < $b->instant ? -1 : 1;
-        });
-    }
 }

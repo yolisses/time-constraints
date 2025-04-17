@@ -2,8 +2,24 @@
 
 namespace Yolisses\TimeConstraints\Interval;
 
+use StableSort;
+
 class TimeIntervalsUnion
 {
+    /**
+     * @param array<Edge> $edges
+     */
+    public static function sortEdges(array &$edges)
+    {
+        // false first
+        StableSort::usort($edges, fn(Edge $a, Edge $b) => $a->is_included <=> $b->is_included);
+
+        // true first
+        StableSort::usort($edges, fn(Edge $a, Edge $b) => $b->isStart <=> $a->isStart);
+
+        StableSort::usort($edges, fn(Edge $a, Edge $b) => $a->instant <=> $b->instant);
+    }
+
     /**
      * @param array<TimeInterval> $time_intervals
      * @return array<TimeInterval>
@@ -11,7 +27,7 @@ class TimeIntervalsUnion
     static function unionTimeIntervals(array $time_intervals)
     {
         $edges = Edge::getTimeIntervalsEdges($time_intervals);
-        Edge::sortEdgesByInstantAndIsStart($edges);
+        self::sortEdges($edges);
 
         $result = [];
         $counter = 0;
