@@ -29,6 +29,6 @@ class DateTimeTest extends TestCase
         $this->assertNotEquals(new DateTimeImmutable('2024-12-31 23:59:59'), $date->modify('+-1 seconds'));
         $this->assertNotEquals(new DateTimeImmutable('2024-12-31 23:59:00'), $date->modify('+-60 seconds'));
 
-        // Conclusion: don't use sign in `modify('$someValue seconds')`
+        // Conclusion: don't use multiple signs
     }
 }
