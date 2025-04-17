@@ -4,16 +4,19 @@ namespace Yolisses\TimeConstraints\Interval;
 
 class Edge
 {
-    public function __construct(public \DateTimeImmutable $instant, public bool $isStart)
-    {
+    public function __construct(
+        public \DateTimeImmutable $instant,
+        public bool $isStart,
+        public bool $isIncluded
+    ) {
     }
 
     static function getTimeIntervalsEdges(array $time_intervals): array
     {
         $edges = [];
         foreach ($time_intervals as $time_interval) {
-            $edges[] = new Edge($time_interval->start, true);
-            $edges[] = new Edge($time_interval->end, false);
+            $edges[] = new Edge($time_interval->start, true, $time_interval->includeStart);
+            $edges[] = new Edge($time_interval->end, false, $time_interval->includeEnd);
         }
 
         return $edges;
