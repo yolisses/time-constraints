@@ -87,8 +87,6 @@ class TimeIntervalsUnionEdgeSortTest extends TestCase
         $edges = Edge::getTimeIntervalsEdges($intervals);
         TimeIntervalsUnion::sortEdges($edges);
 
-        var_dump($edges);
-
         $this->assertEquals(
             [
                 createEdge(1, true, false),
