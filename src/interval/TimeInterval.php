@@ -7,18 +7,28 @@ namespace Yolisses\TimeConstraints\Interval;
  */
 class TimeInterval
 {
-    public function __construct(public \DateTimeImmutable $start, public \DateTimeImmutable $end)
-    {
+    public function __construct(
+        public \DateTimeImmutable $start,
+        public \DateTimeImmutable $end,
+        public bool $include_start,
+        public bool $include_end,
+    ) {
         if (!($end >= $start)) {
             throw new \InvalidArgumentException('End must be equals or greater than start');
         }
     }
 
-    public static function fromStrings(string $start, string $end): TimeInterval
-    {
+    public static function fromStrings(
+        string $start,
+        string $end,
+        bool $include_start,
+        bool $include_end,
+    ): TimeInterval {
         return new TimeInterval(
             new \DateTimeImmutable($start),
-            new \DateTimeImmutable($end)
+            new \DateTimeImmutable($end),
+            $include_start,
+            $include_end,
         );
     }
 
