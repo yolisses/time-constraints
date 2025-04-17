@@ -24,37 +24,42 @@ class TimeIntervalsUnionTest extends TestCase
     function testUnionTimeIntervalsWithEquality()
     {
         // 1 2 3 4 5 6 7
-        // ██████
-        // ██████
-        // ██████
+        // ●───●
+        // ●───●
+        // ●───●
 
         $intervals = [
-            createTimeInterval(1, 4),
-            createTimeInterval(1, 4),
+            createTimeInterval(1, 4, true, true),
+            createTimeInterval(1, 4, true, true),
         ];
 
         $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals([
-            createTimeInterval(1, 4),
+            createTimeInterval(1, 4, true, true),
         ], $result);
     }
 
+    // TODO move this test up
     function testUnionTimeIntervalsWithTime()
     {
         // 0 1 2 3 4
-        // ████
-        //   ██████
-        // ████████
+        // ●─●
+        //   ●─────●
+        // ●───────●
 
         $intervals = [
             new TimeInterval(
                 new DateTimeImmutable('2021-01-01 00:00:00'),
-                new DateTimeImmutable('2021-01-01 00:02:00')
+                new DateTimeImmutable('2021-01-01 00:02:00'),
+                true,
+                true,
             ),
             new TimeInterval(
                 new DateTimeImmutable('2021-01-01 00:01:00'),
-                new DateTimeImmutable('2021-01-01 00:04:00')
+                new DateTimeImmutable('2021-01-01 00:04:00'),
+                true,
+                true,
             ),
         ];
 
@@ -63,7 +68,9 @@ class TimeIntervalsUnionTest extends TestCase
         $this->assertEquals([
             new TimeInterval(
                 new DateTimeImmutable('2021-01-01 00:00:00'),
-                new DateTimeImmutable('2021-01-01 00:04:00')
+                new DateTimeImmutable('2021-01-01 00:04:00'),
+                true,
+                true,
             ),
         ], $result);
     }
@@ -71,23 +78,23 @@ class TimeIntervalsUnionTest extends TestCase
     function testUnionTimeIntervalsSimple()
     {
         // 1 2 3 4 5 6 7
-        // ██
-        //   ██
-        //       ██
-        // ████  ██
+        // ●─●
+        //   ●─●
+        //       ●─●
+        // ●───● ●─●
 
         $intervals = [
-            createTimeInterval(1, 2),
-            createTimeInterval(2, 3),
-            createTimeInterval(4, 5),
+            createTimeInterval(1, 2, true, true),
+            createTimeInterval(2, 3, true, true),
+            createTimeInterval(4, 5, true, true),
         ];
 
         $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals(
             [
-                createTimeInterval(1, 3),
-                createTimeInterval(4, 5),
+                createTimeInterval(1, 3, true, true),
+                createTimeInterval(4, 5, true, true),
             ],
             $result
         );
@@ -96,24 +103,24 @@ class TimeIntervalsUnionTest extends TestCase
     function testUnionTimeIntervalsComplex()
     {
         // 1 2 3 4 5 6 7
-        // ██
-        //       ██████
-        //   ██
-        //         ██
-        // ████  ██████
+        // ●─●
+        //       ●─────●
+        //   ●─●
+        //         ●─●
+        // ●───● ●─────●
         $intervals = [
-            createTimeInterval(1, 2),
-            createTimeInterval(4, 7),
-            createTimeInterval(2, 3),
-            createTimeInterval(5, 6),
+            createTimeInterval(1, 2, true, true),
+            createTimeInterval(4, 7, true, true),
+            createTimeInterval(2, 3, true, true),
+            createTimeInterval(5, 6, true, true),
         ];
 
         $result = TimeIntervalsUnion::unionTimeIntervals($intervals);
 
         $this->assertEquals(
             [
-                createTimeInterval(1, 3),
-                createTimeInterval(4, 7),
+                createTimeInterval(1, 3, true, true),
+                createTimeInterval(4, 7, true, true),
             ],
             $result
         );
