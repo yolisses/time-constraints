@@ -1,10 +1,9 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\Interval\TimeIntervalOperations;
 
-require_once __DIR__ . '/TimeIntervalOperationsTestBase.php';
-
-class TimeIntervalOperationsUnionTest extends TimeIntervalOperationsTestBase
+class TimeIntervalOperationsUnionTest extends TestCase
 {
     public function testEmptyArrayReturnsEmptyArray()
     {
@@ -14,7 +13,7 @@ class TimeIntervalOperationsUnionTest extends TimeIntervalOperationsTestBase
 
     public function testSingleIntervalReturnsSameInterval()
     {
-        $interval = $this->createInterval(1, 2);
+        $interval = createTimeInterval(1, 2);
 
         $result = TimeIntervalOperations::union([$interval]);
 
@@ -25,8 +24,8 @@ class TimeIntervalOperationsUnionTest extends TimeIntervalOperationsTestBase
 
     public function testNonOverlappingIntervals()
     {
-        $interval1 = $this->createInterval(1, 2);
-        $interval2 = $this->createInterval(3, 4);
+        $interval1 = createTimeInterval(1, 2);
+        $interval2 = createTimeInterval(3, 4);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
@@ -39,8 +38,8 @@ class TimeIntervalOperationsUnionTest extends TimeIntervalOperationsTestBase
 
     public function testCompletelyOverlappingIntervals()
     {
-        $interval1 = $this->createInterval(1, 4);
-        $interval2 = $this->createInterval(2, 3);
+        $interval1 = createTimeInterval(1, 4);
+        $interval2 = createTimeInterval(2, 3);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
@@ -51,8 +50,8 @@ class TimeIntervalOperationsUnionTest extends TimeIntervalOperationsTestBase
 
     public function testPartiallyOverlappingIntervals()
     {
-        $interval1 = $this->createInterval(1, 3);
-        $interval2 = $this->createInterval(2, 4);
+        $interval1 = createTimeInterval(1, 3);
+        $interval2 = createTimeInterval(2, 4);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
@@ -63,8 +62,8 @@ class TimeIntervalOperationsUnionTest extends TimeIntervalOperationsTestBase
 
     public function testAdjacentIntervals()
     {
-        $interval1 = $this->createInterval(1, 2);
-        $interval2 = $this->createInterval(2, 3);
+        $interval1 = createTimeInterval(1, 2);
+        $interval2 = createTimeInterval(2, 3);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
@@ -75,9 +74,9 @@ class TimeIntervalOperationsUnionTest extends TimeIntervalOperationsTestBase
 
     public function testMultipleOverlappingAndNonOverlappingIntervals()
     {
-        $interval1 = $this->createInterval(1, 3);
-        $interval2 = $this->createInterval(2, 4);
-        $interval3 = $this->createInterval(5, 6);
+        $interval1 = createTimeInterval(1, 3);
+        $interval2 = createTimeInterval(2, 4);
+        $interval3 = createTimeInterval(5, 6);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2, $interval3]);
 

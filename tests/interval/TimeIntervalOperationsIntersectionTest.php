@@ -1,29 +1,28 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\Interval\TimeIntervalOperations;
 
-require_once __DIR__ . '/TimeIntervalOperationsTestBase.php';
-
-class TimeIntervalOperationsIntersectionTest extends TimeIntervalOperationsTestBase
+class TimeIntervalOperationsIntersectionTest extends TestCase
 {
     public function testEmptyFirstArrayReturnsEmptyArray()
     {
-        $interval = $this->createInterval(1, 2);
+        $interval = createTimeInterval(1, 2);
         $result = TimeIntervalOperations::intersection([], [$interval]);
         $this->assertEmpty($result);
     }
 
     public function testEmptySecondArrayReturnsEmptyArray()
     {
-        $interval = $this->createInterval(1, 2);
+        $interval = createTimeInterval(1, 2);
         $result = TimeIntervalOperations::intersection([$interval], []);
         $this->assertEmpty($result);
     }
 
     public function testNonOverlappingIntervals()
     {
-        $interval1 = $this->createInterval(1, 2);
-        $interval2 = $this->createInterval(3, 4);
+        $interval1 = createTimeInterval(1, 2);
+        $interval2 = createTimeInterval(3, 4);
 
         $result = TimeIntervalOperations::intersection([$interval1], [$interval2]);
         $this->assertEmpty($result);
@@ -31,8 +30,8 @@ class TimeIntervalOperationsIntersectionTest extends TimeIntervalOperationsTestB
 
     public function testCompletelyOverlappingIntervals()
     {
-        $interval1 = $this->createInterval(1, 4);
-        $interval2 = $this->createInterval(2, 3);
+        $interval1 = createTimeInterval(1, 4);
+        $interval2 = createTimeInterval(2, 3);
 
         $result = TimeIntervalOperations::intersection([$interval1], [$interval2]);
 
@@ -43,8 +42,8 @@ class TimeIntervalOperationsIntersectionTest extends TimeIntervalOperationsTestB
 
     public function testPartiallyOverlappingIntervals()
     {
-        $interval1 = $this->createInterval(1, 3);
-        $interval2 = $this->createInterval(2, 4);
+        $interval1 = createTimeInterval(1, 3);
+        $interval2 = createTimeInterval(2, 4);
 
         $result = TimeIntervalOperations::intersection([$interval1], [$interval2]);
 
@@ -55,8 +54,8 @@ class TimeIntervalOperationsIntersectionTest extends TimeIntervalOperationsTestB
 
     public function testAdjacentIntervals()
     {
-        $interval1 = $this->createInterval(1, 2);
-        $interval2 = $this->createInterval(2, 3);
+        $interval1 = createTimeInterval(1, 2);
+        $interval2 = createTimeInterval(2, 3);
 
         $result = TimeIntervalOperations::intersection([$interval1], [$interval2]);
 
@@ -67,9 +66,9 @@ class TimeIntervalOperationsIntersectionTest extends TimeIntervalOperationsTestB
 
     public function testMultipleIntervalsWithMultipleIntersections()
     {
-        $interval1 = $this->createInterval(1, 3);
-        $interval2 = $this->createInterval(5, 7);
-        $interval3 = $this->createInterval(2, 6);
+        $interval1 = createTimeInterval(1, 3);
+        $interval2 = createTimeInterval(5, 7);
+        $interval3 = createTimeInterval(2, 6);
 
         $result = TimeIntervalOperations::intersection([$interval1, $interval2], [$interval3]);
 
@@ -82,9 +81,9 @@ class TimeIntervalOperationsIntersectionTest extends TimeIntervalOperationsTestB
 
     public function testMultipleOverlappingIntersections()
     {
-        $interval1 = $this->createInterval(1, 4);
-        $interval2 = $this->createInterval(2, 5);
-        $interval3 = $this->createInterval(3, 6);
+        $interval1 = createTimeInterval(1, 4);
+        $interval2 = createTimeInterval(2, 5);
+        $interval3 = createTimeInterval(3, 6);
 
         $result = TimeIntervalOperations::intersection([$interval1, $interval2], [$interval3]);
 

@@ -1,3 +1,0 @@
-<?php
-
-const RANDOMLY_CHOSEN_NUMBER = 41278;

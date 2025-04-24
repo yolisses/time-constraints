@@ -1,16 +1,13 @@
 <?php
 
+require_once __DIR__ . '/createDateTime.php';
+
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
-require_once __DIR__ . '/randomly_chosen_number.php';
-
-function createTimeInterval(int $start, int $end)
+function createTimeInterval(int $time_1, int $time_2): TimeInterval
 {
-    $scaled_start = $start * RANDOMLY_CHOSEN_NUMBER;
-    $start_datetime = (new DateTimeImmutable("2021-01-01 00:00:00"))->modify("$scaled_start seconds");
-
-    $scaled_end = $end * RANDOMLY_CHOSEN_NUMBER;
-    $end_datetime = (new DateTimeImmutable("2021-01-01 00:00:00"))->modify("$scaled_end seconds");
-
-    return new TimeInterval($start_datetime, $end_datetime);
+    return new TimeInterval(
+        createDateTime($time_1),
+        createDateTime($time_2),
+    );
 }
