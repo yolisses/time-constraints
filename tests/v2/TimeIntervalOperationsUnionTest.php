@@ -6,6 +6,11 @@ use Yolisses\TimeConstraints\V2\TimeIntervalOperations;
 
 class TimeIntervalOperationsUnionTest extends TestCase
 {
+    private function createDateTime(int $second): DateTimeImmutable
+    {
+        return new DateTimeImmutable("2023-01-01 00:00:$second");
+    }
+
     public function testEmptyArrayReturnsEmptyArray()
     {
         $result = TimeIntervalOperations::union([]);
@@ -15,8 +20,8 @@ class TimeIntervalOperationsUnionTest extends TestCase
     public function testSingleIntervalReturnsSameInterval()
     {
         $interval = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 10:00:00'),
-            new DateTimeImmutable('2023-01-01 12:00:00')
+            $this->createDateTime(1),
+            $this->createDateTime(2),
         );
 
         $result = TimeIntervalOperations::union([$interval]);
@@ -29,12 +34,12 @@ class TimeIntervalOperationsUnionTest extends TestCase
     public function testNonOverlappingIntervals()
     {
         $interval1 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 10:00:00'),
-            new DateTimeImmutable('2023-01-01 11:00:00')
+            $this->createDateTime(1),
+            $this->createDateTime(2)
         );
         $interval2 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 12:00:00'),
-            new DateTimeImmutable('2023-01-01 13:00:00')
+            $this->createDateTime(3),
+            $this->createDateTime(4)
         );
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
@@ -49,78 +54,78 @@ class TimeIntervalOperationsUnionTest extends TestCase
     public function testCompletelyOverlappingIntervals()
     {
         $interval1 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 10:00:00'),
-            new DateTimeImmutable('2023-01-01 12:00:00')
+            $this->createDateTime(1),
+            $this->createDateTime(4)
         );
         $interval2 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 10:30:00'),
-            new DateTimeImmutable('2023-01-01 11:30:00')
+            $this->createDateTime(2),
+            $this->createDateTime(3)
         );
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
         $this->assertCount(1, $result);
-        $this->assertEquals('2023-01-01 10:00:00', $result[0]->getStart()->format('Y-m-d H:i:s'));
-        $this->assertEquals('2023-01-01 12:00:00', $result[0]->getEnd()->format('Y-m-d H:i:s'));
+        $this->assertEquals($interval1->getStart(), $result[0]->getStart());
+        $this->assertEquals($interval1->getEnd(), $result[0]->getEnd());
     }
 
     public function testPartiallyOverlappingIntervals()
     {
         $interval1 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 10:00:00'),
-            new DateTimeImmutable('2023-01-01 12:00:00')
+            $this->createDateTime(1),
+            $this->createDateTime(3)
         );
         $interval2 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 11:00:00'),
-            new DateTimeImmutable('2023-01-01 13:00:00')
+            $this->createDateTime(2),
+            $this->createDateTime(4)
         );
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
         $this->assertCount(1, $result);
-        $this->assertEquals('2023-01-01 10:00:00', $result[0]->getStart()->format('Y-m-d H:i:s'));
-        $this->assertEquals('2023-01-01 13:00:00', $result[0]->getEnd()->format('Y-m-d H:i:s'));
+        $this->assertEquals($interval1->getStart(), $result[0]->getStart());
+        $this->assertEquals($interval2->getEnd(), $result[0]->getEnd());
     }
 
     public function testAdjacentIntervals()
     {
         $interval1 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 10:00:00'),
-            new DateTimeImmutable('2023-01-01 11:00:00')
+            $this->createDateTime(1),
+            $this->createDateTime(2)
         );
         $interval2 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 11:00:00'),
-            new DateTimeImmutable('2023-01-01 12:00:00')
+            $this->createDateTime(2),
+            $this->createDateTime(3)
         );
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
         $this->assertCount(1, $result);
-        $this->assertEquals('2023-01-01 10:00:00', $result[0]->getStart()->format('Y-m-d H:i:s'));
-        $this->assertEquals('2023-01-01 12:00:00', $result[0]->getEnd()->format('Y-m-d H:i:s'));
+        $this->assertEquals($interval1->getStart(), $result[0]->getStart());
+        $this->assertEquals($interval2->getEnd(), $result[0]->getEnd());
     }
 
     public function testMultipleOverlappingAndNonOverlappingIntervals()
     {
         $interval1 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 10:00:00'),
-            new DateTimeImmutable('2023-01-01 12:00:00')
+            $this->createDateTime(1),
+            $this->createDateTime(3)
         );
         $interval2 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 11:00:00'),
-            new DateTimeImmutable('2023-01-01 13:00:00')
+            $this->createDateTime(2),
+            $this->createDateTime(4)
         );
         $interval3 = new TimeInterval(
-            new DateTimeImmutable('2023-01-01 14:00:00'),
-            new DateTimeImmutable('2023-01-01 15:00:00')
+            $this->createDateTime(5),
+            $this->createDateTime(6)
         );
 
         $result = TimeIntervalOperations::union([$interval1, $interval2, $interval3]);
 
         $this->assertCount(2, $result);
-        $this->assertEquals('2023-01-01 10:00:00', $result[0]->getStart()->format('Y-m-d H:i:s'));
-        $this->assertEquals('2023-01-01 13:00:00', $result[0]->getEnd()->format('Y-m-d H:i:s'));
-        $this->assertEquals('2023-01-01 14:00:00', $result[1]->getStart()->format('Y-m-d H:i:s'));
-        $this->assertEquals('2023-01-01 15:00:00', $result[1]->getEnd()->format('Y-m-d H:i:s'));
+        $this->assertEquals($interval1->getStart(), $result[0]->getStart());
+        $this->assertEquals($interval2->getEnd(), $result[0]->getEnd());
+        $this->assertEquals($interval3->getStart(), $result[1]->getStart());
+        $this->assertEquals($interval3->getEnd(), $result[1]->getEnd());
     }
 }
