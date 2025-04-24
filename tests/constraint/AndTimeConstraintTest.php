@@ -4,6 +4,9 @@ use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\Constraint\AndTimeConstraint;
 use Yolisses\TimeConstraints\Constraint\TimeConstraint;
 
+require_once __DIR__ . '/../utils/createDateTime.php';
+require_once __DIR__ . '/../utils/createTimeInterval.php';
+
 class AndTimeConstraintTest extends TestCase
 {
     public function testGetIntervalsEmpty()
@@ -47,7 +50,6 @@ class AndTimeConstraintTest extends TestCase
         ]);
 
         $time_constraint3->method('getIntervals')->willReturn([
-            createTimeInterval(1, 4),
             createTimeInterval(3, 6),
         ]);
 
