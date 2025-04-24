@@ -3,7 +3,7 @@
 namespace Yolisses\TimeConstraints\Constraint;
 
 use Yolisses\TimeConstraints\Constraint\TimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeIntervalsUnion;
+use Yolisses\TimeConstraints\Interval\TimeIntervalOperations;
 
 /**
  * Apply a logical OR between time constraints.
@@ -25,6 +25,6 @@ class OrTimeConstraint extends TimeConstraint
             $intervals = array_merge($intervals, $time_constraint->getIntervals($start_instant, $end_instant));
         }
 
-        return TimeIntervalsUnion::unionTimeIntervals($intervals);
+        return TimeIntervalOperations::union($intervals);
     }
 }
