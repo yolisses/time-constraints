@@ -1,6 +1,6 @@
 <?php
 
-namespace Yolisses\TimeConstraints\V2;
+namespace Yolisses\TimeConstraints\Interval;
 
 class TimeIntervalOperations
 {

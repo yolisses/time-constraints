@@ -6,7 +6,6 @@
     "autoload": {
         "psr-4": {
             "Yolisses\\TimeConstraints\\": "src/",
-            "Yolisses\\TimeConstraints\\V2\\": "src/v2",
             "Yolisses\\TimeConstraints\\Interval\\": "src/interval",
             "Yolisses\\TimeConstraints\\Constraint\\": "src/constraint"
         }

@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\V2\TimeInterval;
+use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class TimeIntervalOperationsTestBase extends TestCase
 {

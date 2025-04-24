@@ -3,7 +3,7 @@
 namespace Yolisses\TimeConstraints\Constraint;
 
 use Yolisses\TimeConstraints\Interval\TimeInterval;
-use Yolisses\TimeConstraints\Interval\TimeIntervalsIntersection;
+use Yolisses\TimeConstraints\Interval\TimeIntervalOperations;
 
 enum OnZeroDuration
 {
@@ -24,7 +24,7 @@ abstract class TimeConstraint
 
     public function clampIntervals($intervals, \DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
     {
-        return TimeIntervalsIntersection::intersectionTimeIntervals(
+        return TimeIntervalOperations::intersection(
             $intervals,
             [new TimeInterval($start_instant, $end_instant)]
         );
@@ -85,12 +85,12 @@ abstract class TimeConstraint
 
             // Iterates over intervals
             foreach ($intervals as $interval) {
-                if ($interval->start <= $start_instant && $start_instant <= $interval->end) {
+                if ($interval->getStart() <= $start_instant && $start_instant <= $interval->getEnd()) {
                     return $start_instant;
-                } else if ($interval->start > $start_instant) {
-                    return $interval->start;
-                } else if ($interval->end < $start_instant) {
-                    return $interval->end;
+                } else if ($interval->getStart() > $start_instant) {
+                    return $interval->getStart();
+                } else if ($interval->getEnd() < $start_instant) {
+                    return $interval->getEnd();
                 }
             }
 
@@ -168,9 +168,9 @@ abstract class TimeConstraint
                     $remaining_duration = abs($duration) - $cumulative_duration;
                     if ($is_duration_negative) {
                         $negative_remaining_duration = -$remaining_duration;
-                        return $interval->end->modify("$negative_remaining_duration seconds");
+                        return $interval->getEnd()->modify("$negative_remaining_duration seconds");
                     } else {
-                        return $interval->start->modify("$remaining_duration seconds");
+                        return $interval->getStart()->modify("$remaining_duration seconds");
                     }
 
                 }

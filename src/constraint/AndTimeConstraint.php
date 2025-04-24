@@ -3,7 +3,7 @@
 namespace Yolisses\TimeConstraints\Constraint;
 
 use Yolisses\TimeConstraints\Constraint\TimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeIntervalsIntersection;
+use Yolisses\TimeConstraints\Interval\TimeIntervalOperations;
 
 /**
  * Apply a logical AND between time constraints.
@@ -26,7 +26,7 @@ class AndTimeConstraint extends TimeConstraint
         $intervals = $this->time_constraints[0]->getIntervals($start_instant, $end_instant);
 
         foreach ($this->time_constraints as $time_constraint) {
-            $intervals = TimeIntervalsIntersection::intersectionTimeIntervals(
+            $intervals = TimeIntervalOperations::intersection(
                 $intervals,
                 $time_constraint->getIntervals($start_instant, $end_instant)
             );

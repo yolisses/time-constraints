@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/TimeIntervalOperationsTestBase.php';
+use Yolisses\TimeConstraints\Interval\TimeIntervalOperations;
 
-use Yolisses\TimeConstraints\V2\TimeIntervalOperations;
+require_once __DIR__ . '/TimeIntervalOperationsTestBase.php';
 
 class TimeIntervalOperationsUnionTest extends TimeIntervalOperationsTestBase
 {
