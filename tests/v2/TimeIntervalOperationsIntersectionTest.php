@@ -1,18 +1,11 @@
 <?php
 
-use Yolisses\TimeConstraints\V2\TimeInterval;
+require_once __DIR__ . '/TimeIntervalOperationsTestBase.php';
+
 use Yolisses\TimeConstraints\V2\TimeIntervalOperations;
 
-class TimeIntervalOperationsIntersectionTest extends TimeIntervalOperationsTest
+class TimeIntervalOperationsIntersectionTest extends TimeIntervalOperationsTestBase
 {
-    protected function createInterval(int $time_1, int $time_2): TimeInterval
-    {
-        return new TimeInterval(
-            $this->createDateTime($time_1),
-            $this->createDateTime($time_2)
-        );
-    }
-
     public function testEmptyFirstArrayReturnsEmptyArray()
     {
         $interval = $this->createInterval(1, 2);

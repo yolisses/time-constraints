@@ -1,16 +1,11 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\V2\TimeInterval;
+require_once __DIR__ . '/TimeIntervalOperationsTestBase.php';
+
 use Yolisses\TimeConstraints\V2\TimeIntervalOperations;
 
-class TimeIntervalOperationsUnionTest extends TestCase
+class TimeIntervalOperationsUnionTest extends TimeIntervalOperationsTestBase
 {
-    private function createDateTime(int $second): DateTimeImmutable
-    {
-        return new DateTimeImmutable("2023-01-01 00:00:$second");
-    }
-
     public function testEmptyArrayReturnsEmptyArray()
     {
         $result = TimeIntervalOperations::union([]);
@@ -19,10 +14,7 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
     public function testSingleIntervalReturnsSameInterval()
     {
-        $interval = new TimeInterval(
-            $this->createDateTime(1),
-            $this->createDateTime(2),
-        );
+        $interval = $this->createInterval(1, 2);
 
         $result = TimeIntervalOperations::union([$interval]);
 
@@ -33,14 +25,8 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
     public function testNonOverlappingIntervals()
     {
-        $interval1 = new TimeInterval(
-            $this->createDateTime(1),
-            $this->createDateTime(2)
-        );
-        $interval2 = new TimeInterval(
-            $this->createDateTime(3),
-            $this->createDateTime(4)
-        );
+        $interval1 = $this->createInterval(1, 2);
+        $interval2 = $this->createInterval(3, 4);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
@@ -53,14 +39,8 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
     public function testCompletelyOverlappingIntervals()
     {
-        $interval1 = new TimeInterval(
-            $this->createDateTime(1),
-            $this->createDateTime(4)
-        );
-        $interval2 = new TimeInterval(
-            $this->createDateTime(2),
-            $this->createDateTime(3)
-        );
+        $interval1 = $this->createInterval(1, 4);
+        $interval2 = $this->createInterval(2, 3);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
@@ -71,14 +51,8 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
     public function testPartiallyOverlappingIntervals()
     {
-        $interval1 = new TimeInterval(
-            $this->createDateTime(1),
-            $this->createDateTime(3)
-        );
-        $interval2 = new TimeInterval(
-            $this->createDateTime(2),
-            $this->createDateTime(4)
-        );
+        $interval1 = $this->createInterval(1, 3);
+        $interval2 = $this->createInterval(2, 4);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
@@ -89,14 +63,8 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
     public function testAdjacentIntervals()
     {
-        $interval1 = new TimeInterval(
-            $this->createDateTime(1),
-            $this->createDateTime(2)
-        );
-        $interval2 = new TimeInterval(
-            $this->createDateTime(2),
-            $this->createDateTime(3)
-        );
+        $interval1 = $this->createInterval(1, 2);
+        $interval2 = $this->createInterval(2, 3);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
@@ -107,18 +75,9 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
     public function testMultipleOverlappingAndNonOverlappingIntervals()
     {
-        $interval1 = new TimeInterval(
-            $this->createDateTime(1),
-            $this->createDateTime(3)
-        );
-        $interval2 = new TimeInterval(
-            $this->createDateTime(2),
-            $this->createDateTime(4)
-        );
-        $interval3 = new TimeInterval(
-            $this->createDateTime(5),
-            $this->createDateTime(6)
-        );
+        $interval1 = $this->createInterval(1, 3);
+        $interval2 = $this->createInterval(2, 4);
+        $interval3 = $this->createInterval(5, 6);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2, $interval3]);
 

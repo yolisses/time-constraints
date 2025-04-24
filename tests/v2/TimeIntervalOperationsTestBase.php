@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\V2\TimeInterval;
 
-class TimeIntervalOperationsTest extends TestCase
+class TimeIntervalOperationsTestBase extends TestCase
 {
     protected function createDateTime(int $second): DateTimeImmutable
     {
