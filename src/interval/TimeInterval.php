@@ -10,7 +10,9 @@ class TimeInterval
 {
     public function __construct(
         private \DateTimeImmutable $start,
-        private \DateTimeImmutable $end
+        private \DateTimeImmutable $end,
+        private bool $startIsIncluded,
+        private bool $endIsIncluded,
     ) {
         if ($start > $end) {
             throw new \InvalidArgumentException("Start time must be before end time");
@@ -37,11 +39,13 @@ class TimeInterval
         return $this->start <= $other->start && $this->end >= $other->end;
     }
 
-    public static function fromStrings(string $start, string $end): TimeInterval
+    public static function fromStrings(string $start, string $end, bool $startIsIncluded, bool $endIsIncluded): TimeInterval
     {
         return new TimeInterval(
             new \DateTimeImmutable($start),
-            new \DateTimeImmutable($end)
+            new \DateTimeImmutable($end),
+            $startIsIncluded,
+            $endIsIncluded
         );
     }
 
