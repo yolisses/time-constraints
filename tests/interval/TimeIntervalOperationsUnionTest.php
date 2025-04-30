@@ -13,17 +13,15 @@ class TimeIntervalOperationsUnionTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    public function testSingleIntervalReturnsSameInterval()
+    public function testSingleInterval()
     {
         $interval = createTimeInterval(1, 2, false, true);
 
         $result = TimeIntervalOperations::union([$interval]);
 
-        $this->assertCount(1, $result);
-        $this->assertSame($interval->getStart(), $result[0]->getStart());
-        $this->assertSame($interval->getEnd(), $result[0]->getEnd());
-        $this->assertSame($interval->getStartIsIncluded(), $result[0]->getStartIsIncluded());
-        $this->assertSame($interval->getEndIsIncluded(), $result[0]->getEndIsIncluded());
+        $this->assertEquals([
+            createTimeInterval(1, 2, false, true),
+        ], $result);
     }
 
     public function testNonOverlappingIntervals()
@@ -33,27 +31,22 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
-        $this->assertCount(2, $result);
-        $this->assertSame($interval1->getStart(), $result[0]->getStart());
-        $this->assertSame($interval1->getEnd(), $result[0]->getEnd());
-        $this->assertSame($interval1->getStartIsIncluded(), $result[0]->getStartIsIncluded());
-        $this->assertSame($interval1->getEndIsIncluded(), $result[0]->getEndIsIncluded());
-        $this->assertSame($interval2->getStart(), $result[1]->getStart());
-        $this->assertSame($interval2->getEnd(), $result[1]->getEnd());
-        $this->assertSame($interval2->getStartIsIncluded(), $result[1]->getStartIsIncluded());
-        $this->assertSame($interval2->getEndIsIncluded(), $result[1]->getEndIsIncluded());
+        $this->assertEquals([
+            createTimeInterval(1, 2, true, false),
+            createTimeInterval(3, 4, true, false),
+        ], $result);
     }
 
     public function testCompletelyOverlappingIntervals()
     {
-        $interval1 = createTimeInterval(1, 4);
-        $interval2 = createTimeInterval(2, 3);
+        $interval1 = createTimeInterval(2, 3, true, true);
+        $interval2 = createTimeInterval(1, 4, false, false);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
-        $this->assertCount(1, $result);
-        $this->assertEquals($interval1->getStart(), $result[0]->getStart());
-        $this->assertEquals($interval1->getEnd(), $result[0]->getEnd());
+        $this->assertEquals([
+            createTimeInterval(1, 4, false, false),
+        ], $result);
     }
 
     public function testPartiallyOverlappingIntervals()
