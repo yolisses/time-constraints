@@ -21,7 +21,7 @@ class TimeIntervalUnionTest extends TestCase
         $result = TimeIntervalUnion::union([$interval]);
 
         $this->assertEquals([
-            createTimeInterval(1, 2, true, true)
+            createTimeInterval(1, 2, true, true),
         ], $result);
     }
 
@@ -116,6 +116,18 @@ class TimeIntervalUnionTest extends TestCase
         $this->assertEquals([
             createTimeInterval(1, 2, true, true),
             createTimeInterval(3, 4, true, true),
+        ], $result);
+    }
+
+    public function testEqualStartTimesWithDifferentStartInclusion(): void
+    {
+        $interval1 = createTimeInterval(1, 2, false, true);
+        $interval2 = createTimeInterval(1, 3, true, false);
+
+        $result = TimeIntervalUnion::union([$interval1, $interval2]);
+
+        $this->assertEquals([
+            createTimeInterval(1, 3, true, false),
         ], $result);
     }
 }
