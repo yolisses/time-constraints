@@ -28,16 +28,20 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
     public function testNonOverlappingIntervals()
     {
-        $interval1 = createTimeInterval(1, 2);
-        $interval2 = createTimeInterval(3, 4);
+        $interval1 = createTimeInterval(1, 2, true, false);
+        $interval2 = createTimeInterval(3, 4, true, false);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
         $this->assertCount(2, $result);
         $this->assertSame($interval1->getStart(), $result[0]->getStart());
         $this->assertSame($interval1->getEnd(), $result[0]->getEnd());
+        $this->assertSame($interval1->getStartIsIncluded(), $result[0]->getStartIsIncluded());
+        $this->assertSame($interval1->getEndIsIncluded(), $result[0]->getEndIsIncluded());
         $this->assertSame($interval2->getStart(), $result[1]->getStart());
         $this->assertSame($interval2->getEnd(), $result[1]->getEnd());
+        $this->assertSame($interval2->getStartIsIncluded(), $result[1]->getStartIsIncluded());
+        $this->assertSame($interval2->getEndIsIncluded(), $result[1]->getEndIsIncluded());
     }
 
     public function testCompletelyOverlappingIntervals()
