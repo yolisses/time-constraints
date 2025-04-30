@@ -11,8 +11,8 @@ class TimeInterval
     public function __construct(
         private \DateTimeImmutable $start,
         private \DateTimeImmutable $end,
-        private bool $startIsIncluded,
-        private bool $endIsIncluded,
+        private bool $start_is_included,
+        private bool $end_is_included,
     ) {
         if ($start > $end) {
             throw new \InvalidArgumentException("Start time must be before end time");
@@ -27,6 +27,16 @@ class TimeInterval
     public function getEnd(): \DateTimeImmutable
     {
         return $this->end;
+    }
+
+    public function getStartIsIncluded(): bool
+    {
+        return $this->start_is_included;
+    }
+
+    public function getEndIsIncluded(): bool
+    {
+        return $this->end_is_included;
     }
 
     public function overlaps(TimeInterval $other): bool
