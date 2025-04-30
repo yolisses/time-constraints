@@ -6,8 +6,9 @@ namespace Yolisses\TimeConstraints\Interval;
  * Represents a time interval between two defined instants. It is conceptually
  * different from a `DateInterval`, which represents a duration.
  *
- * It is an immutable stateless class. It allows using `$interval1 == $interval2`
- * and `assertEquals($interval1, $interval2)`, which is very useful in tests.
+ * It is an immutable stateless class. It allows using `$interval1 ==
+ * $interval2` and `assertEquals($interval1, $interval2)`, which is very useful
+ * in tests.
  */
 class TimeInterval
 {
