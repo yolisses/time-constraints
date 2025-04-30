@@ -3,6 +3,8 @@
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\Interval\TimeIntervalOperations;
 
+require_once __DIR__ . '/../utils/createTimeInterval.php';
+
 class TimeIntervalOperationsUnionTest extends TestCase
 {
     public function testEmptyArrayReturnsEmptyArray()
