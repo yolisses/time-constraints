@@ -51,14 +51,14 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
     public function testPartiallyOverlappingIntervals()
     {
-        $interval1 = createTimeInterval(1, 3);
-        $interval2 = createTimeInterval(2, 4);
+        $interval1 = createTimeInterval(1, 3, true, false);
+        $interval2 = createTimeInterval(2, 4, true, false);
 
         $result = TimeIntervalOperations::union([$interval1, $interval2]);
 
-        $this->assertCount(1, $result);
-        $this->assertEquals($interval1->getStart(), $result[0]->getStart());
-        $this->assertEquals($interval2->getEnd(), $result[0]->getEnd());
+        $this->assertEquals([
+            createTimeInterval(1, 4, true, false),
+        ], $result);
     }
 
     public function testAdjacentIntervals()
