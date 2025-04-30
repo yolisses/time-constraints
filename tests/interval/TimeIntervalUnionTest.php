@@ -119,6 +119,7 @@ class TimeIntervalUnionTest extends TestCase
         ], $result);
     }
 
+    // Edge case
     public function testEqualStartTimesWithDifferentStartInclusion(): void
     {
         $interval1 = createTimeInterval(1, 2, false, true);
