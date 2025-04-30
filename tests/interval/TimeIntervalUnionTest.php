@@ -75,6 +75,18 @@ class TimeIntervalUnionTest extends TestCase
         ], $result);
     }
 
+    public function testIntervalsWithMixedEndpointInclusion(): void
+    {
+        $interval1 = createTimeInterval(1, 2, true, false);
+        $interval2 = createTimeInterval(2, 3, true, true);
+
+        $result = TimeIntervalUnion::union([$interval1, $interval2]);
+
+        $this->assertEquals([
+            createTimeInterval(1, 3, true, true),
+        ], $result);
+    }
+
     public function testMultipleOverlappingAndNonOverlappingIntervals(): void
     {
         $intervals = [
@@ -89,18 +101,6 @@ class TimeIntervalUnionTest extends TestCase
         $this->assertEquals([
             createTimeInterval(1, 3, true, true),
             createTimeInterval(4, 6, true, true),
-        ], $result);
-    }
-
-    public function testIntervalsWithMixedEndpointInclusion(): void
-    {
-        $interval1 = createTimeInterval(1, 2, true, false);
-        $interval2 = createTimeInterval(2, 3, true, true);
-
-        $result = TimeIntervalUnion::union([$interval1, $interval2]);
-
-        $this->assertEquals([
-            createTimeInterval(1, 3, true, true),
         ], $result);
     }
 
