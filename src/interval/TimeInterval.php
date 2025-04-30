@@ -19,7 +19,7 @@ class TimeInterval
         private bool $end_is_included,
     ) {
         if ($start > $end) {
-            throw new \InvalidArgumentException("Start time must be before end time");
+            throw new \InvalidArgumentException("The start time must be equals or earlier than the end time.");
         }
     }
 
