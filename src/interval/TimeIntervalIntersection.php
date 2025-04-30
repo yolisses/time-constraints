@@ -26,28 +26,30 @@ class TimeIntervalIntersection
                     $start = max($interval1->getStart(), $interval2->getStart());
                     $end = min($interval1->getEnd(), $interval2->getEnd());
 
-                    // Only include if start is not after end
-                    if ($start <= $end) {
-                        // Determine start inclusion
-                        $startIsIncluded = false;
-                        if ($interval1->getStart() == $interval2->getStart()) {
-                            $startIsIncluded = $interval1->getStartIsIncluded() && $interval2->getStartIsIncluded();
-                        } elseif ($interval1->getStart() > $interval2->getStart()) {
-                            $startIsIncluded = $interval1->getStartIsIncluded();
-                        } else {
-                            $startIsIncluded = $interval2->getStartIsIncluded();
-                        }
+                    // Determine start inclusion
+                    $startIsIncluded = false;
+                    if ($interval1->getStart() == $interval2->getStart()) {
+                        $startIsIncluded = $interval1->getStartIsIncluded() && $interval2->getStartIsIncluded();
+                    } elseif ($interval1->getStart() > $interval2->getStart()) {
+                        $startIsIncluded = $interval1->getStartIsIncluded();
+                    } else {
+                        $startIsIncluded = $interval2->getStartIsIncluded();
+                    }
 
-                        // Determine end inclusion
-                        $endIsIncluded = false;
-                        if ($interval1->getEnd() == $interval2->getEnd()) {
-                            $endIsIncluded = $interval1->getEndIsIncluded() && $interval2->getEndIsIncluded();
-                        } elseif ($interval1->getEnd() < $interval2->getEnd()) {
-                            $endIsIncluded = $interval1->getEndIsIncluded();
-                        } else {
-                            $endIsIncluded = $interval2->getEndIsIncluded();
-                        }
+                    // Determine end inclusion
+                    $endIsIncluded = false;
+                    if ($interval1->getEnd() == $interval2->getEnd()) {
+                        $endIsIncluded = $interval1->getEndIsIncluded() && $interval2->getEndIsIncluded();
+                    } elseif ($interval1->getEnd() < $interval2->getEnd()) {
+                        $endIsIncluded = $interval1->getEndIsIncluded();
+                    } else {
+                        $endIsIncluded = $interval2->getEndIsIncluded();
+                    }
 
+                    // Include the interval if:
+                    // - Non-degenerate (start < end), or
+                    // - Degenerate (start == end) and the shared point is included in both intervals
+                    if ($start < $end || ($start == $end && $startIsIncluded && $endIsIncluded)) {
                         // Create new interval for the intersection
                         $result[] = new TimeInterval($start, $end, $startIsIncluded, $endIsIncluded);
                     }
