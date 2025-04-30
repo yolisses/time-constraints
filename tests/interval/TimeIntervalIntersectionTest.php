@@ -4,6 +4,7 @@ namespace Yolisses\TimeConstraints\Interval\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\Interval\TimeIntervalIntersection;
+use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 require_once __DIR__ . '/../utils/createTimeInterval.php';
 
@@ -92,6 +93,29 @@ class TimeIntervalIntersectionTest extends TestCase
         $this->assertEquals([
             createTimeInterval(2, 3, true, true),
             createTimeInterval(6, 7, true, true),
+        ], $result);
+    }
+
+    public function testMultipleOverlappingAndNonOverlappingIntervals(): void
+    {
+        $intervals1 = [
+            createTimeInterval(1, 3, true, true),
+            createTimeInterval(4, 6, true, false),
+            createTimeInterval(8, 10, false, true),
+        ];
+        $intervals2 = [
+            createTimeInterval(2, 5, true, true),
+            createTimeInterval(5, 7, false, true),
+            createTimeInterval(9, 11, true, true),
+        ];
+
+        $result = TimeIntervalIntersection::intersection($intervals1, $intervals2);
+
+        $this->assertEquals([
+            createTimeInterval(2, 3, true, true),
+            createTimeInterval(4, 5, true, true),
+            createTimeInterval(5, 6, false, false),
+            createTimeInterval(9, 10, true, true),
         ], $result);
     }
 
