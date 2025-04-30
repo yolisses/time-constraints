@@ -15,13 +15,15 @@ class TimeIntervalOperationsUnionTest extends TestCase
 
     public function testSingleIntervalReturnsSameInterval()
     {
-        $interval = createTimeInterval(1, 2);
+        $interval = createTimeInterval(1, 2, false, true);
 
         $result = TimeIntervalOperations::union([$interval]);
 
         $this->assertCount(1, $result);
         $this->assertSame($interval->getStart(), $result[0]->getStart());
         $this->assertSame($interval->getEnd(), $result[0]->getEnd());
+        $this->assertSame($interval->getStartIsIncluded(), $result[0]->getStartIsIncluded());
+        $this->assertSame($interval->getEndIsIncluded(), $result[0]->getEndIsIncluded());
     }
 
     public function testNonOverlappingIntervals()
