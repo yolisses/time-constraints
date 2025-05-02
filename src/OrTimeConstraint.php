@@ -17,12 +17,12 @@ class OrTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
     {
         $periods = [];
 
         foreach ($this->time_constraints as $time_constraint) {
-            $periods = array_merge($periods, $time_constraint->getPeriods($start_instant, $end_instant));
+            $periods = array_merge($periods, $time_constraint->getSequence($start_instant, $end_instant));
         }
 
         return TimePeriodOperations::union($periods);

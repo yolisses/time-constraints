@@ -19,12 +19,12 @@ class ExceptTimeConstraint extends TimeConstraint
     ) {
     }
 
-    public function getPeriods(
+    public function getSequence(
         \DateTimeImmutable $start_instant,
         \DateTimeImmutable $end_instant
     ): array {
-        $periods_a = $this->time_constraint_a->getPeriods($start_instant, $end_instant);
-        $periods_b = $this->time_constraint_b->getPeriods($start_instant, $end_instant);
+        $periods_a = $this->time_constraint_a->getSequence($start_instant, $end_instant);
+        $periods_b = $this->time_constraint_b->getSequence($start_instant, $end_instant);
         return TimePeriodOperations::difference($periods_a, $periods_b);
     }
 }

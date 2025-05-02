@@ -11,7 +11,7 @@ class WeekdaysTimeConstraint extends TimeConstraint
         return $weekDay == 6 || $weekDay == 7;
     }
 
-    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
     {
         $periods = [];
         $current_instant = clone $start_instant;

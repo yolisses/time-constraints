@@ -15,7 +15,7 @@ class TimeOfDayTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-01 11:03:04');
         $end_instant = new DateTimeImmutable('2025-01-09 11:06:07');
 
-        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $periods = $constraint->getSequence($start_instant, $end_instant);
         $this->assertEquals([
             TimePeriod::fromStrings('2025-01-01 11:03:04', '2025-01-01 12:00'),
             TimePeriod::fromStrings('2025-01-02 10:00', '2025-01-02 12:00'),

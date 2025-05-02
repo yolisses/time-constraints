@@ -17,18 +17,18 @@ class AndTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
     {
         if (empty($this->time_constraints)) {
             return [];
         }
 
-        $periods = $this->time_constraints[0]->getPeriods($start_instant, $end_instant);
+        $periods = $this->time_constraints[0]->getSequence($start_instant, $end_instant);
 
         foreach ($this->time_constraints as $time_constraint) {
             $periods = TimePeriodOperations::intersection(
                 $periods,
-                $time_constraint->getPeriods($start_instant, $end_instant)
+                $time_constraint->getSequence($start_instant, $end_instant)
             );
         }
 

@@ -14,7 +14,7 @@ class MultiplePeriodsTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
     {
         return $this->clampPeriods($this->time_periods, $start_instant, $end_instant);
     }

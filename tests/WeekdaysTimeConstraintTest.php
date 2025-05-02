@@ -23,7 +23,7 @@ class WeekdaysTimeConstraintTest extends TestCase
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-01T02:03:04'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-30T05:06:07'); // Thursday
-        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $periods = $constraint->getSequence($start_instant, $end_instant);
         $this->assertEquals([
             TimePeriod::fromStrings('2025-01-01T02:03:04', '2025-01-04'),
             TimePeriod::fromStrings('2025-01-06', '2025-01-11'),
@@ -38,7 +38,7 @@ class WeekdaysTimeConstraintTest extends TestCase
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-04T02:03:04'); // Saturday
         $end_instant = new DateTimeImmutable('2025-01-30T05:06:07'); // Thursday
-        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $periods = $constraint->getSequence($start_instant, $end_instant);
         $this->assertEquals([
             TimePeriod::fromStrings('2025-01-06', '2025-01-11'),
             TimePeriod::fromStrings('2025-01-13', '2025-01-18'),
@@ -52,7 +52,7 @@ class WeekdaysTimeConstraintTest extends TestCase
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-01T02:03:04'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-05T05:06:07'); // Sunday
-        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $periods = $constraint->getSequence($start_instant, $end_instant);
         $this->assertEquals([
             TimePeriod::fromStrings('2025-01-01T02:03:04', '2025-01-04'),
         ], $periods);
@@ -63,7 +63,7 @@ class WeekdaysTimeConstraintTest extends TestCase
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-01T02:03:04'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-01T02:03:04'); // Wednesday
-        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $periods = $constraint->getSequence($start_instant, $end_instant);
         $this->assertEquals([], $periods);
     }
 
@@ -72,7 +72,7 @@ class WeekdaysTimeConstraintTest extends TestCase
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-04T02:03:04'); // Saturday
         $end_instant = new DateTimeImmutable('2025-01-05T05:06:07'); // Sunday
-        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $periods = $constraint->getSequence($start_instant, $end_instant);
         $this->assertEquals([], $periods);
     }
 }

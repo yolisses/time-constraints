@@ -14,7 +14,7 @@ class SingleDayTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-01 02:03:04');
         $end_instant = new DateTimeImmutable('2025-01-03 05:06:07');
 
-        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $periods = $constraint->getSequence($start_instant, $end_instant);
         $this->assertEquals([
             TimePeriod::fromStrings('2025-01-02 00:00:00', '2025-01-03 00:00:00'),
         ], $periods);
@@ -28,7 +28,7 @@ class SingleDayTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-02 02:03:04');
         $end_instant = new DateTimeImmutable('2025-01-02 05:06:07');
 
-        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $periods = $constraint->getSequence($start_instant, $end_instant);
         $this->assertEquals([
             TimePeriod::fromStrings('2025-01-02 02:03:04', '2025-01-02 05:06:07'),
         ], $periods);

@@ -9,7 +9,7 @@ class TimeConstraintDurationTest extends TestCase
     public function testGetTotalDuration()
     {
         $time_constraint = new class () extends TimeConstraint {
-            public function getPeriods(DateTimeImmutable $start_instant, DateTimeImmutable $end_instant): array
+            public function getSequence(DateTimeImmutable $start_instant, DateTimeImmutable $end_instant): array
             {
                 return [
                     TimePeriod::fromStrings('2025-01-01 01:00:00', '2025-01-01 04:00:06'), // 3 hours 6 seconds

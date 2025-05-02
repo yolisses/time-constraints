@@ -19,7 +19,7 @@ class ExceptTimeConstraintTest extends TestCase
 
         $except_time_constraint = new ExceptTimeConstraint($time_constraint_1, $time_constraint_2);
 
-        $periods = $except_time_constraint->getPeriods(createDateTime(1), createDateTime(2));
+        $periods = $except_time_constraint->getSequence(createDateTime(1), createDateTime(2));
 
         $this->assertEquals([], $periods);
     }
@@ -37,7 +37,7 @@ class ExceptTimeConstraintTest extends TestCase
 
         $except_time_constraint = new ExceptTimeConstraint($time_constraint_1, $time_constraint_2);
 
-        $periods = $except_time_constraint->getPeriods(createDateTime(0), createDateTime(2));
+        $periods = $except_time_constraint->getSequence(createDateTime(0), createDateTime(2));
 
         $this->assertEquals([
             createTimePeriod(1, 2)
@@ -60,7 +60,7 @@ class ExceptTimeConstraintTest extends TestCase
 
         $except_time_constraint = new ExceptTimeConstraint($time_constraint_1, $time_constraint_2);
 
-        $periods = $except_time_constraint->getPeriods(createDateTime(1), createDateTime(6));
+        $periods = $except_time_constraint->getSequence(createDateTime(1), createDateTime(6));
 
         $this->assertEquals([
             createTimePeriod(1, 2),

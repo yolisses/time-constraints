@@ -2,6 +2,7 @@
 
 namespace Yolisses\TimeConstraints;
 
+use League\Period\Sequence;
 use Yolisses\TimeConstraints\Period\TimePeriod;
 use Yolisses\TimeConstraints\Period\TimePeriodOperations;
 
@@ -20,7 +21,7 @@ abstract class TimeConstraint
      * @param \DateTimeImmutable $end_instant
      * @return array<TimePeriod>
      */
-    abstract public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array;
+    abstract public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence;
 
     public function clampPeriods($periods, \DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
     {
@@ -32,7 +33,7 @@ abstract class TimeConstraint
 
     public function getTotalDuration(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
     {
-        $periods = $this->getPeriods($start_instant, $end_instant);
+        $periods = $this->getSequence($start_instant, $end_instant);
 
         $total_duration = 0;
         foreach ($periods as $period) {
@@ -47,9 +48,9 @@ abstract class TimeConstraint
         $is_duration_negative = $end_instant < $start_instant;
 
         if ($is_duration_negative) {
-            $periods = $this->getPeriods($end_instant, $start_instant);
+            $periods = $this->getSequence($end_instant, $start_instant);
         } else {
-            $periods = $this->getPeriods($start_instant, $end_instant);
+            $periods = $this->getSequence($start_instant, $end_instant);
         }
 
         if ($is_duration_negative) {

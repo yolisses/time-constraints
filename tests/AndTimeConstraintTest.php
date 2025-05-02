@@ -13,7 +13,7 @@ class AndTimeConstraintTest extends TestCase
     {
         $and_time_constraint = new AndTimeConstraint([]);
 
-        $periods = $and_time_constraint->getPeriods(createDateTime(1), createDateTime(2));
+        $periods = $and_time_constraint->getSequence(createDateTime(1), createDateTime(2));
 
         $this->assertEquals([], $periods);
     }
@@ -28,7 +28,7 @@ class AndTimeConstraintTest extends TestCase
 
         $and_time_constraint = new AndTimeConstraint([$time_constraint1]);
 
-        $periods = $and_time_constraint->getPeriods(createDateTime(0), createDateTime(2));
+        $periods = $and_time_constraint->getSequence(createDateTime(0), createDateTime(2));
 
         $this->assertEquals([
             createTimePeriod(1, 2)
@@ -55,7 +55,7 @@ class AndTimeConstraintTest extends TestCase
 
         $and_time_constraint = new AndTimeConstraint([$time_constraint1, $time_constraint2, $time_constraint3]);
 
-        $periods = $and_time_constraint->getPeriods(createDateTime(1), createDateTime(6));
+        $periods = $and_time_constraint->getSequence(createDateTime(1), createDateTime(6));
 
         $this->assertEquals([
             createTimePeriod(3, 4)

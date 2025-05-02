@@ -27,7 +27,7 @@ class OrTimeConstraintTest extends TestCase
 
         $and_time_constraint = new OrTimeConstraint([$time_constraint1, $time_constraint2, $time_constraint3]);
 
-        $periods = $and_time_constraint->getPeriods(new DateTimeImmutable('2021-01-01 00:00:00'), new DateTimeImmutable('2021-01-01 02:00:00'));
+        $periods = $and_time_constraint->getSequence(new DateTimeImmutable('2021-01-01 00:00:00'), new DateTimeImmutable('2021-01-01 02:00:00'));
 
         $this->assertEquals([
             TimePeriod::fromStrings('2021-01-01 00:00:00', '2021-01-01 01:30:00'),

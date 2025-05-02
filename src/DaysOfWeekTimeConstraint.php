@@ -17,7 +17,7 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
     {
         $periods = [];
 

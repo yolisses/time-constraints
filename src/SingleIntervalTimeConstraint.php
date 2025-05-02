@@ -15,7 +15,7 @@ class SinglePeriodTimeConstraint extends TimeConstraint
         return new self(TimePeriod::fromStrings($start_instant, $end_instant));
     }
 
-    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
     {
         $periods = [$this->time_period];
 
