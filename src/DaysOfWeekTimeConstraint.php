@@ -37,6 +37,6 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
             $current_instant = $current_instant->modify('+1 day');
         }
 
-        return $this->clampPeriods($periods, $start_instant, $end_instant);
+        return $this->clampSequence($sequence, $start_instant, $end_instant);
     }
 }

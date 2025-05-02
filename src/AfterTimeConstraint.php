@@ -27,6 +27,6 @@ class AfterTimeConstraint extends TimeConstraint
         //   i
         //   ██████████
         $periods = [new TimePeriod($this->instant, $end_instant)];
-        return $this->clampPeriods($periods, $start_instant, $end_instant);
+        return $this->clampSequence($sequence, $start_instant, $end_instant);
     }
 }

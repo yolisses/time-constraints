@@ -23,10 +23,10 @@ abstract class TimeConstraint
      */
     abstract public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence;
 
-    public function clampPeriods($periods, \DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
+    public function clampSequence(Sequence $sequence, \DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
     {
         return TimePeriodOperations::intersection(
-            $periods,
+            $sequence,
             [new TimePeriod($start_instant, $end_instant)]
         );
     }

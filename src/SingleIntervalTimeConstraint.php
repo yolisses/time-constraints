@@ -19,6 +19,6 @@ class SinglePeriodTimeConstraint extends TimeConstraint
     {
         $periods = [$this->time_period];
 
-        return $this->clampPeriods($periods, $start_instant, $end_instant);
+        return $this->clampSequence($sequence, $start_instant, $end_instant);
     }
 }

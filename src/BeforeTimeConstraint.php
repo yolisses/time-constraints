@@ -27,6 +27,6 @@ class BeforeTimeConstraint extends TimeConstraint
         //           i
         // ██████████
         $periods = [new TimePeriod($start_instant, $this->instant)];
-        return $this->clampPeriods($periods, $start_instant, $end_instant);
+        return $this->clampSequence($sequence, $start_instant, $end_instant);
     }
 }

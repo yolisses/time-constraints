@@ -44,6 +44,6 @@ class TimeOfDayTimeConstraint extends TimeConstraint
         }
 
 
-        return $this->clampPeriods($periods, $start_instant, $end_instant);
+        return $this->clampSequence($sequence, $start_instant, $end_instant);
     }
 }

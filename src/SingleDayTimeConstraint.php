@@ -20,6 +20,6 @@ class SingleDayTimeConstraint extends TimeConstraint
         $period = Period::fromDate($start, $end, Bounds::IncludeStartExcludeEnd);
         $sequence = new Sequence($period);
 
-        return $this->clampPeriods($periods, $start_instant, $end_instant);
+        return $this->clampSequence($sequence, $start_instant, $end_instant);
     }
 }
