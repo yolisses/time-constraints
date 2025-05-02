@@ -1,1 +1,1 @@
-![restrictions example](docs/constraint/TimeRestrictions.drawio.svg "Title")
+![restrictions example](docs/TimeRestrictions.drawio.svg "Title")
