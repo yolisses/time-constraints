@@ -2,23 +2,24 @@
 
 namespace Yolisses\TimeConstraints;
 
+use League\Period\Period;
+use League\Period\Sequence;
 use Yolisses\TimeConstraints\TimeConstraint;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 /**
- * Time constraint for a specific time of day. E.g. only from 10:00:00 to 12:00:00.
+ * Time constraint for a specific time of day. E.g. only from 10:00:00 to 16:00:00.
  */
 class TimeOfDayTimeConstraint extends TimeConstraint
 {
     /**
-     * @param string $time_start e.g. `'10:00:00'`
-     * @param string $time_end e.g. `'12:00:00'`
+     * @param string $startTime e.g. `'10:00:00'`
+     * @param string $endTime e.g. `'16:00:00'`
      */
-    public function __construct(public string $time_start, public string $time_end)
+    public function __construct(public string $startTime, public string $endTime)
     {
     }
 
-    static function getCloneWithTime(\DateTimeImmutable $dateTimeImmutable, string $time): \DateTimeImmutable
+    static function setTime(\DateTimeImmutable $dateTimeImmutable, string $time): \DateTimeImmutable
     {
         $timeAsDateTime = new \DateTimeImmutable($time);
         return $dateTimeImmutable->setTime(
@@ -29,21 +30,23 @@ class TimeOfDayTimeConstraint extends TimeConstraint
         );
     }
 
-    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
+    public function getSequence(Period $clampPeriod): Sequence
     {
         $periods = [];
 
-        $current_instant = self::getCloneWithTime($start_instant, $this->time_start);
+        $startDate = $clampPeriod->startDate;
+        $currentDate = self::setTime($startDate, $this->startTime);
 
-        while ($current_instant < $end_instant) {
-            $period_end = self::getCloneWithTime($current_instant, $this->time_end);
+        while ($currentDate < $clampPeriod->endDate) {
+            $period_end = self::setTime($currentDate, $this->endTime);
 
-            $periods[] = new TimePeriod(clone $current_instant, $period_end);
+            $periods[] = Period::fromDate($currentDate, $period_end);
 
-            $current_instant = $current_instant->modify('+1 day');
+            $currentDate = $currentDate->modify('+1 day');
         }
 
+        $sequence = new Sequence(...$periods);
 
-        return $this->clampSequence($sequence, $start_instant, $end_instant);
+        return $this->clampSequence($sequence, $clampPeriod);
     }
 }
