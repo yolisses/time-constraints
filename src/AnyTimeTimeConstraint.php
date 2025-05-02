@@ -13,6 +13,6 @@ class AnyTimeTimeConstraint extends TimeConstraint
 
     public function getSequence(Period $clampPeriod): Sequence
     {
-        return [new TimePeriod(clone $start_instant, clone $end_instant),];
+        return new Sequence(clone $clampPeriod);
     }
 }
