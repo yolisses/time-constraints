@@ -15,6 +15,15 @@ enum OnZeroDuration
 
 abstract class TimeConstraint
 {
+
+    // The current way of getting a sequence is error-prone because it depends
+    // on using clampSequence in all getSequence implementations. One possible
+    // way to make it more robust is to create a method getRawPeriods, which
+    // returns the periods unclamped, and call it inside a default
+    // implementation of getSequence. If performance is an issue for some cases,
+    // it will still be possible to implement clamping while getting the periods
+    // and override getSequence to simply return them.
+
     /**
      * Returns the periods that satisfy the constraint between the given instants.
      */
