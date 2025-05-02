@@ -2,6 +2,8 @@
 
 namespace Yolisses\TimeConstraints;
 
+use League\Period\Period;
+use League\Period\Sequence;
 use Yolisses\TimeConstraints\TimeConstraint;
 use Yolisses\TimeConstraints\Period\TimePeriodOperations;
 
@@ -17,7 +19,7 @@ class OrTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
+    public function getSequence(Period $clampPeriod): Sequence
     {
         $periods = [];
 

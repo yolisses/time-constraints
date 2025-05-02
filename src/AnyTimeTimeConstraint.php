@@ -2,6 +2,8 @@
 
 namespace Yolisses\TimeConstraints;
 
+use League\Period\Period;
+use League\Period\Sequence;
 use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class AnyTimeTimeConstraint extends TimeConstraint
@@ -10,7 +12,7 @@ class AnyTimeTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
+    public function getSequence(Period $clampPeriod): Sequence
     {
         return [new TimePeriod(clone $start_instant, clone $end_instant),];
     }
