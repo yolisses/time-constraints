@@ -2,9 +2,9 @@
 
 namespace Yolisses\TimeConstraints;
 
+use League\Period\Period;
 use League\Period\Sequence;
-use Yolisses\TimeConstraints\Period\TimePeriod;
-use Yolisses\TimeConstraints\Period\TimePeriodOperations;
+use League\Period\UnprocessableInterval;
 
 enum OnZeroDuration
 {
@@ -17,18 +17,24 @@ abstract class TimeConstraint
 {
     /**
      * Returns the periods that satisfy the constraint between the given instants.
-     * @param \DateTimeImmutable $start_instant
-     * @param \DateTimeImmutable $end_instant
-     * @return array<TimePeriod>
      */
-    abstract public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence;
+    abstract public function getSequence(Period $clamp_period): Sequence;
 
-    public function clampSequence(Sequence $sequence, \DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
+
+    public static function clampSequence(Sequence $sequence, Period $clamp_period): Sequence
     {
-        return TimePeriodOperations::intersection(
-            $sequence,
-            [new TimePeriod($start_instant, $end_instant)]
-        );
+        $periods = $sequence->toList();
+        $intersectingPeriods = [];
+        foreach ($periods as $period) {
+            try {
+                $intersection = $period->intersect($clamp_period);
+                $intersectingPeriods[] = $intersection;
+            } catch (UnprocessableInterval $e) {
+                // Skip periods that do not overlap
+                continue;
+            }
+        }
+        return new Sequence(...$intersectingPeriods);
     }
 
     public function getTotalDuration(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
