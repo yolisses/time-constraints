@@ -1,40 +1,42 @@
 <?php
 
+use League\Period\Bounds;
+use League\Period\Period;
+use League\Period\Sequence;
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\BeforeTimeConstraint;
 
 class BeforeTimeConstraintTest extends TestCase
 {
-    public function testBeforeTimeConstraintBefore()
+    public function testClampIntervalAfter()
     {
-        $instant = new DateTimeImmutable('2025-01-03');
-        $constraint = new BeforeTimeConstraint($instant);
-
-        $clampPeriod = Period::fromDate('2025-01-01', '2025-01-02');
-
-        $sequence = $constraint->getSequence($clampPeriod);
-        $this->assertEquals([new TimePeriod($start_instant, $end_instant)], $periods);
+        $constraint = new BeforeTimeConstraint(new DateTimeImmutable('2025-01-01'), true);
+        $clampPeriod = Period::fromDate('2025-01-02', '2025-01-03');
+        $this->assertEquals(new Sequence(), $constraint->getSequence($clampPeriod));
     }
 
-    public function testBeforeTimeConstraintDuring()
+    public function testClampIntervalMetByWithStartIncluded()
     {
-        $instant = new DateTimeImmutable('2025-01-03');
-        $constraint = new BeforeTimeConstraint($instant);
-
-        $clampPeriod = Period::fromDate('2025-01-02', '2025-01-04');
-
-        $sequence = $constraint->getSequence($clampPeriod);
-        $this->assertEquals([new TimePeriod($start_instant, $instant)], $periods);
+        $constraint = new BeforeTimeConstraint(new DateTimeImmutable('2025-01-01'), true);
+        $clampPeriod = Period::fromDate('2025-01-01', '2025-01-02', Bounds::IncludeAll);
+        $this->assertEquals(new Sequence(
+            Period::fromDate('2025-01-01', '2025-01-01', Bounds::IncludeAll)
+        ), $constraint->getSequence($clampPeriod));
     }
 
-    public function testBeforeTimeConstraintAfter()
+    public function testClampIntervalMetByWithStartExcluded()
     {
-        $instant = new DateTimeImmutable('2025-01-03');
-        $constraint = new BeforeTimeConstraint($instant);
+        $constraint = new BeforeTimeConstraint(new DateTimeImmutable('2025-01-01'), false);
+        $clampPeriod = Period::fromDate('2025-01-01', '2025-01-02', Bounds::IncludeAll);
+        $this->assertEquals(new Sequence(), $constraint->getSequence($clampPeriod));
+    }
 
-        $clampPeriod = Period::fromDate('2025-01-04', '2025-01-05');
-
-        $sequence = $constraint->getSequence($clampPeriod);
-        $this->assertEquals([], $periods);
+    public function testClampIntervalBefore()
+    {
+        $constraint = new BeforeTimeConstraint(new DateTimeImmutable('2025-01-03'), false);
+        $clampPeriod = Period::fromDate('2025-01-01', '2025-01-02', Bounds::IncludeAll);
+        $this->assertEquals(new Sequence(
+            Period::fromDate('2025-01-01', '2025-01-02', Bounds::IncludeAll)
+        ), $constraint->getSequence($clampPeriod));
     }
 }

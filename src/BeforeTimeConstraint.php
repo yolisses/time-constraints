@@ -2,32 +2,30 @@
 
 namespace Yolisses\TimeConstraints;
 
+use League\Period\Bounds;
 use League\Period\Period;
 use League\Period\Sequence;
+use League\Period\UnprocessableInterval;
 
 class BeforeTimeConstraint extends TimeConstraint
 {
-    public function __construct(public \DateTimeImmutable $instant)
+    public function __construct(public \DateTimeImmutable $endDate, public bool $isEndIncluded)
     {
     }
 
     public function getSequence(Period $clampPeriod): Sequence
     {
-        //     s   e   
-        //   i
-        // ██
-        if ($this->instant < $start_instant) {
-            return [];
+        if ($clampPeriod->isAfter($this->endDate)) {
+            return new Sequence();
         }
 
-        //     s   e   
-        //       i
-        // ██████
-
-        //     s   e   
-        //           i
-        // ██████████
-        $periods = [new TimePeriod($start_instant, $this->instant)];
-        return $this->clampSequence($sequence, $clampPeriod);
+        try {
+            $idealBounds = $this->isEndIncluded ? Bounds::IncludeAll : Bounds::IncludeStartExcludeEnd;
+            $idealPeriod = Period::fromDate($clampPeriod->startDate, $this->endDate, $idealBounds);
+            $period = $idealPeriod->intersect($clampPeriod);
+            return new Sequence($period);
+        } catch (UnprocessableInterval) {
+            return new Sequence();
+        }
     }
 }
