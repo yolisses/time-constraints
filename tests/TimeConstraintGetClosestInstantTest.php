@@ -3,9 +3,9 @@
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\OrTimeConstraint;
 
-require_once __DIR__ . '/../utils/createDateTime.php';
-require_once __DIR__ . '/../utils/createDuration.php';
-require_once __DIR__ . '/../utils/createSinglePeriodTimeConstraint.php';
+require_once __DIR__ . '/utils/createDateTime.php';
+require_once __DIR__ . '/utils/createDuration.php';
+require_once __DIR__ . '/utils/createSinglePeriodTimeConstraint.php';
 
 class TimeConstraintGetClosestInstantTest extends TestCase
 {

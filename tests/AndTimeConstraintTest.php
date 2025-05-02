@@ -4,8 +4,7 @@ use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\AndTimeConstraint;
 use Yolisses\TimeConstraints\TimeConstraint;
 
-require_once __DIR__ . '/../utils/createDateTime.php';
-require_once __DIR__ . '/../utils/createTimePeriod.php';
+require_once __DIR__ . '/utils/createDateTime.php';
 
 class AndTimeConstraintTest extends TestCase
 {
