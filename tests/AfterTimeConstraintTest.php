@@ -2,7 +2,6 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\AfterTimeConstraint;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class AfterTimeConstraintTest extends TestCase
 {

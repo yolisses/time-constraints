@@ -5,7 +5,6 @@ namespace Yolisses\TimeConstraints;
 use League\Period\Period;
 use League\Period\Sequence;
 use Yolisses\TimeConstraints\TimeConstraint;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class MultiplePeriodsTimeConstraint extends TimeConstraint
 {

@@ -4,7 +4,6 @@ namespace Yolisses\TimeConstraints;
 
 use League\Period\Period;
 use League\Period\Sequence;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class AnyTimeTimeConstraint extends TimeConstraint
 {

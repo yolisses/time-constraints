@@ -3,7 +3,6 @@
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\OrTimeConstraint;
 use Yolisses\TimeConstraints\TimeConstraint;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class OrTimeConstraintTest extends TestCase
 {

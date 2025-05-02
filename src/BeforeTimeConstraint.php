@@ -4,7 +4,6 @@ namespace Yolisses\TimeConstraints;
 
 use League\Period\Period;
 use League\Period\Sequence;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class BeforeTimeConstraint extends TimeConstraint
 {
@@ -29,6 +28,6 @@ class BeforeTimeConstraint extends TimeConstraint
         //           i
         // ██████████
         $periods = [new TimePeriod($start_instant, $this->instant)];
-        return $this->clampSequence($sequence, $start_instant, $end_instant);
+        return $this->clampSequence($sequence, $clampPeriod);
     }
 }

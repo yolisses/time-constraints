@@ -2,7 +2,6 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\DaysOfWeekTimeConstraint;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class DaysOfWeekTimeConstraintTest extends TestCase
 {

@@ -2,7 +2,6 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\MultiplePeriodsTimeConstraint;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class MultiplePeriodsTimeConstraintTest extends TestCase
 {

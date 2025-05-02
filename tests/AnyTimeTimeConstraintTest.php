@@ -3,7 +3,6 @@
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\AnyTimeTimeConstraint;
 use Yolisses\TimeConstraints\SingleDayTimeConstraint;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class AnyTimeTimeConstraintTest extends TestCase
 {

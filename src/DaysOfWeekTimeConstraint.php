@@ -4,7 +4,6 @@ namespace Yolisses\TimeConstraints;
 
 use League\Period\Period;
 use League\Period\Sequence;
-use Yolisses\TimeConstraints\Period\TimePeriod;
 
 /**
  * Time constraint for specific days of the week. E.g. only Mondays, Wednesdays
@@ -39,6 +38,6 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
             $current_instant = $current_instant->modify('+1 day');
         }
 
-        return $this->clampSequence($sequence, $start_instant, $end_instant);
+        return $this->clampSequence($sequence, $clampPeriod);
     }
 }
