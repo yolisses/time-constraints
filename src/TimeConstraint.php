@@ -18,7 +18,7 @@ abstract class TimeConstraint
     /**
      * Returns the periods that satisfy the constraint between the given instants.
      */
-    abstract public function getSequence(Period $clamp_period): Sequence;
+    abstract public function getSequence(Period $clampPeriod): Sequence;
 
 
     public static function clampSequence(Sequence $sequence, Period $clamp_period): Sequence

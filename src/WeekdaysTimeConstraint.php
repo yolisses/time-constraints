@@ -1,7 +1,8 @@
 <?php
 namespace Yolisses\TimeConstraints;
 
-use Yolisses\TimeConstraints\Period\TimePeriod;
+use League\Period\Period;
+use League\Period\Sequence;
 
 class WeekdaysTimeConstraint extends TimeConstraint
 {
@@ -11,24 +12,24 @@ class WeekdaysTimeConstraint extends TimeConstraint
         return $weekDay == 6 || $weekDay == 7;
     }
 
-    public function getSequence(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): Sequence
+    public function getSequence(Period $clampPeriod): Sequence
     {
         $periods = [];
-        $current_instant = clone $start_instant;
+        $startDate = $clampPeriod->startDate;
 
-        if (self::getIsWeekend($current_instant)) {
-            $current_instant = $current_instant->modify('next monday');
+        if (self::getIsWeekend($startDate)) {
+            $startDate = $startDate->modify('next monday');
         }
 
-        while ($current_instant < $end_instant) {
-            $next_saturday = $current_instant->modify('next saturday');
-            $period_end = min($next_saturday, $end_instant);
-            $period = new TimePeriod($current_instant, $period_end);
+        while ($startDate < $clampPeriod->endDate) {
+            $nextSaturday = $startDate->modify('next saturday');
+            $endDate = min($nextSaturday, $clampPeriod->endDate);
+            $period = Period::fromDate($startDate, $endDate);
             $periods[] = $period;
 
-            $current_instant = $next_saturday->modify('next monday');
+            $startDate = $nextSaturday->modify('next monday');
         }
 
-        return $periods;
+        return new Sequence(...$periods);
     }
 }
