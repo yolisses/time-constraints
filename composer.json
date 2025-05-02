@@ -6,7 +6,7 @@
     "autoload": {
         "psr-4": {
             "Yolisses\\TimeConstraints\\": "src/",
-            "Yolisses\\TimeConstraints\\Interval\\": "src/interval",
+            "Yolisses\\TimeConstraints\\Period\\": "src/period",
             "Yolisses\\TimeConstraints\\Constraint\\": "src/constraint"
         }
     },
@@ -18,5 +18,8 @@
     ],
     "require-dev": {
         "phpunit/phpunit": "^11.5"
+    },
+    "require": {
+        "league/period": "^5.3.2"
     }
 }

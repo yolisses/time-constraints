@@ -2,11 +2,11 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\SingleDayTimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class SingleDayTimeConstraintTest extends TestCase
 {
-    public function testGetIntervals()
+    public function testGetPeriods()
     {
         $day = new DateTimeImmutable('2025-01-02 05:00:00');
         $constraint = new SingleDayTimeConstraint($day);
@@ -14,13 +14,13 @@ class SingleDayTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-01 02:03:04');
         $end_instant = new DateTimeImmutable('2025-01-03 05:06:07');
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
         $this->assertEquals([
-            TimeInterval::fromStrings('2025-01-02 00:00:00', '2025-01-03 00:00:00'),
-        ], $intervals);
+            TimePeriod::fromStrings('2025-01-02 00:00:00', '2025-01-03 00:00:00'),
+        ], $periods);
     }
 
-    public function testGetIntervals2()
+    public function testGetPeriods2()
     {
         $day = new DateTimeImmutable('2025-01-02 00:00:00');
         $constraint = new SingleDayTimeConstraint($day);
@@ -28,9 +28,9 @@ class SingleDayTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-02 02:03:04');
         $end_instant = new DateTimeImmutable('2025-01-02 05:06:07');
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
         $this->assertEquals([
-            TimeInterval::fromStrings('2025-01-02 02:03:04', '2025-01-02 05:06:07'),
-        ], $intervals);
+            TimePeriod::fromStrings('2025-01-02 02:03:04', '2025-01-02 05:06:07'),
+        ], $periods);
     }
 }

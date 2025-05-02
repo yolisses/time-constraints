@@ -3,7 +3,7 @@
 namespace Yolisses\TimeConstraints;
 
 use Yolisses\TimeConstraints\TimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 /**
  * Time constraint for a specific time of day. E.g. only from 10:00:00 to 12:00:00.
@@ -29,21 +29,21 @@ class TimeOfDayTimeConstraint extends TimeConstraint
         );
     }
 
-    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
-        $intervals = [];
+        $periods = [];
 
         $current_instant = self::getCloneWithTime($start_instant, $this->time_start);
 
         while ($current_instant < $end_instant) {
-            $interval_end = self::getCloneWithTime($current_instant, $this->time_end);
+            $period_end = self::getCloneWithTime($current_instant, $this->time_end);
 
-            $intervals[] = new TimeInterval(clone $current_instant, $interval_end);
+            $periods[] = new TimePeriod(clone $current_instant, $period_end);
 
             $current_instant = $current_instant->modify('+1 day');
         }
 
 
-        return $this->clampIntervals($intervals, $start_instant, $end_instant);
+        return $this->clampPeriods($periods, $start_instant, $end_instant);
     }
 }

@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\BeforeTimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class BeforeTimeConstraintTest extends TestCase
 {
@@ -14,8 +14,8 @@ class BeforeTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-01');
         $end_instant = new DateTimeImmutable('2025-01-02');
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
-        $this->assertEquals([new TimeInterval($start_instant, $end_instant)], $intervals);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $this->assertEquals([new TimePeriod($start_instant, $end_instant)], $periods);
     }
 
     public function testBeforeTimeConstraintDuring()
@@ -26,8 +26,8 @@ class BeforeTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-02');
         $end_instant = new DateTimeImmutable('2025-01-04');
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
-        $this->assertEquals([new TimeInterval($start_instant, $instant)], $intervals);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $this->assertEquals([new TimePeriod($start_instant, $instant)], $periods);
     }
 
     public function testBeforeTimeConstraintAfter()
@@ -38,7 +38,7 @@ class BeforeTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-04');
         $end_instant = new DateTimeImmutable('2025-01-05');
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
-        $this->assertEquals([], $intervals);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $this->assertEquals([], $periods);
     }
 }

@@ -1,42 +1,42 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\SingleIntervalTimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\SinglePeriodTimeConstraint;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
-class SingleIntervalTimeConstraintTest extends TestCase
+class SinglePeriodTimeConstraintTest extends TestCase
 {
-    public function testGetIntervals()
+    public function testGetPeriods()
     {
-        $time_interval = new TimeInterval(
+        $time_period = new TimePeriod(
             new DateTimeImmutable('2025-01-02 05:00:00'),
             new DateTimeImmutable('2025-01-02 10:00:00')
         );
-        $constraint = new SingleIntervalTimeConstraint($time_interval);
+        $constraint = new SinglePeriodTimeConstraint($time_period);
 
         $start_instant = new DateTimeImmutable('2025-01-01 06:03:04');
         $end_instant = new DateTimeImmutable('2025-01-03 09:06:07');
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
         $this->assertEquals([
-            TimeInterval::fromStrings('2025-01-02 05:00:00', '2025-01-02 10:00:00'),
-        ], $intervals);
+            TimePeriod::fromStrings('2025-01-02 05:00:00', '2025-01-02 10:00:00'),
+        ], $periods);
     }
 
-    public function testGetIntervals2()
+    public function testGetPeriods2()
     {
-        $time_interval = new TimeInterval(
+        $time_period = new TimePeriod(
             new DateTimeImmutable('2025-01-02 05:00:00'),
             new DateTimeImmutable('2025-01-02 10:00:00')
         );
-        $constraint = new SingleIntervalTimeConstraint($time_interval);
+        $constraint = new SinglePeriodTimeConstraint($time_period);
 
         $start_instant = new DateTimeImmutable('2025-01-02 06:03:04');
         $end_instant = new DateTimeImmutable('2025-01-02 09:06:07');
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
         $this->assertEquals([
-            TimeInterval::fromStrings('2025-01-02 06:03:04', '2025-01-02 09:06:07'),
-        ], $intervals);
+            TimePeriod::fromStrings('2025-01-02 06:03:04', '2025-01-02 09:06:07'),
+        ], $periods);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Yolisses\TimeConstraints;
 
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 /**
  * Time constraint for specific days of the week. E.g. only Mondays, Wednesdays
@@ -17,9 +17,9 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
-        $intervals = [];
+        $periods = [];
 
         $current_instant = $start_instant->setTime(0, 0, 0);
 
@@ -27,16 +27,16 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
             $current_day_of_week = (int) $current_instant->format('w');
 
             if (in_array($current_day_of_week, $this->days_of_week)) {
-                $interval_start = clone $current_instant;
-                $interval_end = clone $current_instant;
-                $interval_end = $interval_end->modify('+1 day');
+                $period_start = clone $current_instant;
+                $period_end = clone $current_instant;
+                $period_end = $period_end->modify('+1 day');
 
-                $intervals[] = new TimeInterval($interval_start, $interval_end);
+                $periods[] = new TimePeriod($period_start, $period_end);
             }
 
             $current_instant = $current_instant->modify('+1 day');
         }
 
-        return $this->clampIntervals($intervals, $start_instant, $end_instant);
+        return $this->clampPeriods($periods, $start_instant, $end_instant);
     }
 }

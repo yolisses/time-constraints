@@ -1,11 +1,11 @@
 <?php
 
-use Yolisses\TimeConstraints\SingleIntervalTimeConstraint;
+use Yolisses\TimeConstraints\SinglePeriodTimeConstraint;
 
-require_once __DIR__ . '/createTimeInterval.php';
+require_once __DIR__ . '/createTimePeriod.php';
 
-function createSingleIntervalTimeConstraint(int $start, int $end): SingleIntervalTimeConstraint
+function createSinglePeriodTimeConstraint(int $start, int $end): SinglePeriodTimeConstraint
 {
-    $timeInterval = createTimeInterval($start, $end);
-    return new SingleIntervalTimeConstraint($timeInterval);
+    $timePeriod = createTimePeriod($start, $end);
+    return new SinglePeriodTimeConstraint($timePeriod);
 }

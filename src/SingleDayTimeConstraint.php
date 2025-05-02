@@ -2,7 +2,9 @@
 
 namespace Yolisses\TimeConstraints;
 
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use League\Period\Bounds;
+use League\Period\Period;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class SingleDayTimeConstraint extends TimeConstraint
 {
@@ -10,13 +12,14 @@ class SingleDayTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
         $start = new \DateTimeImmutable($this->day->format('Y-m-d'));
         $end = (new \DateTimeImmutable($this->day->format('Y-m-d')))->modify('+1 day');
 
-        $intervals = [new TimeInterval($start, $end),];
+        $period = Period::fromDate($start, $end, Bounds::IncludeStartExcludeEnd);
+        $periods = [new TimePeriod($start, $end)];
 
-        return $this->clampIntervals($intervals, $start_instant, $end_instant);
+        return $this->clampPeriods($periods, $start_instant, $end_instant);
     }
 }

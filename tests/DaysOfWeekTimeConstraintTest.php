@@ -2,11 +2,11 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\DaysOfWeekTimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class DaysOfWeekTimeConstraintTest extends TestCase
 {
-    function testGetIntervals()
+    function testGetPeriods()
     {
         $days_of_week = [
             1, // Monday
@@ -18,17 +18,17 @@ class DaysOfWeekTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-01 02:03:04'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-09 05:06:07'); // Thursday
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
         $this->assertEquals([
-            TimeInterval::fromStrings('2025-01-01 02:03:04', '2025-01-02'),
-            TimeInterval::fromStrings('2025-01-04', '2025-01-05'),
-            TimeInterval::fromStrings('2025-01-06', '2025-01-07'),
-            TimeInterval::fromStrings('2025-01-08', '2025-01-09'),
-        ], $intervals);
+            TimePeriod::fromStrings('2025-01-01 02:03:04', '2025-01-02'),
+            TimePeriod::fromStrings('2025-01-04', '2025-01-05'),
+            TimePeriod::fromStrings('2025-01-06', '2025-01-07'),
+            TimePeriod::fromStrings('2025-01-08', '2025-01-09'),
+        ], $periods);
     }
 
 
-    public function testGetIntervals2()
+    public function testGetPeriods2()
     {
         $days_of_week = [
             1, // Monday
@@ -42,17 +42,17 @@ class DaysOfWeekTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-01 08:00:00'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-10 17:00:00'); // Friday
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
 
         $this->assertEquals([
-            TimeInterval::fromStrings('2025-01-01 08:00:00', '2025-01-02 00:00:00'), // Wednesday
-            TimeInterval::fromStrings('2025-01-03 00:00:00', '2025-01-04 00:00:00'), // Friday
-            TimeInterval::fromStrings('2025-01-06 00:00:00', '2025-01-09 00:00:00'), // Monday, Tuesday, Wednesday
-            TimeInterval::fromStrings('2025-01-10 00:00:00', '2025-01-10 17:00:00'), // Friday
-        ], $intervals);
+            TimePeriod::fromStrings('2025-01-01 08:00:00', '2025-01-02 00:00:00'), // Wednesday
+            TimePeriod::fromStrings('2025-01-03 00:00:00', '2025-01-04 00:00:00'), // Friday
+            TimePeriod::fromStrings('2025-01-06 00:00:00', '2025-01-09 00:00:00'), // Monday, Tuesday, Wednesday
+            TimePeriod::fromStrings('2025-01-10 00:00:00', '2025-01-10 17:00:00'), // Friday
+        ], $periods);
     }
 
-    function testGetIntervalsEmptyDaysOfWeek()
+    function testGetPeriodsEmptyDaysOfWeek()
     {
         $days_of_week = [];
         $constraint = new DaysOfWeekTimeConstraint($days_of_week);
@@ -60,11 +60,11 @@ class DaysOfWeekTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-01 02:03:04'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-09 05:06:07'); // Thursday
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
-        $this->assertEquals([], $intervals);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $this->assertEquals([], $periods);
     }
 
-    function testGetIntervalsEmptyResult()
+    function testGetPeriodsEmptyResult()
     {
         $days_of_week = [
             1, // Monday
@@ -75,7 +75,7 @@ class DaysOfWeekTimeConstraintTest extends TestCase
         $start_instant = new DateTimeImmutable('2025-01-01 02:03:04'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-05 05:06:07'); // Sunday
 
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
-        $this->assertEquals([], $intervals);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $this->assertEquals([], $periods);
     }
 }

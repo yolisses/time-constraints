@@ -5,60 +5,60 @@ use Yolisses\TimeConstraints\AndTimeConstraint;
 use Yolisses\TimeConstraints\TimeConstraint;
 
 require_once __DIR__ . '/../utils/createDateTime.php';
-require_once __DIR__ . '/../utils/createTimeInterval.php';
+require_once __DIR__ . '/../utils/createTimePeriod.php';
 
 class AndTimeConstraintTest extends TestCase
 {
-    public function testGetIntervalsEmpty()
+    public function testGetPeriodsEmpty()
     {
         $and_time_constraint = new AndTimeConstraint([]);
 
-        $intervals = $and_time_constraint->getIntervals(createDateTime(1), createDateTime(2));
+        $periods = $and_time_constraint->getPeriods(createDateTime(1), createDateTime(2));
 
-        $this->assertEquals([], $intervals);
+        $this->assertEquals([], $periods);
     }
 
-    public function testGetIntervalsWithOneConstraint()
+    public function testGetPeriodsWithOneConstraint()
     {
         $time_constraint1 = $this->createMock(TimeConstraint::class);
 
-        $time_constraint1->method('getIntervals')->willReturn([
-            createTimeInterval(1, 2)
+        $time_constraint1->method('getPeriods')->willReturn([
+            createTimePeriod(1, 2)
         ]);
 
         $and_time_constraint = new AndTimeConstraint([$time_constraint1]);
 
-        $intervals = $and_time_constraint->getIntervals(createDateTime(0), createDateTime(2));
+        $periods = $and_time_constraint->getPeriods(createDateTime(0), createDateTime(2));
 
         $this->assertEquals([
-            createTimeInterval(1, 2)
-        ], $intervals);
+            createTimePeriod(1, 2)
+        ], $periods);
     }
 
-    public function testGetIntervals()
+    public function testGetPeriods()
     {
         $time_constraint1 = $this->createMock(TimeConstraint::class);
         $time_constraint2 = $this->createMock(TimeConstraint::class);
         $time_constraint3 = $this->createMock(TimeConstraint::class);
 
-        $time_constraint1->method('getIntervals')->willReturn([
-            createTimeInterval(1, 4),
+        $time_constraint1->method('getPeriods')->willReturn([
+            createTimePeriod(1, 4),
         ]);
 
-        $time_constraint2->method('getIntervals')->willReturn([
-            createTimeInterval(2, 5),
+        $time_constraint2->method('getPeriods')->willReturn([
+            createTimePeriod(2, 5),
         ]);
 
-        $time_constraint3->method('getIntervals')->willReturn([
-            createTimeInterval(3, 6),
+        $time_constraint3->method('getPeriods')->willReturn([
+            createTimePeriod(3, 6),
         ]);
 
         $and_time_constraint = new AndTimeConstraint([$time_constraint1, $time_constraint2, $time_constraint3]);
 
-        $intervals = $and_time_constraint->getIntervals(createDateTime(1), createDateTime(6));
+        $periods = $and_time_constraint->getPeriods(createDateTime(1), createDateTime(6));
 
         $this->assertEquals([
-            createTimeInterval(3, 4)
-        ], $intervals);
+            createTimePeriod(3, 4)
+        ], $periods);
     }
 }

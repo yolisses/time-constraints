@@ -2,7 +2,7 @@
 
 namespace Yolisses\TimeConstraints;
 
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class BeforeTimeConstraint extends TimeConstraint
 {
@@ -10,7 +10,7 @@ class BeforeTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
         //     s   e   
         //   i
@@ -26,7 +26,7 @@ class BeforeTimeConstraint extends TimeConstraint
         //     s   e   
         //           i
         // ██████████
-        $intervals = [new TimeInterval($start_instant, $this->instant)];
-        return $this->clampIntervals($intervals, $start_instant, $end_instant);
+        $periods = [new TimePeriod($start_instant, $this->instant)];
+        return $this->clampPeriods($periods, $start_instant, $end_instant);
     }
 }

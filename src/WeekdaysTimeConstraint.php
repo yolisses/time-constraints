@@ -1,7 +1,7 @@
 <?php
 namespace Yolisses\TimeConstraints;
 
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class WeekdaysTimeConstraint extends TimeConstraint
 {
@@ -11,9 +11,9 @@ class WeekdaysTimeConstraint extends TimeConstraint
         return $weekDay == 6 || $weekDay == 7;
     }
 
-    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
-        $intervals = [];
+        $periods = [];
         $current_instant = clone $start_instant;
 
         if (self::getIsWeekend($current_instant)) {
@@ -22,13 +22,13 @@ class WeekdaysTimeConstraint extends TimeConstraint
 
         while ($current_instant < $end_instant) {
             $next_saturday = $current_instant->modify('next saturday');
-            $interval_end = min($next_saturday, $end_instant);
-            $interval = new TimeInterval($current_instant, $interval_end);
-            $intervals[] = $interval;
+            $period_end = min($next_saturday, $end_instant);
+            $period = new TimePeriod($current_instant, $period_end);
+            $periods[] = $period;
 
             $current_instant = $next_saturday->modify('next monday');
         }
 
-        return $intervals;
+        return $periods;
     }
 }

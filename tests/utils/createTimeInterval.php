@@ -2,11 +2,11 @@
 
 require_once __DIR__ . '/createDateTime.php';
 
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
-function createTimeInterval(int $time_1, int $time_2): TimeInterval
+function createTimePeriod(int $time_1, int $time_2): TimePeriod
 {
-    return new TimeInterval(
+    return new TimePeriod(
         createDateTime($time_1),
         createDateTime($time_2),
     );

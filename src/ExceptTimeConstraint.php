@@ -3,7 +3,7 @@
 namespace Yolisses\TimeConstraints;
 
 use Yolisses\TimeConstraints\TimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeIntervalOperations;
+use Yolisses\TimeConstraints\Period\TimePeriodOperations;
 
 /**
  * Apply a difference operation between time constraints A and B.
@@ -19,12 +19,12 @@ class ExceptTimeConstraint extends TimeConstraint
     ) {
     }
 
-    public function getIntervals(
+    public function getPeriods(
         \DateTimeImmutable $start_instant,
         \DateTimeImmutable $end_instant
     ): array {
-        $intervals_a = $this->time_constraint_a->getIntervals($start_instant, $end_instant);
-        $intervals_b = $this->time_constraint_b->getIntervals($start_instant, $end_instant);
-        return TimeIntervalOperations::difference($intervals_a, $intervals_b);
+        $periods_a = $this->time_constraint_a->getPeriods($start_instant, $end_instant);
+        $periods_b = $this->time_constraint_b->getPeriods($start_instant, $end_instant);
+        return TimePeriodOperations::difference($periods_a, $periods_b);
     }
 }

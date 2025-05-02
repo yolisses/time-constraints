@@ -2,23 +2,23 @@
 
 namespace Yolisses\TimeConstraints;
 
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
-class SingleIntervalTimeConstraint extends TimeConstraint
+class SinglePeriodTimeConstraint extends TimeConstraint
 {
-    public function __construct(public TimeInterval $time_interval)
+    public function __construct(public TimePeriod $time_period)
     {
     }
 
     public static function fromStrings(string $start_instant, string $end_instant): self
     {
-        return new self(TimeInterval::fromStrings($start_instant, $end_instant));
+        return new self(TimePeriod::fromStrings($start_instant, $end_instant));
     }
 
-    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
-        $intervals = [$this->time_interval];
+        $periods = [$this->time_period];
 
-        return $this->clampIntervals($intervals, $start_instant, $end_instant);
+        return $this->clampPeriods($periods, $start_instant, $end_instant);
     }
 }

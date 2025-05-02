@@ -3,19 +3,19 @@
 namespace Yolisses\TimeConstraints;
 
 use Yolisses\TimeConstraints\TimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
-class MultipleIntervalsTimeConstraint extends TimeConstraint
+class MultiplePeriodsTimeConstraint extends TimeConstraint
 {
     /**
-     * @param TimeInterval[] $time_intervals
+     * @param TimePeriod[] $time_periods
      */
-    public function __construct(public array $time_intervals)
+    public function __construct(public array $time_periods)
     {
     }
 
-    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
-        return $this->clampIntervals($this->time_intervals, $start_instant, $end_instant);
+        return $this->clampPeriods($this->time_periods, $start_instant, $end_instant);
     }
 }

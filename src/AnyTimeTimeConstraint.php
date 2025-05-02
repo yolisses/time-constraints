@@ -2,7 +2,7 @@
 
 namespace Yolisses\TimeConstraints;
 
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class AnyTimeTimeConstraint extends TimeConstraint
 {
@@ -10,8 +10,8 @@ class AnyTimeTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getIntervals(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
+    public function getPeriods(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant): array
     {
-        return [new TimeInterval(clone $start_instant, clone $end_instant),];
+        return [new TimePeriod(clone $start_instant, clone $end_instant),];
     }
 }

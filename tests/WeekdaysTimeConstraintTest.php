@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\WeekdaysTimeConstraint;
-use Yolisses\TimeConstraints\Interval\TimeInterval;
+use Yolisses\TimeConstraints\Period\TimePeriod;
 
 class WeekdaysTimeConstraintTest extends TestCase
 {
@@ -18,61 +18,61 @@ class WeekdaysTimeConstraintTest extends TestCase
         $this->assertFalse(WeekdaysTimeConstraint::getIsWeekend(new DateTimeImmutable('2025-01-07'))); // Tuesday
     }
 
-    function testGetIntervals()
+    function testGetPeriods()
     {
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-01T02:03:04'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-30T05:06:07'); // Thursday
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
         $this->assertEquals([
-            TimeInterval::fromStrings('2025-01-01T02:03:04', '2025-01-04'),
-            TimeInterval::fromStrings('2025-01-06', '2025-01-11'),
-            TimeInterval::fromStrings('2025-01-13', '2025-01-18'),
-            TimeInterval::fromStrings('2025-01-20', '2025-01-25'),
-            TimeInterval::fromStrings('2025-01-27', '2025-01-30T05:06:07'),
-        ], $intervals);
+            TimePeriod::fromStrings('2025-01-01T02:03:04', '2025-01-04'),
+            TimePeriod::fromStrings('2025-01-06', '2025-01-11'),
+            TimePeriod::fromStrings('2025-01-13', '2025-01-18'),
+            TimePeriod::fromStrings('2025-01-20', '2025-01-25'),
+            TimePeriod::fromStrings('2025-01-27', '2025-01-30T05:06:07'),
+        ], $periods);
     }
 
-    function testGetIntervalsStartingAtWeekend()
+    function testGetPeriodsStartingAtWeekend()
     {
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-04T02:03:04'); // Saturday
         $end_instant = new DateTimeImmutable('2025-01-30T05:06:07'); // Thursday
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
         $this->assertEquals([
-            TimeInterval::fromStrings('2025-01-06', '2025-01-11'),
-            TimeInterval::fromStrings('2025-01-13', '2025-01-18'),
-            TimeInterval::fromStrings('2025-01-20', '2025-01-25'),
-            TimeInterval::fromStrings('2025-01-27', '2025-01-30T05:06:07'),
-        ], $intervals);
+            TimePeriod::fromStrings('2025-01-06', '2025-01-11'),
+            TimePeriod::fromStrings('2025-01-13', '2025-01-18'),
+            TimePeriod::fromStrings('2025-01-20', '2025-01-25'),
+            TimePeriod::fromStrings('2025-01-27', '2025-01-30T05:06:07'),
+        ], $periods);
     }
 
-    function testGetIntervalsEndingAtWeekend()
+    function testGetPeriodsEndingAtWeekend()
     {
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-01T02:03:04'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-05T05:06:07'); // Sunday
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
         $this->assertEquals([
-            TimeInterval::fromStrings('2025-01-01T02:03:04', '2025-01-04'),
-        ], $intervals);
+            TimePeriod::fromStrings('2025-01-01T02:03:04', '2025-01-04'),
+        ], $periods);
     }
 
-    function testGetIntervalsEmpty()
+    function testGetPeriodsEmpty()
     {
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-01T02:03:04'); // Wednesday
         $end_instant = new DateTimeImmutable('2025-01-01T02:03:04'); // Wednesday
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
-        $this->assertEquals([], $intervals);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $this->assertEquals([], $periods);
     }
 
-    function testGetIntervalsEmptyAtWeekend()
+    function testGetPeriodsEmptyAtWeekend()
     {
         $constraint = new WeekdaysTimeConstraint();
         $start_instant = new DateTimeImmutable('2025-01-04T02:03:04'); // Saturday
         $end_instant = new DateTimeImmutable('2025-01-05T05:06:07'); // Sunday
-        $intervals = $constraint->getIntervals($start_instant, $end_instant);
-        $this->assertEquals([], $intervals);
+        $periods = $constraint->getPeriods($start_instant, $end_instant);
+        $this->assertEquals([], $periods);
     }
 }
