@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\AndTimeConstraint;
-use Yolisses\TimeConstraints\Constraint\TimeConstraint;
+use Yolisses\TimeConstraints\AndTimeConstraint;
+use Yolisses\TimeConstraints\TimeConstraint;
 
 require_once __DIR__ . '/../utils/createDateTime.php';
 require_once __DIR__ . '/../utils/createTimeInterval.php';

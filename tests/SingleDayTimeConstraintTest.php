@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\SingleDayTimeConstraint;
+use Yolisses\TimeConstraints\SingleDayTimeConstraint;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class SingleDayTimeConstraintTest extends TestCase

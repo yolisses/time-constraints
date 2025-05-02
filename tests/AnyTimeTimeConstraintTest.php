@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\AnyTimeTimeConstraint;
-use Yolisses\TimeConstraints\Constraint\SingleDayTimeConstraint;
+use Yolisses\TimeConstraints\AnyTimeTimeConstraint;
+use Yolisses\TimeConstraints\SingleDayTimeConstraint;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class AnyTimeTimeConstraintTest extends TestCase

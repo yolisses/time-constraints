@@ -1,6 +1,6 @@
 <?php
 
-use Yolisses\TimeConstraints\Constraint\SingleIntervalTimeConstraint;
+use Yolisses\TimeConstraints\SingleIntervalTimeConstraint;
 
 require_once __DIR__ . '/createTimeInterval.php';
 

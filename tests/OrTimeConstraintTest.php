@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\OrTimeConstraint;
-use Yolisses\TimeConstraints\Constraint\TimeConstraint;
+use Yolisses\TimeConstraints\OrTimeConstraint;
+use Yolisses\TimeConstraints\TimeConstraint;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class OrTimeConstraintTest extends TestCase

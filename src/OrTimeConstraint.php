@@ -1,8 +1,8 @@
 <?php
 
-namespace Yolisses\TimeConstraints\Constraint;
+namespace Yolisses\TimeConstraints;
 
-use Yolisses\TimeConstraints\Constraint\TimeConstraint;
+use Yolisses\TimeConstraints\TimeConstraint;
 use Yolisses\TimeConstraints\Interval\TimeIntervalOperations;
 
 /**

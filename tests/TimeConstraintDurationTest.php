@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\TimeConstraint;
+use Yolisses\TimeConstraints\TimeConstraint;
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 
 class TimeConstraintDurationTest extends TestCase

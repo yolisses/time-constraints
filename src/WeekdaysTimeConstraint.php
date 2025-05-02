@@ -1,5 +1,5 @@
 <?php
-namespace Yolisses\TimeConstraints\Constraint;
+namespace Yolisses\TimeConstraints;
 
 use Yolisses\TimeConstraints\Interval\TimeInterval;
 

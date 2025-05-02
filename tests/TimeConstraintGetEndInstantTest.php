@@ -1,9 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\OrTimeConstraint;
-use Yolisses\TimeConstraints\Constraint\SingleIntervalTimeConstraint;
-use Yolisses\TimeConstraints\Constraint\TimeOfDayTimeConstraint;
+use Yolisses\TimeConstraints\OrTimeConstraint;
+use Yolisses\TimeConstraints\SingleIntervalTimeConstraint;
+use Yolisses\TimeConstraints\TimeOfDayTimeConstraint;
 
 class TimeConstraintGetEndInstantTest extends TestCase
 {

@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\Constraint\OrTimeConstraint;
+use Yolisses\TimeConstraints\OrTimeConstraint;
 
 require_once __DIR__ . '/../utils/createDateTime.php';
 require_once __DIR__ . '/../utils/createDuration.php';
