@@ -64,7 +64,9 @@ class DaysOfWeekTimeConstraintTest extends TestCase
         $this->assertEquals(new Sequence(
             Period::fromDate('2025-01-01 08:00:00', '2025-01-02 00:00:00'), // Wednesday
             Period::fromDate('2025-01-03 00:00:00', '2025-01-04 00:00:00'), // Friday
-            Period::fromDate('2025-01-06 00:00:00', '2025-01-09 00:00:00'), // Monday, Tuesday, Wednesday
+            Period::fromDate('2025-01-06 00:00:00', '2025-01-07 00:00:00'), // Monday
+            Period::fromDate('2025-01-07 00:00:00', '2025-01-08 00:00:00'), // Tuesday
+            Period::fromDate('2025-01-08 00:00:00', '2025-01-09 00:00:00'), // Wednesday
             Period::fromDate('2025-01-10 00:00:00', '2025-01-10 17:00:00'), // Friday
         ), $sequence);
     }
