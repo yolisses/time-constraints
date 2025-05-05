@@ -22,21 +22,24 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
     {
         $periods = [];
 
-        $current_instant = $start_instant->setTime(0, 0, 0);
+        $currentDate = $clampPeriod->startDate->setTime(0, 0, 0);
 
-        while ($current_instant < $end_instant) {
-            $current_day_of_week = (int) $current_instant->format('w');
+        while ($currentDate < $clampPeriod->endDate) {
+            $currentDayOfWeek = (int) $currentDate->format('w');
 
-            if (in_array($current_day_of_week, $this->days_of_week)) {
-                $period_start = clone $current_instant;
-                $period_end = clone $current_instant;
-                $period_end = $period_end->modify('+1 day');
+            if (in_array($currentDayOfWeek, $this->days_of_week)) {
+                $startDate = clone $currentDate;
+                $endDate = clone $currentDate;
+                $endDate = $endDate->modify('+1 day');
 
-                $periods[] = new TimePeriod($period_start, $period_end);
+                $periods[] = Period::fromDate($startDate, $endDate);
             }
 
-            $current_instant = $current_instant->modify('+1 day');
+            $currentDate = $currentDate->modify('+1 day');
         }
+
+        var_dump($periods);
+        $sequence = new Sequence(...$periods);
 
         return $this->clampSequence($sequence, $clampPeriod);
     }
