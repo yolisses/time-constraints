@@ -1,36 +1,38 @@
 <?php
 
+use League\Period\Period;
+use League\Period\Sequence;
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\OrTimeConstraint;
 use Yolisses\TimeConstraints\TimeConstraint;
 
 class OrTimeConstraintTest extends TestCase
 {
-    public function testGetPeriods()
+    public function testGetSequence()
     {
         $time_constraint1 = $this->createMock(TimeConstraint::class);
         $time_constraint2 = $this->createMock(TimeConstraint::class);
         $time_constraint3 = $this->createMock(TimeConstraint::class);
 
-        $time_constraint1->method('getPeriods')->willReturn([
-            TimePeriod::fromStrings('2021-01-01 00:00:00', '2021-01-01 01:00:00')
-        ]);
+        $time_constraint1->method('getSequence')->willReturn(new Sequence(
+            Period::fromDate('2021-01-01', '2021-01-03')
+        ));
 
-        $time_constraint2->method('getPeriods')->willReturn([
-            TimePeriod::fromStrings('2021-01-01 00:30:00', '2021-01-01 01:30:00')
-        ]);
+        $time_constraint2->method('getSequence')->willReturn(new Sequence(
+            Period::fromDate('2021-01-02', '2021-01-04')
+        ));
 
-        $time_constraint3->method('getPeriods')->willReturn([
-            TimePeriod::fromStrings('2021-01-01 01:45:00', '2021-01-01 02:00:00')
-        ]);
+        $time_constraint3->method('getSequence')->willReturn(new Sequence(
+            Period::fromDate('2021-01-05', '2021-01-06')
+        ));
 
-        $and_time_constraint = new OrTimeConstraint([$time_constraint1, $time_constraint2, $time_constraint3]);
+        $or_time_constraint = new OrTimeConstraint([$time_constraint1, $time_constraint2, $time_constraint3]);
 
-        $periods = $and_time_constraint->getSequence(new DateTimeImmutable('2021-01-01 00:00:00'), new DateTimeImmutable('2021-01-01 02:00:00'));
+        $periods = $or_time_constraint->getSequence(Period::fromDate('2021-01-01', '2021-01-06'));
 
-        $this->assertEquals([
-            TimePeriod::fromStrings('2021-01-01 00:00:00', '2021-01-01 01:30:00'),
-            TimePeriod::fromStrings('2021-01-01 01:45:00', '2021-01-01 02:00:00')
-        ], $periods);
+        $this->assertEquals(new Sequence(
+            Period::fromDate('2021-01-01', '2021-01-04'),
+            Period::fromDate('2021-01-05', '2021-01-06')
+        ), $periods);
     }
 }

@@ -24,9 +24,12 @@ class OrTimeConstraint extends TimeConstraint
         $periods = [];
 
         foreach ($this->time_constraints as $time_constraint) {
-            $periods = array_merge($periods, $time_constraint->getSequence($start_instant, $end_instant));
+            $newSequence = $time_constraint->getSequence($clampPeriod);
+            foreach ($newSequence as $period) {
+                $periods[] = $period;
+            }
         }
 
-        return TimePeriodOperations::union($periods);
+        return (new Sequence(...$periods))->unions();
     }
 }
