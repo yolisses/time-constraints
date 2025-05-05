@@ -22,7 +22,7 @@ class AndTimeConstraintTest extends TestCase
         $time_constraint1 = $this->createMock(TimeConstraint::class);
 
         $time_constraint1->method('getPeriods')->willReturn([
-            createTimePeriod(1, 2)
+            createPeriod(1, 2)
         ]);
 
         $and_time_constraint = new AndTimeConstraint([$time_constraint1]);
@@ -30,7 +30,7 @@ class AndTimeConstraintTest extends TestCase
         $periods = $and_time_constraint->getSequence(createDateTime(0), createDateTime(2));
 
         $this->assertEquals([
-            createTimePeriod(1, 2)
+            createPeriod(1, 2)
         ], $periods);
     }
 
@@ -41,15 +41,15 @@ class AndTimeConstraintTest extends TestCase
         $time_constraint3 = $this->createMock(TimeConstraint::class);
 
         $time_constraint1->method('getPeriods')->willReturn([
-            createTimePeriod(1, 4),
+            createPeriod(1, 4),
         ]);
 
         $time_constraint2->method('getPeriods')->willReturn([
-            createTimePeriod(2, 5),
+            createPeriod(2, 5),
         ]);
 
         $time_constraint3->method('getPeriods')->willReturn([
-            createTimePeriod(3, 6),
+            createPeriod(3, 6),
         ]);
 
         $and_time_constraint = new AndTimeConstraint([$time_constraint1, $time_constraint2, $time_constraint3]);
@@ -57,7 +57,7 @@ class AndTimeConstraintTest extends TestCase
         $periods = $and_time_constraint->getSequence(createDateTime(1), createDateTime(6));
 
         $this->assertEquals([
-            createTimePeriod(3, 4)
+            createPeriod(3, 4)
         ], $periods);
     }
 }

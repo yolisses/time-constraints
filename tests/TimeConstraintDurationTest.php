@@ -1,5 +1,7 @@
 <?php
 
+use League\Period\Period;
+use League\Period\Sequence;
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\TimeConstraint;
 
@@ -8,13 +10,13 @@ class TimeConstraintDurationTest extends TestCase
     public function testGetTotalDuration()
     {
         $time_constraint = new class () extends TimeConstraint {
-            public function getSequence(DateTimeImmutable $start_instant, DateTimeImmutable $end_instant): array
+            public function getSequence(Period $clampPeriod): Sequence
             {
-                return [
-                    TimePeriod::fromStrings('2025-01-01 01:00:00', '2025-01-01 04:00:06'), // 3 hours 6 seconds
-                    TimePeriod::fromStrings('2025-01-02 07:00:00', '2025-01-02 09:04:00'), // 2 hours 4 minutes
-                    TimePeriod::fromStrings('2025-01-03 15:00:00', '2025-01-03 16:00:02'), // 1 hours 2 seconds
-                ];
+                return new Sequence(
+                    Period::fromDate('2025-01-01 01:00:00', '2025-01-01 04:00:06'), // 3 hours 6 seconds
+                    Period::fromDate('2025-01-02 07:00:00', '2025-01-02 09:04:00'), // 2 hours 4 minutes
+                    Period::fromDate('2025-01-03 15:00:00', '2025-01-03 16:00:02'), // 1 hours 2 seconds
+                );
             }
         };
 
