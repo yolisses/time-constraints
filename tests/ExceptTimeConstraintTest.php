@@ -1,69 +1,75 @@
 <?php
 
+use League\Period\Period;
+use League\Period\Sequence;
 use PHPUnit\Framework\TestCase;
 use Yolisses\TimeConstraints\ExceptTimeConstraint;
 use Yolisses\TimeConstraints\TimeConstraint;
 
 require_once __DIR__ . '/utils/createDateTime.php';
+require_once __DIR__ . '/utils/createPeriod.php';
 
 class ExceptTimeConstraintTest extends TestCase
 {
-    public function testGetPeriodsEmpty()
+    public function testgetSequenceEmpty()
     {
-        $time_constraint_1 = $this->createMock(TimeConstraint::class);
-        $time_constraint_2 = $this->createMock(TimeConstraint::class);
+        $timeConstraint1 = $this->createMock(TimeConstraint::class);
+        $timeConstraint2 = $this->createMock(TimeConstraint::class);
 
-        $time_constraint_1->method('getPeriods')->willReturn([]);
-        $time_constraint_2->method('getPeriods')->willReturn([]);
+        $timeConstraint1->method('getSequence')->willReturn(new Sequence());
+        $timeConstraint2->method('getSequence')->willReturn(new Sequence());
 
-        $except_time_constraint = new ExceptTimeConstraint($time_constraint_1, $time_constraint_2);
+        $exceptTimeConstraint = new ExceptTimeConstraint($timeConstraint1, $timeConstraint2);
 
-        $periods = $except_time_constraint->getSequence(createDateTime(1), createDateTime(2));
+        $clampPeriod = Period::fromDate(createDateTime(1), createDateTime(2));
+        $periods = $exceptTimeConstraint->getSequence($clampPeriod);
 
-        $this->assertEquals([], $periods);
+        $this->assertEquals(new Sequence(), $periods);
     }
 
-    public function testGetPeriodsWithOneConstraint()
+    public function testgetSequenceWithOneConstraint()
     {
 
-        $time_constraint_1 = $this->createMock(TimeConstraint::class);
-        $time_constraint_2 = $this->createMock(TimeConstraint::class);
+        $timeConstraint1 = $this->createMock(TimeConstraint::class);
+        $timeConstraint2 = $this->createMock(TimeConstraint::class);
 
-        $time_constraint_1->method('getPeriods')->willReturn([
+        $timeConstraint1->method('getSequence')->willReturn(new Sequence(
             createPeriod(1, 2)
-        ]);
-        $time_constraint_2->method('getPeriods')->willReturn([]);
+        ));
+        $timeConstraint2->method('getSequence')->willReturn(new Sequence());
 
-        $except_time_constraint = new ExceptTimeConstraint($time_constraint_1, $time_constraint_2);
+        $exceptTimeConstraint = new ExceptTimeConstraint($timeConstraint1, $timeConstraint2);
 
-        $periods = $except_time_constraint->getSequence(createDateTime(0), createDateTime(2));
+        $clampPeriod = Period::fromDate(createDateTime(0), createDateTime(2));
+        $periods = $exceptTimeConstraint->getSequence($clampPeriod);
 
-        $this->assertEquals([
+        $this->assertEquals(new Sequence(
             createPeriod(1, 2)
-        ], $periods);
+        ), $periods);
     }
 
-    public function testGetPeriods()
+    public function testgetSequence()
     {
-        $time_constraint_1 = $this->createMock(TimeConstraint::class);
-        $time_constraint_2 = $this->createMock(TimeConstraint::class);
+        $timeConstraint1 = $this->createMock(TimeConstraint::class);
+        $timeConstraint2 = $this->createMock(TimeConstraint::class);
 
-        $time_constraint_1->method('getPeriods')->willReturn([
+        $timeConstraint1->method('getSequence')->willReturn(new Sequence(
             createPeriod(1, 3),
             createPeriod(5, 6),
-        ]);
+        ));
 
-        $time_constraint_2->method('getPeriods')->willReturn([
+        $timeConstraint2->method('getSequence')->willReturn(new Sequence(
             createPeriod(2, 4),
-        ]);
+        ));
 
-        $except_time_constraint = new ExceptTimeConstraint($time_constraint_1, $time_constraint_2);
+        $exceptTimeConstraint = new ExceptTimeConstraint($timeConstraint1, $timeConstraint2);
 
-        $periods = $except_time_constraint->getSequence(createDateTime(1), createDateTime(6));
+        $clampPeriod = Period::fromDate(createDateTime(1), createDateTime(6));
+        $periods = $exceptTimeConstraint->getSequence($clampPeriod);
 
-        $this->assertEquals([
+        $this->assertEquals(new Sequence(
             createPeriod(1, 2),
             createPeriod(5, 6),
-        ], $periods);
+        ), $periods);
     }
 }
