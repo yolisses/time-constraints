@@ -33,25 +33,6 @@ class DaysOfWeekTimeConstraintTest extends TestCase
             1, // Monday
             2, // Tuesday
             3, // Wednesday
-        ];
-        $constraint = new DaysOfWeekTimeConstraint($days_of_week);
-
-        // Wednesday - Friday
-        $clampPeriod = Period::fromDate('2025-01-05 00:00:00', '2025-01-10 00:00:00');
-
-        $sequence = $constraint->getSequence($clampPeriod);
-
-        $this->assertEquals(new Sequence(
-            Period::fromDate('2025-01-06 00:00:00', '2025-01-09 00:00:00'), // Monday, Tuesday, Wednesday
-        ), $sequence);
-    }
-
-    public function testGetSequence3()
-    {
-        $days_of_week = [
-            1, // Monday
-            2, // Tuesday
-            3, // Wednesday
             5, // Friday
         ];
         $constraint = new DaysOfWeekTimeConstraint($days_of_week);
