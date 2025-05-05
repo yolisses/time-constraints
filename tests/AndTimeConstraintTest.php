@@ -1,63 +1,58 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\AndTimeConstraint;
-use Yolisses\TimeConstraints\TimeConstraint;
+namespace Yolisses\TimeConstraints;
 
-require_once __DIR__ . '/utils/createDateTime.php';
+use League\Period\Period;
+use League\Period\Sequence;
+use PHPUnit\Framework\TestCase;
 
 class AndTimeConstraintTest extends TestCase
 {
-    public function testGetPeriodsEmpty()
+    public function testGetSequenceWithEmptyConstraints()
     {
-        $and_time_constraint = new AndTimeConstraint([]);
-
-        $periods = $and_time_constraint->getSequence(createDateTime(1), createDateTime(2));
-
-        $this->assertEquals([], $periods);
+        $constraint = new AndTimeConstraint([]);
+        $clampPeriod = Period::fromDate('2025-01-01', '2025-01-02');
+        $this->assertEquals(new Sequence(), $constraint->getSequence($clampPeriod));
     }
 
-    public function testGetPeriodsWithOneConstraint()
+    public function testGetSequenceWithSingleConstraint()
     {
-        $time_constraint1 = $this->createMock(TimeConstraint::class);
+        $mockConstraint = $this->createMock(TimeConstraint::class);
+        $mockConstraint->method('getSequence')->willReturn(
+            new Sequence(Period::fromDate('2025-01-01', '2025-01-02'))
+        );
 
-        $time_constraint1->method('getPeriods')->willReturn([
-            createPeriod(1, 2)
-        ]);
+        $constraint = new AndTimeConstraint([$mockConstraint]);
+        $clampPeriod = Period::fromDate('2025-01-01', '2025-01-02');
 
-        $and_time_constraint = new AndTimeConstraint([$time_constraint1]);
-
-        $periods = $and_time_constraint->getSequence(createDateTime(0), createDateTime(2));
-
-        $this->assertEquals([
-            createPeriod(1, 2)
-        ], $periods);
+        $this->assertEquals(
+            new Sequence(Period::fromDate('2025-01-01', '2025-01-02')),
+            $constraint->getSequence($clampPeriod)
+        );
     }
 
-    public function testGetPeriods()
+    public function testGetSequenceWithMultipleConstraints()
     {
-        $time_constraint1 = $this->createMock(TimeConstraint::class);
-        $time_constraint2 = $this->createMock(TimeConstraint::class);
-        $time_constraint3 = $this->createMock(TimeConstraint::class);
+        $mockConstraint1 = $this->createMock(TimeConstraint::class);
+        $mockConstraint1->method('getSequence')->willReturn(
+            new Sequence(Period::fromDate('2025-01-01', '2025-01-04'))
+        );
 
-        $time_constraint1->method('getPeriods')->willReturn([
-            createPeriod(1, 4),
-        ]);
+        $mockConstraint2 = $this->createMock(TimeConstraint::class);
+        $mockConstraint2->method('getSequence')->willReturn(
+            new Sequence(Period::fromDate('2025-01-02', '2025-01-05'))
+        );
 
-        $time_constraint2->method('getPeriods')->willReturn([
-            createPeriod(2, 5),
-        ]);
+        $mockConstraint3 = $this->createMock(TimeConstraint::class);
+        $mockConstraint3->method('getSequence')->willReturn(
+            new Sequence(Period::fromDate('2025-01-03', '2025-01-06'))
+        );
 
-        $time_constraint3->method('getPeriods')->willReturn([
-            createPeriod(3, 6),
-        ]);
+        $constraint = new AndTimeConstraint([$mockConstraint1, $mockConstraint2, $mockConstraint3]);
+        $clampPeriod = Period::fromDate('2025-01-01', '2025-01-06');
 
-        $and_time_constraint = new AndTimeConstraint([$time_constraint1, $time_constraint2, $time_constraint3]);
-
-        $periods = $and_time_constraint->getSequence(createDateTime(1), createDateTime(6));
-
-        $this->assertEquals([
-            createPeriod(3, 4)
-        ], $periods);
+        $this->assertEquals(new Sequence(
+            Period::fromDate('2025-01-03', '2025-01-04'),
+        ), $constraint->getSequence($clampPeriod));
     }
 }

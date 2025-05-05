@@ -5,7 +5,6 @@ namespace Yolisses\TimeConstraints;
 use League\Period\Period;
 use League\Period\Sequence;
 use Yolisses\TimeConstraints\TimeConstraint;
-use Yolisses\TimeConstraints\Period\TimePeriodOperations;
 
 /**
  * Apply a logical AND between time constraints.
@@ -21,19 +20,9 @@ class AndTimeConstraint extends TimeConstraint
 
     public function getSequence(Period $clampPeriod): Sequence
     {
-        if (empty($this->time_constraints)) {
-            return [];
-        }
-
-        $periods = $this->time_constraints[0]->getSequence($start_instant, $end_instant);
-
-        foreach ($this->time_constraints as $time_constraint) {
-            $periods = TimePeriodOperations::intersection(
-                $periods,
-                $time_constraint->getSequence($start_instant, $end_instant)
-            );
-        }
-
-        return $periods;
+        $sequences = array_map(function (TimeConstraint $timeConstraint) use ($clampPeriod) {
+            return $timeConstraint->getSequence($clampPeriod);
+        }, $this->time_constraints);
+        return SequencesUnion::union($sequences);
     }
 }
