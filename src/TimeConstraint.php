@@ -47,18 +47,6 @@ abstract class TimeConstraint
         return new Sequence(...$intersectingPeriods);
     }
 
-    public function getTotalDuration(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
-    {
-        $periods = $this->getSequence($start_instant, $end_instant);
-
-        $total_duration = 0;
-        foreach ($periods as $period) {
-            $total_duration += $period->timeDuration();
-        }
-
-        return $total_duration;
-    }
-
     public function getPeriodsAllowingReverse(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
     {
         $is_duration_negative = $end_instant < $start_instant;
