@@ -25,7 +25,8 @@ abstract class TimeConstraint
     // and override getSequence to simply return them.
 
     /**
-     * Returns the periods that satisfy the constraint between the given instants.
+     * Returns the periods that satisfy the constraint between the given
+     * instants.
      */
     abstract public function getSequence(Period $clampPeriod): Sequence;
 
@@ -52,7 +53,7 @@ abstract class TimeConstraint
 
         $total_duration = 0;
         foreach ($periods as $period) {
-            $total_duration += $period->getDuration();
+            $total_duration += $period->timeDuration();
         }
 
         return $total_duration;
@@ -101,12 +102,12 @@ abstract class TimeConstraint
 
             // Iterates over periods
             foreach ($periods as $period) {
-                if ($period->getStart() <= $start_instant && $start_instant <= $period->getEnd()) {
+                if ($period->startDate <= $start_instant && $start_instant <= $period->endDate) {
                     return $start_instant;
-                } else if ($period->getStart() > $start_instant) {
-                    return $period->getStart();
-                } else if ($period->getEnd() < $start_instant) {
-                    return $period->getEnd();
+                } else if ($period->startDate > $start_instant) {
+                    return $period->startDate;
+                } else if ($period->endDate < $start_instant) {
+                    return $period->endDate;
                 }
             }
 
@@ -133,8 +134,8 @@ abstract class TimeConstraint
      * @param int $max_iterations
      * @param null|int $search_period_duration The duration in seconds used in
      * the search period. This can be increased to deal with time constraints
-     * that return more sparse periods. The default value is  `2 * $duration`
-     * if on_zero_duration is THROW_EXCEPTION, and 1 day if on_zero_duration is
+     * that return more sparse periods. The default value is  `2 * $duration` if
+     * on_zero_duration is THROW_EXCEPTION, and 1 day if on_zero_duration is
      * GET_CLOSEST_PAST or GET_CLOSEST_FUTURE.
      * @param OnZeroDuration $on_zero_duration What to do if the duration is 0.
      * @throws \Exception
@@ -178,15 +179,15 @@ abstract class TimeConstraint
 
             // Iterates over periods
             foreach ($periods as $period) {
-                if ($cumulative_duration + $period->getDuration() < abs($duration)) {
-                    $cumulative_duration += $period->getDuration();
+                if ($cumulative_duration + $period->timeDuration() < abs($duration)) {
+                    $cumulative_duration += $period->timeDuration();
                 } else {
                     $remaining_duration = abs($duration) - $cumulative_duration;
                     if ($is_duration_negative) {
                         $negative_remaining_duration = -$remaining_duration;
-                        return $period->getEnd()->modify("$negative_remaining_duration seconds");
+                        return $period->endDate->modify("$negative_remaining_duration seconds");
                     } else {
-                        return $period->getStart()->modify("$remaining_duration seconds");
+                        return $period->startDate->modify("$remaining_duration seconds");
                     }
 
                 }
