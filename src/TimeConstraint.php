@@ -50,8 +50,6 @@ abstract class TimeConstraint
         return new Sequence(...$intersectingPeriods);
     }
 
-
-
     private function getPeriodsForward(\DateTimeImmutable $searchStart, \DateTimeImmutable $searchEnd)
     {
         $searchPeriod = Period::fromDate($searchStart, $searchEnd, Bounds::IncludeStartExcludeEnd);
@@ -107,7 +105,7 @@ abstract class TimeConstraint
     public function getClosestDate(
         \DateTimeImmutable $targetDate,
         int $searchPeriodDuration,
-        int $max_iterations = 1000,
+        int $maxIterations = 1000,
     ): \DateTimeImmutable {
         if ($searchPeriodDuration == 0) {
             throw new InvalidArgumentException();
@@ -116,7 +114,7 @@ abstract class TimeConstraint
         $iterations = 0;
         $searchStart = $targetDate;
         $isReversed = $searchPeriodDuration < 0;
-        while ($iterations < $max_iterations) {
+        while ($iterations < $maxIterations) {
             $searchEnd = $searchStart->modify("{$searchPeriodDuration} seconds");
 
             if ($isReversed) {
@@ -147,74 +145,73 @@ abstract class TimeConstraint
      * the start instant. In this case, the search period duration must be
      * negative.
      *
-     * @param \DateTimeImmutable $start_instant
+     * @param \DateTimeImmutable $startDate
      * @param int $duration The duration in seconds.
-     * @param int $max_iterations
-     * @param null|int $search_period_duration The duration in seconds used in
+     * @param int $maxIterations
+     * @param null|int $searchPeriodDuration The duration in seconds used in
      * the search period. This can be increased to deal with time constraints
      * that return more sparse periods. The default value is  `2 * $duration` if
-     * on_zero_duration is THROW_EXCEPTION, and 1 day if on_zero_duration is
+     * onZeroDuration is THROW_EXCEPTION, and 1 day if onZeroDuration is
      * GET_CLOSEST_PAST or GET_CLOSEST_FUTURE.
-     * @param OnZeroDuration $on_zero_duration What to do if the duration is 0.
+     * @param OnZeroDuration $onZeroDuration What to do if the duration is 0.
      * @throws \Exception
      * @return \DateTimeImmutable
      */
     public function getEndInstant(
-        \DateTimeImmutable $start_instant,
+        \DateTimeImmutable $startDate,
         int $duration,
-        int $max_iterations = 1000,
-        null|int $search_period_duration = null,
-        OnZeroDuration $on_zero_duration = OnZeroDuration::THROW_EXCEPTION,
+        int $maxIterations = 1000,
+        null|int $searchPeriodDuration = null,
+        OnZeroDuration $onZeroDuration = OnZeroDuration::THROW_EXCEPTION,
     ) {
         if ($duration == 0) {
             $one_day_in_seconds = 24 * 60 * 60;
-            if ($on_zero_duration === OnZeroDuration::THROW_EXCEPTION) {
+            if ($onZeroDuration === OnZeroDuration::THROW_EXCEPTION) {
                 throw new \Exception("Duration must be different from 0");
-            } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_PAST) {
-                return $this->getClosestDate($start_instant, -$one_day_in_seconds, $max_iterations);
-            } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_FUTURE) {
-                return $this->getClosestDate($start_instant, $one_day_in_seconds, $max_iterations);
+            } else if ($onZeroDuration === OnZeroDuration::GET_CLOSEST_PAST) {
+                return $this->getClosestDate($startDate, -$one_day_in_seconds, $maxIterations);
+            } else if ($onZeroDuration === OnZeroDuration::GET_CLOSEST_FUTURE) {
+                return $this->getClosestDate($startDate, $one_day_in_seconds, $maxIterations);
             }
         }
 
-        $is_duration_negative = $duration < 0;
+        $durationIsNegative = $duration < 0;
 
-        if ($is_duration_negative && $search_period_duration > 0) {
-            throw new \Exception("search_period_duration must be negative if duration is negative");
+        if ($durationIsNegative && $searchPeriodDuration > 0) {
+            throw new \Exception("searchPeriodDuration must be negative if duration is negative");
         }
 
-        if (empty($search_period_duration)) {
-            $search_period_duration = $duration * 2;
+        if (empty($searchPeriodDuration)) {
+            $searchPeriodDuration = $duration * 2;
         }
 
-        $search_start_instant = $start_instant;
-        $search_end_instant = $start_instant->modify("$search_period_duration seconds");
+        $searchStart = $startDate;
+        $searchEnd = $startDate->modify("$searchPeriodDuration seconds");
 
-
-        $cumulative_duration = 0;
-        for ($i = 0; $i < $max_iterations; $i++) {
-            $periods = $this->getPeriodsAllowingReverse($search_start_instant, $search_end_instant);
+        $cumulativeDuration = 0;
+        for ($i = 0; $i < $maxIterations; $i++) {
+            $periods = $this->getPeriodsAllowingReverse($searchStart, $searchEnd);
 
             // Iterates over periods
             foreach ($periods as $period) {
-                if ($cumulative_duration + $period->timeDuration() < abs($duration)) {
-                    $cumulative_duration += $period->timeDuration();
+                if ($cumulativeDuration + $period->timeDuration() < abs($duration)) {
+                    $cumulativeDuration += $period->timeDuration();
                 } else {
-                    $remaining_duration = abs($duration) - $cumulative_duration;
-                    if ($is_duration_negative) {
-                        $negative_remaining_duration = -$remaining_duration;
-                        return $period->endDate->modify("$negative_remaining_duration seconds");
+                    $remainingDuration = abs($duration) - $cumulativeDuration;
+                    if ($durationIsNegative) {
+                        $negativeRemainingDuration = -$remainingDuration;
+                        return $period->endDate->modify("$negativeRemainingDuration seconds");
                     } else {
-                        return $period->startDate->modify("$remaining_duration seconds");
+                        return $period->startDate->modify("$remainingDuration seconds");
                     }
 
                 }
             }
 
-            $search_start_instant = $search_end_instant;
-            $search_end_instant = $search_end_instant->modify("$search_period_duration seconds");
+            $searchStart = $searchEnd;
+            $searchEnd = $searchEnd->modify("$searchPeriodDuration seconds");
         }
 
-        throw new \Exception("End instant not found with max iterations equals $max_iterations");
+        throw new \Exception("End instant not found with max iterations equals $maxIterations");
     }
 }
