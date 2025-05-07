@@ -51,10 +51,11 @@ abstract class TimeConstraint
     }
 
 
+
     private function getPeriodsForward(\DateTimeImmutable $searchStart, \DateTimeImmutable $searchEnd)
     {
         $searchPeriod = Period::fromDate($searchStart, $searchEnd, Bounds::IncludeStartExcludeEnd);
-        $periods = $this->getSequence($searchPeriod)->toList();
+        $periods = $this->getSequence($searchPeriod)->unions()->toList();
         usort($periods, fn(Period $a, Period $b) => $a->startDate <=> $b->startDate);
         return $periods;
     }
@@ -80,7 +81,7 @@ abstract class TimeConstraint
     private function getPeriodsBackward(\DateTimeImmutable $searchStart, \DateTimeImmutable $searchEnd)
     {
         $searchPeriod = Period::fromDate($searchEnd, $searchStart, Bounds::ExcludeStartIncludeEnd);
-        $periods = $this->getSequence($searchPeriod)->toList();
+        $periods = $this->getSequence($searchPeriod)->unions()->toList();
         usort($periods, fn(Period $a, Period $b) => $b->startDate <=> $a->startDate);
         return $periods;
     }
