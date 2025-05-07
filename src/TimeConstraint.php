@@ -105,8 +105,8 @@ abstract class TimeConstraint
 
         while ($iterations < $max_iterations) {
             // Create a search period starting from currentStart with the given duration
-            $endDate = $currentStart->modify("+{$search_period_duration} seconds");
-            $searchPeriod = Period::fromDate($currentStart, $endDate, Bounds::IncludeAll);
+            $endDate = $currentStart->modify("{$search_period_duration} seconds");
+            $searchPeriod = $this->getSearchPeriod($currentStart, $endDate);
 
             // Get the sequence of periods that satisfy the constraint within the search period
             $sequence = $this->getSequence($searchPeriod);
@@ -127,7 +127,7 @@ abstract class TimeConstraint
             }
 
             // Move the search period forward by search_period_duration
-            $currentStart = $currentStart->modify("+{$search_period_duration} seconds");
+            $currentStart = $currentStart->modify("{$search_period_duration} seconds");
             $iterations++;
         }
 
