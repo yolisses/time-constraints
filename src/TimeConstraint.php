@@ -88,7 +88,7 @@ abstract class TimeConstraint
      * instant exists at all. To deal with that, the search period is moved
      * forward iteratively. If the max number of iterations is reached, an
      * Exception is thrown.
-     * @param \DateTimeImmutable $startDate The instant to start the search.
+     * @param \DateTimeImmutable $targetDate The instant to start the search.
      * @param int $searchPeriodDuration The duration in seconds used in the
      * search period.
      * @param int $max_iterations The maximum number of iterations to search the
@@ -96,39 +96,47 @@ abstract class TimeConstraint
      * @throws ClosestDateNotReachedError
      * @return \DateTimeImmutable
      */
-    public function getNextClosestInstant(
-        \DateTimeImmutable $startDate,
+    public function getClosestInstant(
+        \DateTimeImmutable $targetDate,
         int $searchPeriodDuration,
         int $max_iterations = 1000,
     ): \DateTimeImmutable {
-        $currentStart = $startDate;
+        $searchStart = $targetDate;
         $iterations = 0;
 
-        if ($searchPeriodDuration <= 0) {
+        if ($searchPeriodDuration == 0) {
             throw new InvalidArgumentException();
         }
 
+        $isReversed = $searchPeriodDuration < 0;
+
         while ($iterations < $max_iterations) {
             // Create a search period starting from currentStart with the given duration
-            $endDate = $currentStart->modify("{$searchPeriodDuration} seconds");
-            $searchPeriod = $this->getSearchPeriod($currentStart, $endDate);
+            $searchEnd = $searchStart->modify("{$searchPeriodDuration} seconds");
+            $periods = $this->getPeriodsAllowingReverse($searchStart, $searchEnd);
 
-            // Get the sequence of periods that satisfy the constraint within the search period
-            $sequence = $this->getSequence($searchPeriod);
-            usort($sequence, fn(Period $a, Period $b) => $a->startDate <=> $b->endDate);
+            foreach ($periods as $period) {
+                if ($isReversed) {
+                    if ($targetDate > $period->endDate) {
+                        return $period->endDate;
+                    }
 
-            foreach ($sequence as $period) {
-                if ($startDate < $period->startDate) {
-                    return $period->startDate;
-                }
+                    if ($period->endDate == $targetDate || $period->contains($targetDate)) {
+                        return $targetDate;
+                    }
+                } else {
+                    if ($targetDate < $period->startDate) {
+                        return $period->startDate;
+                    }
 
-                if ($period->startDate == $startDate || $period->contains($startDate)) {
-                    return $startDate;
+                    if ($period->startDate == $targetDate || $period->contains($targetDate)) {
+                        return $targetDate;
+                    }
                 }
             }
 
             // Move the search period forward by searchPeriodDuration
-            $currentStart = $currentStart->modify("{$searchPeriodDuration} seconds");
+            $searchStart = $searchStart->modify("{$searchPeriodDuration} seconds");
             $iterations++;
         }
 
@@ -170,9 +178,9 @@ abstract class TimeConstraint
             if ($on_zero_duration === OnZeroDuration::THROW_EXCEPTION) {
                 throw new \Exception("Duration must be different from 0");
             } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_PAST) {
-                return $this->getNextClosestInstant($start_instant, -$one_day_in_seconds, $max_iterations);
+                return $this->getClosestInstant($start_instant, -$one_day_in_seconds, $max_iterations);
             } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_FUTURE) {
-                return $this->getNextClosestInstant($start_instant, $one_day_in_seconds, $max_iterations);
+                return $this->getClosestInstant($start_instant, $one_day_in_seconds, $max_iterations);
             }
         }
 

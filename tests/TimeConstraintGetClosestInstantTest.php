@@ -33,7 +33,7 @@ class TimeConstraintGetClosestInstantTest extends TestCase
 
         $closestDates = [];
         for ($i = 0; $i <= 15; $i++) {
-            $closestDates[] = $time_constraint->getNextClosestInstant(createDateTime($i), $search_period_duration);
+            $closestDates[] = $time_constraint->getClosestInstant(createDateTime($i), $search_period_duration);
         }
 
         //                       11  13  15
@@ -63,7 +63,7 @@ class TimeConstraintGetClosestInstantTest extends TestCase
         $search_period_duration = createDuration(3);
 
         $this->expectException(ClosestDateNotReachedError::class);
-        $time_constraint->getNextClosestInstant(createDateTime(16), $search_period_duration);
+        $time_constraint->getClosestInstant(createDateTime(16), $search_period_duration);
     }
 
     public function testGetClosestInstantWithNegativeDuration()
@@ -74,8 +74,8 @@ class TimeConstraintGetClosestInstantTest extends TestCase
         // $this->assertEquals(createDateTime(3), $time_constraint->getClosestInstant(createDateTime(3), $search_period_duration));
 
         $closestDates = [null, null];
-        for ($i = 2; $i < 12; $i++) {
-            $closestDates[] = $time_constraint->getNextClosestInstant(createDateTime($i), $search_period_duration);
+        for ($i = 2; $i <= 16; $i++) {
+            $closestDates[] = $time_constraint->getClosestInstant(createDateTime($i), $search_period_duration);
         }
 
         //                       11  13  15
@@ -98,12 +98,12 @@ class TimeConstraintGetClosestInstantTest extends TestCase
         $this->assertEquals(createDateTime(15), $closestDates[16]);
     }
 
-    public function testGetClosestInstantWithNegativeDurationAndException1()
+    public function testGetClosestInstantWithNegativeDurationAndException()
     {
         $time_constraint = $this->createTimeConstraint();
         $search_period_duration = createDuration(-3);
 
         $this->expectException(ClosestDateNotReachedError::class);
-        $time_constraint->getNextClosestInstant(createDateTime(0), $search_period_duration);
+        $time_constraint->getClosestInstant(createDateTime(0), $search_period_duration);
     }
 }
