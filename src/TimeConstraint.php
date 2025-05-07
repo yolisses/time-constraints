@@ -131,7 +131,7 @@ abstract class TimeConstraint
             $iterations++;
         }
 
-        throw new \Exception('No instant found within the maximum number of iterations.');
+        throw new ClosestDateNotReachedError();
     }
 
     /**

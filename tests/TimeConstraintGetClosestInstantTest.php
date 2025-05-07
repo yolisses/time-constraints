@@ -2,6 +2,7 @@
 
 use League\Period\Bounds;
 use PHPUnit\Framework\TestCase;
+use Yolisses\TimeConstraints\ClosestDateNotReachedError;
 use Yolisses\TimeConstraints\OrTimeConstraint;
 
 require_once __DIR__ . '/utils/createDateTime.php';
@@ -61,7 +62,7 @@ class TimeConstraintGetClosestInstantTest extends TestCase
         $time_constraint = $this->createTimeConstraint();
         $search_period_duration = createDuration(3);
 
-        $this->expectException(Exception::class);
+        $this->expectException(ClosestDateNotReachedError::class);
         $time_constraint->getClosestInstant(createDateTime(16), $search_period_duration);
     }
 
@@ -69,6 +70,8 @@ class TimeConstraintGetClosestInstantTest extends TestCase
     {
         $time_constraint = $this->createTimeConstraint();
         $search_period_duration = createDuration(-3);
+
+        $this->assertEquals(createDateTime(3), $time_constraint->getClosestInstant(createDateTime(3), $search_period_duration));
 
         $closestDates = [null, null];
         for ($i = 2; $i < 12; $i++) {
@@ -100,7 +103,7 @@ class TimeConstraintGetClosestInstantTest extends TestCase
         $time_constraint = $this->createTimeConstraint();
         $search_period_duration = createDuration(-3);
 
-        $this->expectException(Exception::class);
+        $this->expectException(ClosestDateNotReachedError::class);
         $time_constraint->getClosestInstant(createDateTime(0), $search_period_duration);
     }
 }
