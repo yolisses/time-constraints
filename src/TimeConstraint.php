@@ -2,6 +2,7 @@
 
 namespace Yolisses\TimeConstraints;
 
+use League\Period\Bounds;
 use League\Period\Period;
 use League\Period\Sequence;
 use League\Period\UnprocessableInterval;
@@ -47,19 +48,36 @@ abstract class TimeConstraint
         return new Sequence(...$intersectingPeriods);
     }
 
-    public function getPeriodsAllowingReverse(\DateTimeImmutable $start_instant, \DateTimeImmutable $end_instant)
+    private function getSearchPeriod(\DateTimeImmutable $searchStartDate, \DateTimeImmutable $searchEndDate): Period
     {
-        $is_duration_negative = $end_instant < $start_instant;
+        if ($searchStartDate > $searchEndDate) {
+            return new Period($searchEndDate, $searchStartDate, Bounds::ExcludeStartIncludeEnd);
+        }
+        return new Period($searchStartDate, $searchEndDate, Bounds::IncludeStartExcludeEnd);
+    }
 
-        if ($is_duration_negative) {
-            $periods = $this->getSequence($end_instant, $start_instant);
-        } else {
-            $periods = $this->getSequence($start_instant, $end_instant);
+    /**
+     * @return Period[]
+     */
+    private function getPeriodsAllowingReverse(\DateTimeImmutable $searchStartDate, \DateTimeImmutable $searchEndDate): array
+    {
+        $searchPeriod = $this->getSearchPeriod($searchStartDate, $searchEndDate);
+        $sequence = $this->getSequence($searchPeriod);
+
+        /**
+         * @var Period[]
+         */
+        $periods = [];
+
+        foreach ($sequence as $period) {
+            $periods[] = $period;
         }
 
-        if ($is_duration_negative) {
-            return array_reverse($periods);
-        }
+        $shouldReverse = $searchStartDate > $searchEndDate;
+        usort($periods, function (Period $a, Period $b) use ($shouldReverse) {
+            return $shouldReverse ? $a->startDate <=> $b->startDate : $b->startDate <=> $a->startDate;
+        });
+
         return $periods;
     }
 
@@ -69,7 +87,7 @@ abstract class TimeConstraint
      * instant exists at all. To deal with that, the search period is moved
      * forward iteratively. If the max number of iterations is reached, an
      * Exception is thrown.
-     * @param \DateTimeImmutable $start_instant The instant to start the search.
+     * @param \DateTimeImmutable $startDate The instant to start the search.
      * @param int $search_period_duration The duration in seconds used in the
      * search period.
      * @param int $max_iterations The maximum number of iterations to search the
@@ -78,29 +96,29 @@ abstract class TimeConstraint
      * @return \DateTimeImmutable
      */
     public function getClosestInstant(
-        \DateTimeImmutable $start_instant,
+        \DateTimeImmutable $startDate,
         int $search_period_duration,
         int $max_iterations = 1000,
     ) {
-        $search_start_instant = $start_instant;
-        $search_end_instant = $start_instant->modify("$search_period_duration seconds");
+        $searchStartDate = $startDate;
+        $searchEndDate = $startDate->modify("$search_period_duration seconds");
 
         for ($i = 0; $i < $max_iterations; $i++) {
-            $periods = $this->getPeriodsAllowingReverse($search_start_instant, $search_end_instant);
+            $periods = $this->getPeriodsAllowingReverse($searchStartDate, $searchEndDate);
 
             // Iterates over periods
             foreach ($periods as $period) {
-                if ($period->startDate <= $start_instant && $start_instant <= $period->endDate) {
-                    return $start_instant;
-                } else if ($period->startDate > $start_instant) {
+                if ($period->startDate <= $startDate && $startDate <= $period->endDate) {
+                    return $startDate;
+                } else if ($period->startDate > $startDate) {
                     return $period->startDate;
-                } else if ($period->endDate < $start_instant) {
+                } else if ($period->endDate < $startDate) {
                     return $period->endDate;
                 }
             }
 
-            $search_start_instant = $search_end_instant;
-            $search_end_instant = $search_end_instant->modify("$search_period_duration seconds");
+            $searchStartDate = $searchEndDate;
+            $searchEndDate = $searchEndDate->modify("$search_period_duration seconds");
         }
 
         throw new \Exception("Closest instant not found with max iterations equals $max_iterations");
