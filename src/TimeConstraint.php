@@ -96,7 +96,7 @@ abstract class TimeConstraint
      * @throws ClosestDateNotReachedError
      * @return \DateTimeImmutable
      */
-    public function getClosestInstant(
+    public function getNextClosestInstant(
         \DateTimeImmutable $startDate,
         int $searchPeriodDuration,
         int $max_iterations = 1000,
@@ -104,7 +104,7 @@ abstract class TimeConstraint
         $currentStart = $startDate;
         $iterations = 0;
 
-        if ($searchPeriodDuration == 0) {
+        if ($searchPeriodDuration <= 0) {
             throw new InvalidArgumentException();
         }
 
@@ -115,23 +115,19 @@ abstract class TimeConstraint
 
             // Get the sequence of periods that satisfy the constraint within the search period
             $sequence = $this->getSequence($searchPeriod);
+            usort($sequence, fn(Period $a, Period $b) => $a->startDate <=> $b->endDate);
 
-            // If the sequence is not empty, find the closest instant
-            if (!$sequence->isEmpty()) {
-                foreach ($sequence as $period) {
-                    // Check if startDate is within or before the period
-                    if ($startDate <= $period->endDate) {
-                        // If startDate is before the period, return the period's start
-                        if ($startDate < $period->startDate) {
-                            return $period->startDate;
-                        }
-                        // If startDate is within the period, return it
-                        return $startDate;
-                    }
+            foreach ($sequence as $period) {
+                if ($startDate < $period->startDate) {
+                    return $period->startDate;
+                }
+
+                if ($period->startDate == $startDate || $period->contains($startDate)) {
+                    return $startDate;
                 }
             }
 
-            // Move the search period forward by search_period_duration
+            // Move the search period forward by searchPeriodDuration
             $currentStart = $currentStart->modify("{$searchPeriodDuration} seconds");
             $iterations++;
         }
@@ -174,9 +170,9 @@ abstract class TimeConstraint
             if ($on_zero_duration === OnZeroDuration::THROW_EXCEPTION) {
                 throw new \Exception("Duration must be different from 0");
             } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_PAST) {
-                return $this->getClosestInstant($start_instant, -$one_day_in_seconds, $max_iterations);
+                return $this->getNextClosestInstant($start_instant, -$one_day_in_seconds, $max_iterations);
             } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_FUTURE) {
-                return $this->getClosestInstant($start_instant, $one_day_in_seconds, $max_iterations);
+                return $this->getNextClosestInstant($start_instant, $one_day_in_seconds, $max_iterations);
             }
         }
 
