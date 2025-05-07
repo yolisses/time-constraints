@@ -12,7 +12,7 @@ use Yolisses\TimeConstraints\TimeConstraint;
 class ExceptTimeConstraint extends TimeConstraint
 {
     /**
-     * @param array<TimeConstraint> $time_constraints
+     * @param TimeConstraint[] $timeConstraints
      */
     public function __construct(
         public TimeConstraint $timeConstraint1,

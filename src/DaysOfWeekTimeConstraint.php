@@ -14,7 +14,7 @@ use League\Period\Sequence;
  */
 class DaysOfWeekTimeConstraint extends TimeConstraint
 {
-    public function __construct(public array $days_of_week)
+    public function __construct(public array $daysOfWeek)
     {
     }
 
@@ -27,7 +27,7 @@ class DaysOfWeekTimeConstraint extends TimeConstraint
         while ($currentDate < $clampPeriod->endDate) {
             $currentDayOfWeek = (int) $currentDate->format('w');
 
-            if (in_array($currentDayOfWeek, $this->days_of_week)) {
+            if (in_array($currentDayOfWeek, $this->daysOfWeek)) {
                 $startDate = clone $currentDate;
                 $endDate = clone $currentDate;
                 $endDate = $endDate->modify('+1 day');

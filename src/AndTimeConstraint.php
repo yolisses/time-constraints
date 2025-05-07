@@ -12,9 +12,9 @@ use Yolisses\TimeConstraints\TimeConstraint;
 class AndTimeConstraint extends TimeConstraint
 {
     /**
-     * @param array<TimeConstraint> $time_constraints
+     * @param TimeConstraint[] $timeConstraints
      */
-    public function __construct(public array $time_constraints)
+    public function __construct(public array $timeConstraints)
     {
     }
 
@@ -22,7 +22,7 @@ class AndTimeConstraint extends TimeConstraint
     {
         $sequences = array_map(function (TimeConstraint $timeConstraint) use ($clampPeriod) {
             return $timeConstraint->getSequence($clampPeriod);
-        }, $this->time_constraints);
+        }, $this->timeConstraints);
         return SequencesUnion::union($sequences);
     }
 }

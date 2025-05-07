@@ -12,7 +12,7 @@ class SingleDayTimeConstraint extends TimeConstraint
     {
     }
 
-    public function getSequence(Period $clamp_period): Sequence
+    public function getSequence(Period $clampPeriod): Sequence
     {
         $start = new \DateTimeImmutable($this->day->format('Y-m-d'));
         $end = (new \DateTimeImmutable($this->day->format('Y-m-d')))->modify('+1 day');
@@ -20,6 +20,6 @@ class SingleDayTimeConstraint extends TimeConstraint
         $period = Period::fromDate($start, $end, Bounds::IncludeStartExcludeEnd);
         $sequence = new Sequence($period);
 
-        return $this->clampSequence($sequence, $clamp_period);
+        return $this->clampSequence($sequence, $clampPeriod);
     }
 }

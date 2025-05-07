@@ -13,9 +13,9 @@ use Yolisses\TimeConstraints\Period\TimePeriodOperations;
 class OrTimeConstraint extends TimeConstraint
 {
     /**
-     * @param array<TimeConstraint> $time_constraints
+     * @param TimeConstraint[] $timeConstraints
      */
-    public function __construct(public array $time_constraints)
+    public function __construct(public array $timeConstraints)
     {
     }
 
@@ -23,8 +23,8 @@ class OrTimeConstraint extends TimeConstraint
     {
         $periods = [];
 
-        foreach ($this->time_constraints as $time_constraint) {
-            $newSequence = $time_constraint->getSequence($clampPeriod);
+        foreach ($this->timeConstraints as $timeConstraint) {
+            $newSequence = $timeConstraint->getSequence($clampPeriod);
             foreach ($newSequence as $period) {
                 $periods[] = $period;
             }
