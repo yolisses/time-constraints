@@ -92,7 +92,7 @@ abstract class TimeConstraint
      * search period.
      * @param int $max_iterations The maximum number of iterations to search the
      * instant.
-     * @throws \Exception
+     * @throws ClosestDateNotReachedError
      * @return \DateTimeImmutable
      */
     public function getClosestInstant(
