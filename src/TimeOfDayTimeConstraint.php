@@ -38,9 +38,9 @@ class TimeOfDayTimeConstraint extends TimeConstraint
         $currentDate = self::setTime($startDate, $this->startTime);
 
         while ($currentDate < $clampPeriod->endDate) {
-            $period_end = self::setTime($currentDate, $this->endTime);
+            $periodEnd = self::setTime($currentDate, $this->endTime);
 
-            $periods[] = Period::fromDate($currentDate, $period_end);
+            $periods[] = Period::fromDate($currentDate, $periodEnd);
 
             $currentDate = $currentDate->modify('+1 day');
         }

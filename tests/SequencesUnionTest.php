@@ -3,7 +3,7 @@
 use League\Period\Period;
 use League\Period\Sequence;
 use PHPUnit\Framework\TestCase;
-use Yolisses\TimeConstraints\SequencesUnion;
+use Yolisses\TimeConstraints\SequencesIntersection;
 
 class SequencesUnionTest extends TestCase
 {
@@ -12,7 +12,7 @@ class SequencesUnionTest extends TestCase
      */
     public function testEmptySequences(): void
     {
-        $result = SequencesUnion::union([]);
+        $result = SequencesIntersection::intersection([]);
         $this->assertEquals(new Sequence(), $result);
     }
 
@@ -25,7 +25,7 @@ class SequencesUnionTest extends TestCase
             Period::fromDate('2025-01-01', '2025-01-10'),
             Period::fromDate('2025-02-01', '2025-02-15')
         );
-        $result = SequencesUnion::union([$sequence]);
+        $result = SequencesIntersection::intersection([$sequence]);
 
         $this->assertEquals(new Sequence(
             Period::fromDate('2025-01-01', '2025-01-10'),
@@ -47,7 +47,7 @@ class SequencesUnionTest extends TestCase
             Period::fromDate('2025-02-10', '2025-02-20')
         );
 
-        $result = SequencesUnion::union([$sequence1, $sequence2]);
+        $result = SequencesIntersection::intersection([$sequence1, $sequence2]);
 
         $this->assertEquals(new Sequence(
             Period::fromDate('2025-01-05', '2025-01-10'),
@@ -73,7 +73,7 @@ class SequencesUnionTest extends TestCase
             Period::fromDate('2025-02-12', '2025-02-25')
         );
 
-        $result = SequencesUnion::union([$sequence1, $sequence2, $sequence3]);
+        $result = SequencesIntersection::intersection([$sequence1, $sequence2, $sequence3]);
 
         $this->assertEquals(new Sequence(
             Period::fromDate('2025-01-07', '2025-01-10'),
@@ -93,7 +93,7 @@ class SequencesUnionTest extends TestCase
             Period::fromDate('2025-01-06', '2025-01-10')
         );
 
-        $result = SequencesUnion::union([$sequence1, $sequence2]);
+        $result = SequencesIntersection::intersection([$sequence1, $sequence2]);
 
         $this->assertEquals(new Sequence(), $result);
     }
@@ -108,7 +108,7 @@ class SequencesUnionTest extends TestCase
         );
         $sequence2 = new Sequence(); // Empty sequence
 
-        $result = SequencesUnion::union([$sequence1, $sequence2]);
+        $result = SequencesIntersection::intersection([$sequence1, $sequence2]);
 
         $this->assertEquals(new Sequence(), $result);
     }
@@ -123,7 +123,7 @@ class SequencesUnionTest extends TestCase
         );
         $sequences = [$sequence, $sequence, $sequence];
 
-        $result = SequencesUnion::union($sequences);
+        $result = SequencesIntersection::intersection($sequences);
 
         $this->assertEquals(new Sequence(
             Period::fromDate('2025-01-01', '2025-01-10'),

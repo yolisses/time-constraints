@@ -4,7 +4,7 @@ namespace Yolisses\TimeConstraints;
 
 use League\Period\Sequence;
 
-class SequencesUnion
+class SequencesIntersection
 {
     /**
      * Compute the intersection of n sequences.
@@ -12,7 +12,7 @@ class SequencesUnion
      * @param Sequence[] $sequences Array of Sequence objects
      * @return Sequence A new Sequence containing the intersecting periods
      */
-    public static function union(array $sequences): Sequence
+    public static function intersection(array $sequences): Sequence
     {
         // Handle edge cases
         if (empty($sequences)) {

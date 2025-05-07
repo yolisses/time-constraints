@@ -23,6 +23,6 @@ class AndTimeConstraint extends TimeConstraint
         $sequences = array_map(function (TimeConstraint $timeConstraint) use ($clampPeriod) {
             return $timeConstraint->getSequence($clampPeriod);
         }, $this->timeConstraints);
-        return SequencesUnion::union($sequences);
+        return SequencesIntersection::intersection($sequences);
     }
 }
