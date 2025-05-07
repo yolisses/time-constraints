@@ -49,7 +49,7 @@ abstract class TimeConstraint
         return new Sequence(...$intersectingPeriods);
     }
 
-    private function checkFowardInSequence(
+    private function checkClosestDateFoward(
         \DateTimeImmutable $targetDate,
         \DateTimeImmutable $searchStart,
         \DateTimeImmutable $searchEnd,
@@ -70,7 +70,7 @@ abstract class TimeConstraint
         return null;
     }
 
-    private function checkBackwardInSequence(
+    private function checkClosestDateBackward(
         \DateTimeImmutable $targetDate,
         \DateTimeImmutable $searchStart,
         \DateTimeImmutable $searchEnd,
@@ -91,7 +91,7 @@ abstract class TimeConstraint
         return null;
     }
 
-    public function getClosestInstant(
+    public function getClosestDate(
         \DateTimeImmutable $targetDate,
         int $searchPeriodDuration,
         int $max_iterations = 1000,
@@ -107,9 +107,9 @@ abstract class TimeConstraint
             $searchEnd = $searchStart->modify("{$searchPeriodDuration} seconds");
 
             if ($isReversed) {
-                $result = $this->checkBackwardInSequence($targetDate, $searchStart, $searchEnd);
+                $result = $this->checkClosestDateBackward($targetDate, $searchStart, $searchEnd);
             } else {
-                $result = $this->checkFowardInSequence($targetDate, $searchStart, $searchEnd);
+                $result = $this->checkClosestDateFoward($targetDate, $searchStart, $searchEnd);
             }
 
             if ($result) {
@@ -158,9 +158,9 @@ abstract class TimeConstraint
             if ($on_zero_duration === OnZeroDuration::THROW_EXCEPTION) {
                 throw new \Exception("Duration must be different from 0");
             } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_PAST) {
-                return $this->getClosestInstant($start_instant, -$one_day_in_seconds, $max_iterations);
+                return $this->getClosestDate($start_instant, -$one_day_in_seconds, $max_iterations);
             } else if ($on_zero_duration === OnZeroDuration::GET_CLOSEST_FUTURE) {
-                return $this->getClosestInstant($start_instant, $one_day_in_seconds, $max_iterations);
+                return $this->getClosestDate($start_instant, $one_day_in_seconds, $max_iterations);
             }
         }
 
