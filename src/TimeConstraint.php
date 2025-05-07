@@ -34,13 +34,13 @@ abstract class TimeConstraint
     abstract public function getSequence(Period $clampPeriod): Sequence;
 
 
-    public static function clampSequence(Sequence $sequence, Period $clamp_period): Sequence
+    public static function clampSequence(Sequence $sequence, Period $clampPeriod): Sequence
     {
         $periods = $sequence->toList();
         $intersectingPeriods = [];
         foreach ($periods as $period) {
             try {
-                $intersection = $period->intersect($clamp_period);
+                $intersection = $period->intersect($clampPeriod);
                 $intersectingPeriods[] = $intersection;
             } catch (UnprocessableInterval $e) {
                 // Skip periods that do not overlap
@@ -174,13 +174,12 @@ abstract class TimeConstraint
         OnZeroDuration $onZeroDuration = OnZeroDuration::THROW_EXCEPTION,
     ) {
         if ($duration == 0) {
-            $one_day_in_seconds = 24 * 60 * 60;
             if ($onZeroDuration === OnZeroDuration::THROW_EXCEPTION) {
                 throw new \Exception("Duration must be different from 0");
             } else if ($onZeroDuration === OnZeroDuration::GET_CLOSEST_PAST) {
-                return $this->getClosestDate($startDate, -$one_day_in_seconds, $maxIterations);
+                return $this->getClosestDate($startDate, -$searchPeriodDuration, $maxIterations);
             } else if ($onZeroDuration === OnZeroDuration::GET_CLOSEST_FUTURE) {
-                return $this->getClosestDate($startDate, $one_day_in_seconds, $maxIterations);
+                return $this->getClosestDate($startDate, $searchPeriodDuration, $maxIterations);
             }
         }
 
