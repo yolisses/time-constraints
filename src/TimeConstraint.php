@@ -75,7 +75,7 @@ abstract class TimeConstraint
 
         $shouldReverse = $searchStartDate > $searchEndDate;
         usort($periods, function (Period $a, Period $b) use ($shouldReverse) {
-            return $shouldReverse ? $a->startDate <=> $b->startDate : $b->startDate <=> $a->startDate;
+            return $shouldReverse ? $b->startDate <=> $a->startDate : $a->startDate <=> $b->startDate;
         });
 
         return $periods;
