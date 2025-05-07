@@ -2,6 +2,7 @@
 
 namespace Yolisses\TimeConstraints;
 
+use InvalidArgumentException;
 use League\Period\Bounds;
 use League\Period\Period;
 use League\Period\Sequence;
@@ -88,7 +89,7 @@ abstract class TimeConstraint
      * forward iteratively. If the max number of iterations is reached, an
      * Exception is thrown.
      * @param \DateTimeImmutable $startDate The instant to start the search.
-     * @param int $search_period_duration The duration in seconds used in the
+     * @param int $searchPeriodDuration The duration in seconds used in the
      * search period.
      * @param int $max_iterations The maximum number of iterations to search the
      * instant.
@@ -97,15 +98,19 @@ abstract class TimeConstraint
      */
     public function getClosestInstant(
         \DateTimeImmutable $startDate,
-        int $search_period_duration,
+        int $searchPeriodDuration,
         int $max_iterations = 1000,
     ): \DateTimeImmutable {
         $currentStart = $startDate;
         $iterations = 0;
 
+        if ($searchPeriodDuration == 0) {
+            throw new InvalidArgumentException();
+        }
+
         while ($iterations < $max_iterations) {
             // Create a search period starting from currentStart with the given duration
-            $endDate = $currentStart->modify("{$search_period_duration} seconds");
+            $endDate = $currentStart->modify("{$searchPeriodDuration} seconds");
             $searchPeriod = $this->getSearchPeriod($currentStart, $endDate);
 
             // Get the sequence of periods that satisfy the constraint within the search period
@@ -127,7 +132,7 @@ abstract class TimeConstraint
             }
 
             // Move the search period forward by search_period_duration
-            $currentStart = $currentStart->modify("{$search_period_duration} seconds");
+            $currentStart = $currentStart->modify("{$searchPeriodDuration} seconds");
             $iterations++;
         }
 
