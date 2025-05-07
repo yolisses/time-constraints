@@ -51,9 +51,9 @@ abstract class TimeConstraint
     private function getSearchPeriod(\DateTimeImmutable $searchStartDate, \DateTimeImmutable $searchEndDate): Period
     {
         if ($searchStartDate > $searchEndDate) {
-            return new Period($searchEndDate, $searchStartDate, Bounds::ExcludeStartIncludeEnd);
+            return Period::fromDate($searchEndDate, $searchStartDate, Bounds::ExcludeStartIncludeEnd);
         }
-        return new Period($searchStartDate, $searchEndDate, Bounds::IncludeStartExcludeEnd);
+        return Period::fromDate($searchStartDate, $searchEndDate, Bounds::IncludeStartExcludeEnd);
     }
 
     /**
