@@ -9,9 +9,9 @@ class TimeOfDayTimeConstraintTest extends TestCase
 {
     function testGetPeriods()
     {
-        $time_start = '10:00:00';
-        $time_end = '12:00:00';
-        $constraint = new TimeOfDayTimeConstraint($time_start, $time_end);
+        $timeStart = '10:00:00';
+        $timeEnd = '12:00:00';
+        $constraint = new TimeOfDayTimeConstraint($timeStart, $timeEnd);
 
         $clampPeriod = Period::fromDate('2025-01-01 11:03:04', '2025-01-09 11:06:07');
 

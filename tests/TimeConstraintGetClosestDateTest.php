@@ -17,23 +17,23 @@ class TimeConstraintGetClosestDateTest extends TestCase
         //                       11  13  15
         // 0 1 2 3 4 5 6 7 8 9 10  12  14  16
         //   (---)   (---]     [---) [---]
-        $time_constraint = new OrTimeConstraint([
+        $timeConstraint = new OrTimeConstraint([
             createSinglePeriodTimeConstraint(1, 3, Bounds::ExcludeAll),
             createSinglePeriodTimeConstraint(5, 7, Bounds::ExcludeStartIncludeEnd),
             createSinglePeriodTimeConstraint(10, 12, Bounds::IncludeStartExcludeEnd),
             createSinglePeriodTimeConstraint(13, 15, Bounds::IncludeAll),
         ]);
-        return $time_constraint;
+        return $timeConstraint;
     }
 
     public function testGetClosestDateWithPositiveDuration()
     {
-        $time_constraint = $this->createTimeConstraint();
-        $search_period_duration = createDuration(3);
+        $timeConstraint = $this->createTimeConstraint();
+        $searchPeriodDuration = createDuration(3);
 
         $closestDates = [];
         for ($i = 0; $i <= 15; $i++) {
-            $closestDates[] = $time_constraint->getClosestDate(createDateTime($i), $search_period_duration);
+            $closestDates[] = $timeConstraint->getClosestDate(createDateTime($i), $searchPeriodDuration);
         }
 
         //                       11  13  15
@@ -59,23 +59,21 @@ class TimeConstraintGetClosestDateTest extends TestCase
 
     public function testGetClosestDateWithPositiveDurationAndException()
     {
-        $time_constraint = $this->createTimeConstraint();
-        $search_period_duration = createDuration(3);
+        $timeConstraint = $this->createTimeConstraint();
+        $searchPeriodDuration = createDuration(3);
 
         $this->expectException(ClosestDateNotReachedError::class);
-        $time_constraint->getClosestDate(createDateTime(16), $search_period_duration);
+        $timeConstraint->getClosestDate(createDateTime(16), $searchPeriodDuration);
     }
 
     public function testGetClosestDateWithNegativeDuration()
     {
-        $time_constraint = $this->createTimeConstraint();
-        $search_period_duration = createDuration(-3);
-
-        // $this->assertEquals(createDateTime(3), $time_constraint->getClosestDate(createDateTime(3), $search_period_duration));
+        $timeConstraint = $this->createTimeConstraint();
+        $searchPeriodDuration = createDuration(-3);
 
         $closestDates = [null, null];
         for ($i = 2; $i <= 16; $i++) {
-            $closestDates[] = $time_constraint->getClosestDate(createDateTime($i), $search_period_duration);
+            $closestDates[] = $timeConstraint->getClosestDate(createDateTime($i), $searchPeriodDuration);
         }
 
         //                       11  13  15
@@ -100,10 +98,10 @@ class TimeConstraintGetClosestDateTest extends TestCase
 
     public function testGetClosestDateWithNegativeDurationAndException()
     {
-        $time_constraint = $this->createTimeConstraint();
-        $search_period_duration = createDuration(-3);
+        $timeConstraint = $this->createTimeConstraint();
+        $searchPeriodDuration = createDuration(-3);
 
         $this->expectException(ClosestDateNotReachedError::class);
-        $time_constraint->getClosestDate(createDateTime(0), $search_period_duration);
+        $timeConstraint->getClosestDate(createDateTime(0), $searchPeriodDuration);
     }
 }

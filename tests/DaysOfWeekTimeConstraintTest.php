@@ -9,12 +9,12 @@ class DaysOfWeekTimeConstraintTest extends TestCase
 {
     function testGetSequence()
     {
-        $days_of_week = [
+        $daysOfWeek = [
             1, // Monday
             3, // Wednesday
             6, // Saturday
         ];
-        $constraint = new DaysOfWeekTimeConstraint($days_of_week);
+        $constraint = new DaysOfWeekTimeConstraint($daysOfWeek);
 
         // Wednesday - Thursday
         $clampPeriod = Period::fromDate('2025-01-01 02:03:04', '2025-01-09 05:06:07');
@@ -29,13 +29,13 @@ class DaysOfWeekTimeConstraintTest extends TestCase
 
     public function testGetSequence2()
     {
-        $days_of_week = [
+        $daysOfWeek = [
             1, // Monday
             2, // Tuesday
             3, // Wednesday
             5, // Friday
         ];
-        $constraint = new DaysOfWeekTimeConstraint($days_of_week);
+        $constraint = new DaysOfWeekTimeConstraint($daysOfWeek);
 
         // Wednesday - Friday
         $clampPeriod = Period::fromDate('2025-01-01 08:00:00', '2025-01-10 17:00:00');
@@ -54,8 +54,8 @@ class DaysOfWeekTimeConstraintTest extends TestCase
 
     function testGetSequenceEmptyDaysOfWeek()
     {
-        $days_of_week = [];
-        $constraint = new DaysOfWeekTimeConstraint($days_of_week);
+        $daysOfWeek = [];
+        $constraint = new DaysOfWeekTimeConstraint($daysOfWeek);
 
         // Wednesday - Thursday
         $clampPeriod = Period::fromDate('2025-01-01 02:03:04', '2025-01-09 05:06:07');
@@ -66,11 +66,11 @@ class DaysOfWeekTimeConstraintTest extends TestCase
 
     function testGetSequenceEmptyResult()
     {
-        $days_of_week = [
+        $daysOfWeek = [
             1, // Monday
             2, // Tuesday
         ];
-        $constraint = new DaysOfWeekTimeConstraint($days_of_week);
+        $constraint = new DaysOfWeekTimeConstraint($daysOfWeek);
 
         // Wednesday - Sunday
         $clampPeriod = Period::fromDate('2025-01-01 02:03:04', '2025-01-05 05:06:07');
