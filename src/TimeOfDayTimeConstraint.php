@@ -7,7 +7,8 @@ use League\Period\Sequence;
 use Yolisses\TimeConstraints\TimeConstraint;
 
 /**
- * Time constraint for a specific time of day. E.g. only from 10:00:00 to 16:00:00.
+ * Time constraint for a specific time of day. E.g. only from 10:00:00 to
+ * 16:00:00.
  */
 class TimeOfDayTimeConstraint extends TimeConstraint
 {

@@ -29,7 +29,8 @@ class SequencesIntersection
         foreach (array_slice($sequences, 1) as $sequence) {
             $intersections = [];
 
-            // Compare each period in the current result with each period in the new sequence
+            // Compare each period in the current result with each period in the
+            // new sequence
             foreach ($result as $period1) {
                 foreach ($sequence as $period2) {
                     if ($period1->overlaps($period2)) {

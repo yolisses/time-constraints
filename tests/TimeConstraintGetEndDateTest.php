@@ -6,9 +6,9 @@ use Yolisses\TimeConstraints\OrTimeConstraint;
 use Yolisses\TimeConstraints\SinglePeriodTimeConstraint;
 use Yolisses\TimeConstraints\TimeOfDayTimeConstraint;
 
-class TimeConstraintGetEndInstantTest extends TestCase
+class TimeConstraintGetEndDateTest extends TestCase
 {
-    public function testGetEndInstant()
+    public function testGetEndDate()
     {
         //   0 1 2 3 4 5 6 7 8 9
         // 01████
@@ -26,12 +26,12 @@ class TimeConstraintGetEndInstantTest extends TestCase
         $start = new DateTimeImmutable('2025-01-01 00:00');
         $duration = 7 * 3600;  // 7h
 
-        $end = $timeConstraint->getEndInstant($start, $duration);
+        $end = $timeConstraint->getEndDate($start, $duration);
 
         $this->assertEquals(new DateTimeImmutable('2025-01-03 06:00'), $end);
     }
 
-    public function testGetEndInstantWithNegativeDuration()
+    public function testGetEndDateWithNegativeDuration()
     {
         //   0 1 2 3 4 5 6 7 8 9
         // 01████
@@ -49,12 +49,12 @@ class TimeConstraintGetEndInstantTest extends TestCase
         $start = new DateTimeImmutable('2025-01-03 06:00');
         $duration = -7 * 3600;  // -7h
 
-        $end = $timeConstraint->getEndInstant($start, $duration);
+        $end = $timeConstraint->getEndDate($start, $duration);
 
         $this->assertEquals(new DateTimeImmutable('2025-01-01 00:00'), $end);
     }
 
-    public function testDependingOnMaxInstant()
+    public function testDependingOnMaxDate()
     {
         //                      10  12  14  16  18  20  22  24
         //   0 1 2 3 4 5 6 7 8 9  11  13  15  17  19  21  23
@@ -72,10 +72,10 @@ class TimeConstraintGetEndInstantTest extends TestCase
         $start = new DateTimeImmutable('2025-01-01 00:00');
         $timeConstraint = new TimeOfDayTimeConstraint('03:00', '05:00');
 
-        $this->assertEquals(new DateTimeImmutable('2025-01-08 04:00'), $timeConstraint->getEndInstant($start, $duration));
-        $this->assertEquals(new DateTimeImmutable('2025-01-08 04:00'), $timeConstraint->getEndInstant($start, $duration, 1000, 1000));
+        $this->assertEquals(new DateTimeImmutable('2025-01-08 04:00'), $timeConstraint->getEndDate($start, $duration));
+        $this->assertEquals(new DateTimeImmutable('2025-01-08 04:00'), $timeConstraint->getEndDate($start, $duration, 1000, 1000));
 
         $this->expectException(Exception::class);
-        $timeConstraint->getEndInstant($start, $duration, 10, 1000);
+        $timeConstraint->getEndDate($start, $duration, 10, 1000);
     }
 }

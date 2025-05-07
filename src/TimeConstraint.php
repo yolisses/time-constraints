@@ -28,8 +28,7 @@ abstract class TimeConstraint
     // and override getSequence to simply return them.
 
     /**
-     * Returns the periods that satisfy the constraint between the given
-     * instants.
+     * Returns the periods that satisfy the constraint between the given dates.
      */
     abstract public function getSequence(Period $clampPeriod): Sequence;
 
@@ -144,29 +143,28 @@ abstract class TimeConstraint
     }
 
     /**
-     * Returns the end instant given the start instant and the duration. Because
-     * the time constraints details are unknown, theres no guarantee that the
-     * end instant exists at all. To deal with that, the end instant is searched
-     * using a search period, that is moved forward iteratively. If the max
-     * number of iterations is reached, an Exception is thrown.
+     * Returns the end date given the start date and the duration. Because the
+     * time constraints details are unknown, theres no guarantee that the end
+     * date exists at all. To deal with that, the end date is searched using a
+     * search period, that is moved forward iteratively. If the max number of
+     * iterations is reached, an Exception is thrown.
      *
-     * The duration can be negative, which means that the end instant is before
-     * the start instant. In this case, the search period duration must be
-     * negative.
+     * The duration can be negative, which means that the end date is before the
+     * start date. In this case, the search period duration must be negative.
      *
      * @param \DateTimeImmutable $startDate
      * @param int $duration The duration in seconds.
      * @param int $maxIterations
-     * @param null|int $searchPeriodDuration The duration in seconds used in
-     * the search period. This can be increased to deal with time constraints
-     * that return more sparse periods. The default value is  `2 * $duration` if
+     * @param null|int $searchPeriodDuration The duration in seconds used in the
+     * search period. This can be increased to deal with time constraints that
+     * return more sparse periods. The default value is  `2 * $duration` if
      * onZeroDuration is THROW_EXCEPTION, and 1 day if onZeroDuration is
      * GET_CLOSEST_PAST or GET_CLOSEST_FUTURE.
      * @param OnZeroDuration $onZeroDuration What to do if the duration is 0.
      * @throws \Exception
      * @return \DateTimeImmutable
      */
-    public function getEndInstant(
+    public function getEndDate(
         \DateTimeImmutable $startDate,
         int $duration,
         int $maxIterations = 1000,
@@ -220,6 +218,6 @@ abstract class TimeConstraint
             $searchEnd = $searchEnd->modify("$searchPeriodDuration seconds");
         }
 
-        throw new \Exception("End instant not found with max iterations equals $maxIterations");
+        throw new \Exception("End date not found with max iterations equals $maxIterations");
     }
 }
