@@ -49,7 +49,7 @@ abstract class TimeConstraint
         return new Sequence(...$intersectingPeriods);
     }
 
-    private function checkClosestDateFoward(
+    private function checkClosestDateForward(
         \DateTimeImmutable $targetDate,
         \DateTimeImmutable $searchStart,
         \DateTimeImmutable $searchEnd,
@@ -109,7 +109,7 @@ abstract class TimeConstraint
             if ($isReversed) {
                 $result = $this->checkClosestDateBackward($targetDate, $searchStart, $searchEnd);
             } else {
-                $result = $this->checkClosestDateFoward($targetDate, $searchStart, $searchEnd);
+                $result = $this->checkClosestDateForward($targetDate, $searchStart, $searchEnd);
             }
 
             if ($result) {
