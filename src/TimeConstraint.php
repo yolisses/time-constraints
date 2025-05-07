@@ -2,6 +2,7 @@
 
 namespace Yolisses\TimeConstraints;
 
+use DateTime;
 use InvalidArgumentException;
 use League\Period\Bounds;
 use League\Period\Period;
@@ -49,15 +50,21 @@ abstract class TimeConstraint
         return new Sequence(...$intersectingPeriods);
     }
 
+
+    private function getPeriodsForward(\DateTimeImmutable $searchStart, \DateTimeImmutable $searchEnd)
+    {
+        $searchPeriod = Period::fromDate($searchStart, $searchEnd, Bounds::IncludeStartExcludeEnd);
+        $periods = $this->getSequence($searchPeriod)->toList();
+        usort($periods, fn(Period $a, Period $b) => $a->startDate <=> $b->startDate);
+        return $periods;
+    }
+
     private function checkClosestDateForward(
         \DateTimeImmutable $targetDate,
         \DateTimeImmutable $searchStart,
         \DateTimeImmutable $searchEnd,
     ) {
-        $searchPeriod = Period::fromDate($searchStart, $searchEnd, Bounds::IncludeStartExcludeEnd);
-        $periods = $this->getSequence($searchPeriod)->toList();
-        usort($periods, fn(Period $a, Period $b) => $a->startDate <=> $b->startDate);
-
+        $periods = $this->getPeriodsForward($searchStart, $searchEnd);
         foreach ($periods as $period) {
             if ($targetDate < $period->startDate) {
                 return $period->startDate;
@@ -70,15 +77,20 @@ abstract class TimeConstraint
         return null;
     }
 
+    private function getPeriodsBackward(\DateTimeImmutable $searchStart, \DateTimeImmutable $searchEnd)
+    {
+        $searchPeriod = Period::fromDate($searchEnd, $searchStart, Bounds::ExcludeStartIncludeEnd);
+        $periods = $this->getSequence($searchPeriod)->toList();
+        usort($periods, fn(Period $a, Period $b) => $b->startDate <=> $a->startDate);
+        return $periods;
+    }
+
     private function checkClosestDateBackward(
         \DateTimeImmutable $targetDate,
         \DateTimeImmutable $searchStart,
         \DateTimeImmutable $searchEnd,
     ) {
-        $searchPeriod = Period::fromDate($searchEnd, $searchStart, Bounds::ExcludeStartIncludeEnd);
-        $periods = $this->getSequence($searchPeriod)->toList();
-        usort($periods, fn(Period $a, Period $b) => $b->startDate <=> $a->startDate);
-
+        $periods = $this->getPeriodsBackward($searchStart, $searchEnd);
         foreach ($periods as $period) {
             if ($targetDate > $period->endDate) {
                 return $period->endDate;
