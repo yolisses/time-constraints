@@ -49,93 +49,73 @@ abstract class TimeConstraint
         return new Sequence(...$intersectingPeriods);
     }
 
-    private function getSearchPeriod(\DateTimeImmutable $searchStartDate, \DateTimeImmutable $searchEndDate): Period
-    {
-        if ($searchStartDate > $searchEndDate) {
-            return Period::fromDate($searchEndDate, $searchStartDate, Bounds::ExcludeStartIncludeEnd);
-        }
-        return Period::fromDate($searchStartDate, $searchEndDate, Bounds::IncludeStartExcludeEnd);
-    }
+    private function checkFowardInSequence(
+        \DateTimeImmutable $targetDate,
+        \DateTimeImmutable $searchStart,
+        \DateTimeImmutable $searchEnd,
+    ) {
+        $searchPeriod = Period::fromDate($searchStart, $searchEnd, Bounds::IncludeStartExcludeEnd);
+        $periods = $this->getSequence($searchPeriod)->toList();
+        usort($periods, fn(Period $a, Period $b) => $a->startDate <=> $b->startDate);
 
-    /**
-     * @return Period[]
-     */
-    private function getPeriodsAllowingReverse(\DateTimeImmutable $searchStartDate, \DateTimeImmutable $searchEndDate): array
-    {
-        $searchPeriod = $this->getSearchPeriod($searchStartDate, $searchEndDate);
-        $sequence = $this->getSequence($searchPeriod);
-
-        /**
-         * @var Period[]
-         */
-        $periods = [];
-
-        foreach ($sequence as $period) {
-            $periods[] = $period;
+        foreach ($periods as $period) {
+            if ($targetDate < $period->startDate) {
+                return $period->startDate;
+            }
+            if ($period->startDate == $targetDate || $period->contains($targetDate)) {
+                return $targetDate;
+            }
         }
 
-        $shouldReverse = $searchStartDate > $searchEndDate;
-        usort($periods, function (Period $a, Period $b) use ($shouldReverse) {
-            return $shouldReverse ? $b->startDate <=> $a->startDate : $a->startDate <=> $b->startDate;
-        });
-
-        return $periods;
+        return null;
     }
 
-    /**
-     * Returns the closest instant that satisfies the constraint. Because the
-     * time constraints details are unknown, theres no guarantee that the
-     * instant exists at all. To deal with that, the search period is moved
-     * forward iteratively. If the max number of iterations is reached, an
-     * Exception is thrown.
-     * @param \DateTimeImmutable $targetDate The instant to start the search.
-     * @param int $searchPeriodDuration The duration in seconds used in the
-     * search period.
-     * @param int $max_iterations The maximum number of iterations to search the
-     * instant.
-     * @throws ClosestDateNotReachedError
-     * @return \DateTimeImmutable
-     */
+    private function checkBackwardInSequence(
+        \DateTimeImmutable $targetDate,
+        \DateTimeImmutable $searchStart,
+        \DateTimeImmutable $searchEnd,
+    ) {
+        $searchPeriod = Period::fromDate($searchEnd, $searchStart, Bounds::ExcludeStartIncludeEnd);
+        $periods = $this->getSequence($searchPeriod)->toList();
+        usort($periods, fn(Period $a, Period $b) => $b->startDate <=> $a->startDate);
+
+        foreach ($periods as $period) {
+            if ($targetDate > $period->endDate) {
+                return $period->endDate;
+            }
+            if ($period->endDate == $targetDate || $period->contains($targetDate)) {
+                return $targetDate;
+            }
+        }
+
+        return null;
+    }
+
     public function getClosestInstant(
         \DateTimeImmutable $targetDate,
         int $searchPeriodDuration,
         int $max_iterations = 1000,
     ): \DateTimeImmutable {
-        $searchStart = $targetDate;
-        $iterations = 0;
-
         if ($searchPeriodDuration == 0) {
             throw new InvalidArgumentException();
         }
 
+        $iterations = 0;
+        $searchStart = $targetDate;
         $isReversed = $searchPeriodDuration < 0;
-
         while ($iterations < $max_iterations) {
-            // Create a search period starting from currentStart with the given duration
             $searchEnd = $searchStart->modify("{$searchPeriodDuration} seconds");
-            $periods = $this->getPeriodsAllowingReverse($searchStart, $searchEnd);
 
-            foreach ($periods as $period) {
-                if ($isReversed) {
-                    if ($targetDate > $period->endDate) {
-                        return $period->endDate;
-                    }
-
-                    if ($period->endDate == $targetDate || $period->contains($targetDate)) {
-                        return $targetDate;
-                    }
-                } else {
-                    if ($targetDate < $period->startDate) {
-                        return $period->startDate;
-                    }
-
-                    if ($period->startDate == $targetDate || $period->contains($targetDate)) {
-                        return $targetDate;
-                    }
-                }
+            if ($isReversed) {
+                $result = $this->checkBackwardInSequence($targetDate, $searchStart, $searchEnd);
+            } else {
+                $result = $this->checkFowardInSequence($targetDate, $searchStart, $searchEnd);
             }
 
-            // Move the search period forward by searchPeriodDuration
+            if ($result) {
+                return $result;
+            }
+
             $searchStart = $searchStart->modify("{$searchPeriodDuration} seconds");
             $iterations++;
         }
