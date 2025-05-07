@@ -134,6 +134,15 @@ abstract class TimeConstraint
         throw new ClosestDateNotReachedError();
     }
 
+    private function getPeriodsAllowingReverse(\DateTimeImmutable $searchStart, \DateTimeImmutable $searchEnd)
+    {
+        if ($searchStart > $searchEnd) {
+            return $this->getPeriodsBackward($searchStart, $searchEnd);
+        } else {
+            return $this->getPeriodsForward($searchStart, $searchEnd);
+        }
+    }
+
     /**
      * Returns the end instant given the start instant and the duration. Because
      * the time constraints details are unknown, theres no guarantee that the
