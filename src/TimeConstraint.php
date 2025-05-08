@@ -171,7 +171,7 @@ abstract class TimeConstraint
         null|int $searchPeriodDuration = null,
         OnZeroDuration $onZeroDuration = OnZeroDuration::THROW_EXCEPTION,
     ) {
-        if ($duration == 0) {
+        if ($duration === 0) {
             if ($onZeroDuration === OnZeroDuration::THROW_EXCEPTION) {
                 throw new \Exception("Duration must be different from 0");
             } else if ($onZeroDuration === OnZeroDuration::GET_CLOSEST_PAST) {
