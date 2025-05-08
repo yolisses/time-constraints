@@ -171,13 +171,14 @@ abstract class TimeConstraint
         null|int $searchPeriodDuration = null,
         OnZeroDuration $onZeroDuration = OnZeroDuration::THROW_EXCEPTION,
     ) {
+        $onDayInSeconds = 24 * 60 * 60;
         if ($duration === 0) {
             if ($onZeroDuration === OnZeroDuration::THROW_EXCEPTION) {
                 throw new \Exception("Duration must be different from 0");
             } else if ($onZeroDuration === OnZeroDuration::GET_CLOSEST_PAST) {
-                return $this->getClosestDate($startDate, -$searchPeriodDuration, $maxIterations);
+                return $this->getClosestDate($startDate, -$onDayInSeconds, $maxIterations);
             } else if ($onZeroDuration === OnZeroDuration::GET_CLOSEST_FUTURE) {
-                return $this->getClosestDate($startDate, $searchPeriodDuration, $maxIterations);
+                return $this->getClosestDate($startDate, $onDayInSeconds, $maxIterations);
             }
         }
 
